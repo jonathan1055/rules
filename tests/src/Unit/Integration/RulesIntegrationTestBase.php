@@ -225,7 +225,7 @@ abstract class RulesIntegrationTestBase extends UnitTestCase {
     $this->dataFetcher = new DataFetcher();
     $this->messenger = new TestMessenger();
 
-    $this->dataFilterManager = new DataFilterManager($this->namespaces, $this->moduleHandler->reveal());
+    $this->dataFilterManager = new DataFilterManager($this->namespaces, $this->cacheBackend, $this->moduleHandler->reveal());
     $this->placeholderResolver = new PlaceholderResolver($this->dataFetcher, $this->dataFilterManager);
 
     $container->set('entity.manager', $this->entityManager->reveal());
