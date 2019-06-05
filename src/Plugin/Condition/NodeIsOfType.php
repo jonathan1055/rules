@@ -19,7 +19,7 @@ use Drupal\rules\Core\RulesConditionBase;
  *     ),
  *     "types" = @ContextDefinition("string",
  *       label = @Translation("Content types"),
- *       description = @Translation("Check for the the allowed node types."),
+ *       description = @Translation("Check for the allowed node types."),
  *       multiple = TRUE
  *     ),
  *   }

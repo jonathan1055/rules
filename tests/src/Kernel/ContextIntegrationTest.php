@@ -8,7 +8,7 @@ use Drupal\rules\Engine\RulesComponent;
 use Drupal\rules\Exception\EvaluationException;
 
 /**
- * Tests the the extended core context API with Rules.
+ * Tests the extended core context API with Rules.
  *
  * @group Rules
  */

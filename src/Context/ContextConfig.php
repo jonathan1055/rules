@@ -76,7 +76,7 @@ class ContextConfig {
    * @param string $context_name
    *   The name of the context.
    * @param mixed $value
-   *   The value to set for the context. The value must he a valid value for the
+   *   The value to set for the context. The value must be a valid value for the
    *   context's data type, unless a data processor takes care of processing it
    *   to a valid value.
    *
