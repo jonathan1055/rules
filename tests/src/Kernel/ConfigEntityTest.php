@@ -31,6 +31,8 @@ class ConfigEntityTest extends RulesKernelTestBase {
 
   /**
    * Tests that an empty rule configuration can be saved.
+   *
+   * @doesNotPerformAssertions
    */
   public function testSavingEmptyRule() {
     $rule = $this->expressionManager->createRule();
@@ -110,6 +112,8 @@ class ConfigEntityTest extends RulesKernelTestBase {
 
   /**
    * Tests that a reaction rule config entity can be saved.
+   *
+   * @doesNotPerformAssertions
    */
   public function testReactionRuleSaving() {
     $rule = $this->expressionManager->createRule();

@@ -29,6 +29,8 @@ class ConfigSchemaTest extends RulesKernelTestBase {
 
   /**
    * Make sure the system send email config schema works on saving.
+   *
+   * @doesNotPerformAssertions
    */
   public function testMailActionContextSchema() {
     $rule = $this->expressionManager
