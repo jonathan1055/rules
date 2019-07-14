@@ -34,7 +34,7 @@ namespace Drupal\Tests\rules\Unit\Integration\Action {
      * @covers ::summary
      */
     public function testSummary() {
-      $this->assertEquals('Send account e-mail', $this->action->summary());
+      $this->assertEquals('Send account email', $this->action->summary());
     }
 
     /**

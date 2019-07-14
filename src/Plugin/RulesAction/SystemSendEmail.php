@@ -32,13 +32,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     ),
  *     "reply" = @ContextDefinition("email",
  *       label = @Translation("Reply to"),
- *       description = @Translation("The mail's reply-to address. Leave it empty to use the site-wide configured address."),
+ *       description = @Translation("The email's reply-to address. Leave it empty to use the site-wide configured address."),
  *       default_value = NULL,
  *       required = FALSE
  *     ),
  *     "language" = @ContextDefinition("language",
  *       label = @Translation("Language"),
- *       description = @Translation("If specified, the language used for getting the mail message and subject."),
+ *       description = @Translation("If specified, the language used for getting the email message and subject."),
  *       default_value = NULL,
  *       required = FALSE
  *     ),
@@ -115,7 +115,7 @@ class SystemSendEmail extends RulesActionBase implements ContainerFactoryPluginI
       'subject' => $subject,
       'message' => $message,
     ];
-    // Set a unique key for this mail.
+    // Set a unique key for this email.
     $key = 'rules_action_mail_' . $this->getPluginId();
 
     $recipients = implode(', ', $to);
