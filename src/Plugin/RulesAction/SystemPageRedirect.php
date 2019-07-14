@@ -29,7 +29,7 @@ class SystemPageRedirect extends RulesActionBase implements ContainerFactoryPlug
   /**
    * The logger for the rules channel.
    *
-   * @var \Psr\Log\LoggerInterface
+   * @var \Drupal\Core\Logger\LoggerChannelInterface
    */
   protected $logger;
 

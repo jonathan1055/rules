@@ -3,11 +3,11 @@
 namespace Drupal\Tests\rules\Unit\Integration\Action;
 
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Mail\MailManagerInterface;
 use Drupal\Tests\rules\Unit\Integration\RulesIntegrationTestBase;
 use Prophecy\Argument;
-use Psr\Log\LoggerInterface;
 
 /**
  * @coversDefaultClass \Drupal\rules\Plugin\RulesAction\SystemSendEmail
@@ -16,7 +16,7 @@ use Psr\Log\LoggerInterface;
 class SystemSendEmailTest extends RulesIntegrationTestBase {
 
   /**
-   * @var \Psr\Log\LoggerInterface|\Prophecy\Prophecy\ProphecyInterface
+   * @var \Drupal\Core\Logger\LoggerChannelInterface|\Prophecy\Prophecy\ProphecyInterface
    */
   protected $logger;
 
@@ -37,7 +37,7 @@ class SystemSendEmailTest extends RulesIntegrationTestBase {
    */
   protected function setUp() {
     parent::setUp();
-    $this->logger = $this->prophesize(LoggerInterface::class);
+    $this->logger = $this->prophesize(LoggerChannelInterface::class);
     $logger_factory = $this->prophesize(LoggerChannelFactoryInterface::class);
     $logger_factory->get('rules')->willReturn($this->logger->reveal());
 
