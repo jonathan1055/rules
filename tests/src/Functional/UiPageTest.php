@@ -31,10 +31,13 @@ class UiPageTest extends RulesBrowserTestBase {
     $this->drupalLogin($account);
 
     $this->drupalGet('admin/config/workflow/rules');
-    $this->assertSession()->statusCodeEquals(200);
+
+    /** @var \Drupal\Tests\WebAssert $assert */
+    $assert = $this->assertSession();
+    $assert->statusCodeEquals(200);
 
     // Test that there is an empty reaction rule listing.
-    $this->assertSession()->pageTextContains('There are no reaction rules yet.');
+    $assert->pageTextContains('There are no reaction rules yet.');
   }
 
   /**
@@ -53,8 +56,10 @@ class UiPageTest extends RulesBrowserTestBase {
 
     $this->pressButton('Save');
 
-    $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextContains('Reaction rule Test rule has been created.');
+    /** @var \Drupal\Tests\WebAssert $assert */
+    $assert = $this->assertSession();
+    $assert->statusCodeEquals(200);
+    $assert->pageTextContains('Reaction rule Test rule has been created.');
 
     $this->clickLink('Add condition');
 
@@ -64,11 +69,11 @@ class UiPageTest extends RulesBrowserTestBase {
     $this->fillField('context[node][setting]', '1');
     $this->pressButton('Save');
 
-    $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->pageTextContains('You have unsaved changes.');
+    $assert->statusCodeEquals(200);
+    $assert->pageTextContains('You have unsaved changes.');
 
     $this->pressButton('Save');
-    $this->assertSession()->pageTextContains('Reaction rule Test rule has been updated. ');
+    $assert->pageTextContains('Reaction rule Test rule has been updated. ');
   }
 
   /**
@@ -85,11 +90,13 @@ class UiPageTest extends RulesBrowserTestBase {
     $this->fillField('context[node][setting]', '1');
     $this->pressButton('Save');
 
-    $this->assertSession()->pageTextContains('You have unsaved changes.');
+    /** @var \Drupal\Tests\WebAssert $assert */
+    $assert = $this->assertSession();
+    $assert->pageTextContains('You have unsaved changes.');
 
     // Edit and cancel.
     $this->pressButton('Cancel');
-    $this->assertSession()->pageTextContains('Canceled.');
+    $assert->pageTextContains('Canceled.');
 
     // Make sure that we are back at the overview listing page.
     $this->assertEquals(1, preg_match('#/admin/config/workflow/rules$#', $this->getSession()->getCurrentUrl()));
@@ -103,13 +110,16 @@ class UiPageTest extends RulesBrowserTestBase {
     $this->testCreateReactionRule();
 
     $this->clickLink('Delete');
-    $this->assertSession()->pageTextContains('Are you sure you want to delete Condition: Node is promoted from Test rule?');
+
+    /** @var \Drupal\Tests\WebAssert $assert */
+    $assert = $this->assertSession();
+    $assert->pageTextContains('Are you sure you want to delete Condition: Node is promoted from Test rule?');
 
     $this->pressButton('Delete');
-    $this->assertSession()->pageTextContains('You have unsaved changes.');
+    $assert->pageTextContains('You have unsaved changes.');
 
     $this->pressButton('Save');
-    $this->assertSession()->pageTextContains('Reaction rule Test rule has been updated. ');
+    $assert->pageTextContains('Reaction rule Test rule has been updated. ');
   }
 
   /**
@@ -159,7 +169,9 @@ class UiPageTest extends RulesBrowserTestBase {
     $this->fillField('context[message][setting]', 'message');
     $this->pressButton('Save');
 
-    $this->assertSession()->statusCodeEquals(200);
+    /** @var \Drupal\Tests\WebAssert $assert */
+    $assert = $this->assertSession();
+    $assert->statusCodeEquals(200);
   }
 
 }

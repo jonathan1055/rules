@@ -89,7 +89,9 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     $this->fillField('Title', 'Test title');
     $this->pressButton('Save');
 
-    $this->assertSession()->pageTextContains('Title matched "Test title"!');
+    /** @var \Drupal\Tests\WebAssert $assert */
+    $assert = $this->assertSession();
+    $assert->pageTextContains('Title matched "Test title"!');
 
     // Edit the rule and negate the condition.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule');
@@ -105,7 +107,7 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     $this->drupalGet('node/add/article');
     $this->fillField('Title', 'Test title');
     $this->pressButton('Save');
-    $this->assertSession()->pageTextNotContains('Title matched "Test title"!');
+    $assert->pageTextNotContains('Title matched "Test title"!');
   }
 
 }
