@@ -140,6 +140,25 @@ class UiPageTest extends RulesBrowserTestBase {
   }
 
   /**
+   * Tests that a negated condition has NOT prefixed to its label.
+   */
+  public function testNegatedCondition() {
+    // Setup a rule with one condition.
+    $this->testCreateReactionRule();
+
+    /** @var \Drupal\Tests\WebAssert $assert */
+    $assert = $this->assertSession();
+    // Check that the label shows up on the Rule edit page.
+    $assert->pageTextContains('Condition: Node is promoted');
+
+    // Edit the condition, negate it, then check the label again.
+    $this->clickLink('Edit');
+    $this->fillField('Negate', 1);
+    $this->pressButton('Save');
+    $assert->pageTextContains('Condition: NOT Node is promoted');
+  }
+
+  /**
    * Tests that an action with a multiple context can be configured.
    */
   public function testMultipleContextAction() {
