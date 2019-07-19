@@ -114,9 +114,14 @@ trait ContextFormTrait {
           $context_config->map($context_name, $value['setting']);
         }
         else {
-          // Each line of the textarea is one value for multiple contexts.
+          // Each line of the textarea is one value for 'multiple' contexts.
           if ($context_definitions[$context_name]->isMultiple()) {
-            $values = explode("\n", $value['setting']);
+            // Textareas should always have \r\n line breaks, but for more
+            // robust parsing we should also accommodate just \n or just \r.
+            //
+            // Additionally, we want to remove leading and trailing whitespace
+            // from each line, and discard any empty lines.
+            $values = preg_split('/\s*\R\s*/', $value['setting'], NULL, PREG_SPLIT_NO_EMPTY);
             $context_config->setValue($context_name, $values);
           }
           else {
