@@ -24,8 +24,8 @@ use Drupal\user\UserInterface;
  *   }
  * )
  *
- * @todo: Add access callback information from Drupal 7.
- * @todo: Add port for rules_user_roles_options_list.
+ * @todo Add access callback information from Drupal 7.
+ * @todo Add port for rules_user_roles_options_list.
  */
 class UserRoleAdd extends RulesActionBase {
 

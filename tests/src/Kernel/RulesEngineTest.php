@@ -138,7 +138,7 @@ class RulesEngineTest extends RulesKernelTestBase {
    * Tests that multiple actions can consume and provide context variables.
    */
   public function testActionProvidedContext() {
-    // @todo: Convert the test to make use of actions instead of conditions.
+    // @todo Convert the test to make use of actions instead of conditions.
     $rule = $this->expressionManager->createRule();
 
     // The condition provides a "provided_text" variable.

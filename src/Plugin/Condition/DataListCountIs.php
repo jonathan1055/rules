@@ -27,10 +27,10 @@ use Drupal\rules\Core\RulesConditionBase;
  *   }
  * )
  *
- * @todo: Add access callback information from Drupal 7?
- * @todo: set ContextDefinition default value
- * @todo: set ContextDefinition options list
- * @todo: set ContextDefinition restriction
+ * @todo Add access callback information from Drupal 7?
+ * @todo set ContextDefinition default value
+ * @todo Set ContextDefinition options list
+ * @todo Set ContextDefinition restriction
  */
 class DataListCountIs extends RulesConditionBase {
 

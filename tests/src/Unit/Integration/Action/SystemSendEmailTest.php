@@ -43,7 +43,7 @@ class SystemSendEmailTest extends RulesIntegrationTestBase {
 
     $this->mailManager = $this->prophesize(MailManagerInterface::class);
 
-    // @todo this is wrong, the logger is no factory.
+    // @todo This is wrong, the logger is no factory.
     $this->container->set('logger.factory', $logger_factory->reveal());
     $this->container->set('plugin.manager.mail', $this->mailManager->reveal());
 
@@ -86,7 +86,7 @@ class SystemSendEmailTest extends RulesIntegrationTestBase {
       ->shouldBeCalledTimes(1);
 
     $this->logger->notice(
-      // @todo assert the actual message here, but PHPunit goes into an endless
+      // @todo Assert the actual message here, but PHPunit goes into an endless
       // loop with that.
       Argument::any(), Argument::any()
     )->shouldBeCalledTimes(1);
@@ -121,7 +121,7 @@ class SystemSendEmailTest extends RulesIntegrationTestBase {
       ->shouldBeCalledTimes(1);
 
     $this->logger->notice(
-      // @todo assert the actual message here, but PHPunit goes into an endless
+      // @todo Assert the actual message here, but PHPunit goes into an endless
       // with that.
       Argument::any(), Argument::any()
     )->shouldBeCalledTimes(1);

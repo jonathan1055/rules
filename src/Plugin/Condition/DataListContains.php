@@ -24,10 +24,10 @@ use Drupal\Core\Entity\EntityInterface;
  *   }
  * )
  *
- * @todo: Add access callback information from Drupal 7?
- * @todo: Add group information from Drupal 7?
- * @todo: set ContextDefinition restriction
- * @todo: Add info alter
+ * @todo Add access callback information from Drupal 7?
+ * @todo Add group information from Drupal 7?
+ * @todo Set ContextDefinition restriction
+ * @todo Add info alter
  */
 class DataListContains extends RulesConditionBase {
 

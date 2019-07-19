@@ -67,7 +67,7 @@ abstract class RulesComponentFormBase extends EntityForm {
       ],
     ];
 
-    // @todo enter a real tag field here.
+    // @todo Enter a real tag field here.
     $form['settings']['tags'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Tags'),

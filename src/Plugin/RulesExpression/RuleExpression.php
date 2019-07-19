@@ -219,7 +219,7 @@ class RuleExpression extends ExpressionBase implements RuleExpressionInterface, 
    * {@inheritdoc}
    */
   public function prepareExecutionMetadataState(ExecutionMetadataStateInterface $metadata_state, ExpressionInterface $until = NULL, $apply_assertions = TRUE) {
-    // @todo: If the rule is nested, we may not pass assertions to following
+    // @todo If the rule is nested, we may not pass assertions to following
     // expressions as we do not know whether the rule fires at all. Should we
     // clone the metadata state to ensure modifications stay local?
     $found = $this->conditions->prepareExecutionMetadataState($metadata_state, $until, $apply_assertions);

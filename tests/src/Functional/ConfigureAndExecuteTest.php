@@ -65,7 +65,7 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     $this->fillField('Condition', 'rules_data_comparison');
     $this->pressButton('Continue');
 
-    // @todo this should not be necessary once the data context is set to
+    // @todo This should not be necessary once the data context is set to
     // selector by default anyway.
     $this->pressButton('Switch to data selection');
     $this->fillField('context[data][setting]', 'node.title.0.value');

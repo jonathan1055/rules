@@ -19,7 +19,7 @@ class AndExpression extends ConditionExpressionContainer {
   /**
    * Returns whether there is a configured condition.
    *
-   * @todo: Remove this once we added the API to access configured conditions.
+   * @todo Remove this once we added the API to access configured conditions.
    *
    * @return bool
    *   TRUE if there are no conditions, FALSE otherwise.

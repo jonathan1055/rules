@@ -20,7 +20,7 @@ class RulesComponentAddForm extends RulesComponentFormBase {
     }
     else {
       $values = [];
-      // @todo: Create the right expression depending on the route.
+      // @todo Create the right expression depending on the route.
       $entity = $this->entityTypeManager->getStorage($entity_type_id)->create($values);
       $entity->setExpression($this->expressionManager->createRule());
 

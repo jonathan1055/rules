@@ -25,10 +25,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   }
  * )
  *
- * @todo: Add access callback information from Drupal 7.
- * @todo: We should maybe use a dedicated data type for the ip address, as we
+ * @todo Add access callback information from Drupal 7.
+ * @todo We should maybe use a dedicated data type for the ip address, as we
  * do in Drupal 7.
- * @todo: This action depends on the ban module. We need to have a way to
+ * @todo This action depends on the ban module. We need to have a way to
  * specify this.
  */
 class BanIP extends RulesActionBase implements ContainerFactoryPluginInterface {

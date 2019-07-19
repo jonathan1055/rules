@@ -28,8 +28,8 @@ use Drupal\rules\Core\RulesConditionBase;
  *   }
  * )
  *
- * @todo: Add access callback information from Drupal 7.
- * @todo: Find a way to port rules_condition_data_is_operator_options() from Drupal 7.
+ * @todo Add access callback information from Drupal 7.
+ * @todo Find a way to port rules_condition_data_is_operator_options() from Drupal 7.
  */
 class DataComparison extends RulesConditionBase {
 

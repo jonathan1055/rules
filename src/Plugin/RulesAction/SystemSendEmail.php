@@ -45,8 +45,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   }
  * )
  *
- * @todo: Define that message Context should be textarea comparing with textfield Subject
- * @todo: Add access callback information from Drupal 7.
+ * @todo Define that message Context should be textarea comparing with textfield Subject
+ * @todo Add access callback information from Drupal 7.
  */
 class SystemSendEmail extends RulesActionBase implements ContainerFactoryPluginInterface {
 

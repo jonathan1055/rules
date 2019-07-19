@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   deriver = "Drupal\rules\Plugin\RulesAction\EntityPathAliasCreateDeriver"
  * )
  *
- * @todo: Add access callback information from Drupal 7.
+ * @todo Add access callback information from Drupal 7.
  */
 class EntityPathAliasCreate extends RulesActionBase implements ContainerFactoryPluginInterface {
 

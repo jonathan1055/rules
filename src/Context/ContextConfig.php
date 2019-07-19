@@ -181,7 +181,7 @@ class ContextConfig {
    * @param \Drupal\Core\Plugin\ContextAwarePluginInterface $plugin
    *   An instance of the plugin for which the config has been created.
    *
-   * @todo: Implement.
+   * @todo Implement.
    */
   public function checkConfig(CoreContextAwarePluginInterface $plugin) {
     // @todo.

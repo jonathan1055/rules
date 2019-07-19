@@ -29,7 +29,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   }
  * )
  *
- * @todo: Add access callback information from Drupal 7.
+ * @todo Add access callback information from Drupal 7.
  */
 class PathHasAlias extends RulesConditionBase implements ContainerFactoryPluginInterface {
 

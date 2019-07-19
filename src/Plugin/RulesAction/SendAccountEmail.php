@@ -24,7 +24,7 @@ use Drupal\user\UserInterface;
  *   }
  * )
  *
- * @todo: Add access callback information from Drupal 7.
+ * @todo Add access callback information from Drupal 7.
  */
 class SendAccountEmail extends RulesActionBase {
 

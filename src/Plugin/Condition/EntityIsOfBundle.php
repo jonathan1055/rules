@@ -29,7 +29,7 @@ use Drupal\rules\Core\RulesConditionBase;
  *   }
  * )
  *
- * @todo: Add access callback information from Drupal 7?
+ * @todo Add access callback information from Drupal 7?
  */
 class EntityIsOfBundle extends RulesConditionBase {
 

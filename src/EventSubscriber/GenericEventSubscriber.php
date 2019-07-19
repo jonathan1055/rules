@@ -112,7 +112,7 @@ class GenericEventSubscriber implements EventSubscriberInterface {
         $value = $event->getArgument($context_name);
       }
       // Else there must be a getter method or public property.
-      // @todo: Add support for the getter method.
+      // @todo Add support for the getter method.
       else {
         $value = $event->$context_name;
       }

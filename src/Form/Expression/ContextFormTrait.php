@@ -72,7 +72,7 @@ trait ContextFormTrait {
     }
     elseif ($context_definition->isMultiple()) {
       $element['#type'] = 'textarea';
-      // @todo get a description for possible values that can be filled in.
+      // @todo Get a description for possible values that can be filled in.
       $element['#description'] = $this->t('Enter one value per line for this multi-valued context.');
 
       // Glue the list of values together as one item per line in the text area.

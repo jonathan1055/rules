@@ -56,7 +56,7 @@ class DataConvert extends RulesActionBase {
    *   The behaviour for rounding.
    */
   protected function doExecute($value, $target_type, $rounding_behavior) {
-    // @todo: Add support for objects implementing __toString().
+    // @todo Add support for objects implementing __toString().
     if (!is_scalar($value)) {
       throw new InvalidArgumentException('Only scalar values are supported.');
     }

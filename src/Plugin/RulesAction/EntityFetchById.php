@@ -32,8 +32,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   }
  * )
  *
- * @todo: Add access callback information from Drupal 7.
- * @todo: port for rules_entity_action_type_options.
+ * @todo Add access callback information from Drupal 7.
+ * @todo Port for rules_entity_action_type_options.
  */
 class EntityFetchById extends RulesActionBase implements ContainerFactoryPluginInterface {
 

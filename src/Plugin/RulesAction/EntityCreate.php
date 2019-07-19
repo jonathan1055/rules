@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   deriver = "Drupal\rules\Plugin\RulesAction\EntityCreateDeriver"
  * )
  *
- * @todo: Add access callback information from Drupal 7.
+ * @todo Add access callback information from Drupal 7.
  */
 class EntityCreate extends RulesActionBase implements ContainerFactoryPluginInterface {
 
