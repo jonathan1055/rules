@@ -18,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   context = {
  *     "ip" = @ContextDefinition("string",
  *       label = @Translation("IP Address"),
- *       description = @Translation("Ban an IP using the Ban Module. If no IP is provided, the current user IP is used."),
+ *       description = @Translation("Ban an IP address using the Ban Module. If no IP is provided, the current user IP is used."),
  *       default_value = NULL,
  *       required = FALSE
  *     ),
@@ -31,7 +31,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * @todo This action depends on the ban module. We need to have a way to
  * specify this.
  */
-class BanIP extends RulesActionBase implements ContainerFactoryPluginInterface {
+class BanIp extends RulesActionBase implements ContainerFactoryPluginInterface {
 
   /**
    * The ban manager used to ban the IP.
@@ -61,7 +61,7 @@ class BanIP extends RulesActionBase implements ContainerFactoryPluginInterface {
   }
 
   /**
-   * Constructs the BanIP object.
+   * Constructs the BanIp object.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.

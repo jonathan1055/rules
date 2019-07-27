@@ -8,10 +8,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * @coversDefaultClass \Drupal\rules\Plugin\RulesAction\BanIP
+ * @coversDefaultClass \Drupal\rules\Plugin\RulesAction\BanIp
  * @group RulesAction
  */
-class BanIPTest extends RulesIntegrationTestBase {
+class BanIpTest extends RulesIntegrationTestBase {
 
   /**
    * The action to be tested.
