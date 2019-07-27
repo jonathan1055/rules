@@ -92,9 +92,9 @@ class RulesComponentConfig extends ConfigEntityBase implements RulesUiComponentP
   /**
    * The component configuration as nested array.
    *
-   * See \Drupal\rules\Engine\RulesComponent::getConfiguration()
-   *
    * @var array
+   *
+   * @see \Drupal\rules\Engine\RulesComponent::getConfiguration()
    */
   protected $component = [];
 

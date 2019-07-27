@@ -3,7 +3,7 @@
 namespace Drupal\Tests\rules\Kernel;
 
 /**
- * Tests that mails actually go out twith send email action.
+ * Tests that mails actually go out with the send email action.
  *
  * @group Rules
  */

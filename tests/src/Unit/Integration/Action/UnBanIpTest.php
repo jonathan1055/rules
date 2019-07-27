@@ -70,12 +70,10 @@ class UnBanIpTest extends RulesIntegrationTestBase {
   /**
    * Tests the action execution with Context IPv4.
    *
-   * See http://en.wikipedia.org/wiki/Reserved_IP_addresses
-   * See https://tools.ietf.org/html/rfc3330 : "192.0.2.0/24 - This block is
-   * assigned as "TEST-NET" for use in documentation and example code. It is
-   * often used in conjunction with domain names example.com or example.net in
-   * vendor and protocol documentation. Addresses within this block should not
-   * appear on the public Internet."
+   * Uses the 192.0.2.0/24 "TEST-NET" address block as defined in RFC3330.
+   *
+   * @see http://en.wikipedia.org/wiki/Reserved_IP_addresses
+   * @see https://tools.ietf.org/html/rfc3330
    *
    * @covers ::execute
    */
@@ -93,12 +91,10 @@ class UnBanIpTest extends RulesIntegrationTestBase {
   /**
    * Tests the action execution with Context IPv6.
    *
-   * See http://en.wikipedia.org/wiki/Reserved_IP_addresses
-   * See https://tools.ietf.org/html/rfc3330 : "192.0.2.0/24 - This block is
-   * assigned as "TEST-NET" for use in documentation and example code. It is
-   * often used in conjunction with domain names example.com or example.net in
-   * vendor and protocol documentation. Addresses within this block should not
-   * appear on the public Internet."
+   * Uses the 192.0.2.0/24 "TEST-NET" address block as defined in RFC3330.
+   *
+   * @see http://en.wikipedia.org/wiki/Reserved_IP_addresses
+   * @see https://tools.ietf.org/html/rfc3330
    *
    * @covers ::execute
    */

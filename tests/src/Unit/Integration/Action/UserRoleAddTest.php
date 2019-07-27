@@ -92,7 +92,7 @@ class UserRoleAddTest extends RulesEntityIntegrationTestBase {
     $administrator = $this->prophesize(RoleInterface::class);
     $administrator->id()->willReturn('administrator');
 
-    // Test adding of three roles role.
+    // Test adding of three roles.
     $this->action
       ->setContextValue('user', $account->reveal())
       ->setContextValue('roles', [
