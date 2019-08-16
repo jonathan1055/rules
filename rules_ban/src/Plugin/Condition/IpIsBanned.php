@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\rules\Plugin\Condition;
+namespace Drupal\rules_ban\Plugin\Condition;
 
 use Drupal\ban\BanIpManagerInterface;
 use Drupal\rules\Core\RulesConditionBase;

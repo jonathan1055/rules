@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\rules\Unit\Integration\Action;
+namespace Drupal\Tests\rules_ban\Unit\Integration\Action;
 
 use Drupal\ban\BanIpManagerInterface;
 use Drupal\Tests\rules\Unit\Integration\RulesIntegrationTestBase;
@@ -8,10 +8,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * @coversDefaultClass \Drupal\rules\Plugin\RulesAction\BanIp
+ * @coversDefaultClass \Drupal\rules_ban\Plugin\RulesAction\UnBanIp
  * @group RulesAction
  */
-class BanIpTest extends RulesIntegrationTestBase {
+class UnBanIpTest extends RulesIntegrationTestBase {
 
   /**
    * The action to be tested.
@@ -40,7 +40,11 @@ class BanIpTest extends RulesIntegrationTestBase {
    */
   protected function setUp() {
     parent::setUp();
-    // We need the ban module.
+
+    // Must enable our module to make its plugins discoverable.
+    $this->enableModule('rules_ban');
+
+    // We also need the ban module.
     $this->enableModule('ban');
     $this->banManager = $this->prophesize(BanIpManagerInterface::class);
     $this->container->set('ban.ip_manager', $this->banManager->reveal());
@@ -54,7 +58,7 @@ class BanIpTest extends RulesIntegrationTestBase {
     $this->requestStack->getCurrentRequest()->willReturn($this->request->reveal());
     $this->container->set('request_stack', $this->requestStack->reveal());
 
-    $this->action = $this->actionManager->createInstance('rules_ban_ip');
+    $this->action = $this->actionManager->createInstance('rules_unban_ip');
   }
 
   /**
@@ -63,7 +67,7 @@ class BanIpTest extends RulesIntegrationTestBase {
    * @covers ::summary
    */
   public function testSummary() {
-    $this->assertEquals('Ban an IP address', $this->action->summary());
+    $this->assertEquals('Remove the ban on an IP address', $this->action->summary());
   }
 
   /**
@@ -81,7 +85,7 @@ class BanIpTest extends RulesIntegrationTestBase {
     $ipv4 = '192.0.2.0';
     $this->action->setContextValue('ip', $ipv4);
 
-    $this->banManager->banIp($ipv4)->shouldBeCalledTimes(1);
+    $this->banManager->unbanIp($ipv4)->shouldBeCalledTimes(1);
 
     $this->action->execute();
 
@@ -102,7 +106,7 @@ class BanIpTest extends RulesIntegrationTestBase {
     $ipv6 = '2002:0:0:0:0:0:c000:200';
     $this->action->setContextValue('ip', $ipv6);
 
-    $this->banManager->banIp($ipv6)->shouldBeCalledTimes(1);
+    $this->banManager->unbanIp($ipv6)->shouldBeCalledTimes(1);
 
     $this->action->execute();
 
@@ -121,7 +125,7 @@ class BanIpTest extends RulesIntegrationTestBase {
 
     $this->request->getClientIp()->willReturn($ip)->shouldBeCalledTimes(1);
 
-    $this->banManager->banIp($ip)->shouldBeCalledTimes(1);
+    $this->banManager->unbanIp($ip)->shouldBeCalledTimes(1);
 
     $this->action->execute();
   }
