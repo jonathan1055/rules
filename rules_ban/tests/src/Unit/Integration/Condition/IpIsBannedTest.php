@@ -5,6 +5,8 @@ namespace Drupal\Tests\rules_ban\Unit\Integration\Condition;
 use Drupal\Core\Plugin\Context\Context;
 use Drupal\ban\BanIpManagerInterface;
 use Drupal\Tests\rules\Unit\Integration\RulesIntegrationTestBase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * @coversDefaultClass \Drupal\rules_ban\Plugin\Condition\IpIsBanned
@@ -27,6 +29,16 @@ class IpIsBannedTest extends RulesIntegrationTestBase {
   protected $banManager;
 
   /**
+   * @var \Symfony\Component\HttpFoundation\Request|\Prophecy\Prophecy\ProphecyInterface
+   */
+  protected $request;
+
+  /**
+   * @var \Symfony\Component\HttpFoundation\RequestStack|\Prophecy\Prophecy\ProphecyInterface
+   */
+  protected $requestStack;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp() {
@@ -39,6 +51,15 @@ class IpIsBannedTest extends RulesIntegrationTestBase {
     $this->enableModule('ban');
     $this->banManager = $this->prophesize(BanIpManagerInterface::class);
     $this->container->set('ban.ip_manager', $this->banManager->reveal());
+
+    // Mock a request.
+    $this->request = $this->prophesize(Request::class);
+
+    // Mock the request_stack service, make it return our mocked request,
+    // and register it in the container.
+    $this->requestStack = $this->prophesize(RequestStack::class);
+    $this->requestStack->getCurrentRequest()->willReturn($this->request->reveal());
+    $this->container->set('request_stack', $this->requestStack->reveal());
 
     $this->condition = $this->conditionManager->createInstance('rules_ip_is_banned');
   }

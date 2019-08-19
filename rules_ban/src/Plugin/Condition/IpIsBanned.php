@@ -6,6 +6,7 @@ use Drupal\ban\BanIpManagerInterface;
 use Drupal\rules\Core\RulesConditionBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Provides an 'IP address is blocked' condition.
@@ -17,7 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   context = {
  *     "ip" = @ContextDefinition("string",
  *       label = @Translation("IP Address"),
- *       description = @Translation("Determine if an IP address is banned using the Ban Module."),
+ *       description = @Translation("Determine if an IP address is banned using the Ban Module. If no IP is provided, the current user IP is used."),
  *       default_value = NULL,
  *       required = FALSE
  *     )
@@ -27,6 +28,20 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class IpIsBanned extends RulesConditionBase implements ContainerFactoryPluginInterface {
 
   /**
+   * The ban manager used to check the IP.
+   *
+   * @var \Drupal\ban\BanIpManagerInterface
+   */
+  protected $banManager;
+
+  /**
+   * The corresponding request stack.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack
+   */
+  protected $requestStack;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
@@ -34,7 +49,8 @@ class IpIsBanned extends RulesConditionBase implements ContainerFactoryPluginInt
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('ban.ip_manager')
+      $container->get('ban.ip_manager'),
+      $container->get('request_stack')
     );
   }
 
@@ -49,10 +65,13 @@ class IpIsBanned extends RulesConditionBase implements ContainerFactoryPluginInt
    *   The plugin implementation definition.
    * @param \Drupal\ban\BanIpManagerInterface $ban_manager
    *   The ban manager.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
+   *   The corresponding request stack.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, BanIpManagerInterface $ban_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, BanIpManagerInterface $ban_manager, RequestStack $request_stack) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->banManager = $ban_manager;
+    $this->requestStack = $request_stack;
   }
 
   /**
@@ -64,7 +83,11 @@ class IpIsBanned extends RulesConditionBase implements ContainerFactoryPluginInt
    * @return bool
    *   TRUE if the IP address is banned.
    */
-  public function doEvaluate($ip) {
+  protected function doEvaluate($ip = NULL) {
+    if (!isset($ip)) {
+      $ip = $this->requestStack->getCurrentRequest()->getClientIp();
+    }
+
     return $this->banManager->isBanned($ip);
   }
 
