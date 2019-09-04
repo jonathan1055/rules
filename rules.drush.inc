@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Rules module drush integration.
+ * Rules module integration with Drush 8 and earlier.
  */
 
 use Drupal\Core\Serialization\Yaml;
@@ -215,22 +215,21 @@ function drush_rules_list() {
  * Enables a Reaction Rule on the site.
  */
 function drush_rules_enable($rule) {
-
   // The $rule argument must be a Reaction Rule.
   if (\Drupal::service('config.storage')->exists('rules.reaction.' . $rule)) {
     $config = \Drupal::configFactory()->getEditable('rules.reaction.' . $rule);
   }
   else {
-    return drush_set_error('', dt('Could not find a Reaction Rule named "!rule-name".', ['!rule-name' => $rule]));
+    return drush_set_error('', dt('Could not find a Reaction Rule named "@name".', ['@name' => $rule]));
   }
 
   if (!$config->get('status')) {
     $config->set('status', TRUE);
     $config->save();
-    drush_log(dt('The rule "!name" has been enabled.', ['!name' => $rule]), 'success');
+    drush_log(dt('The rule "@name" has been enabled.', ['@name' => $rule]), 'success');
   }
   else {
-    drush_log(dt('The rule "!name" is already enabled.', ['!name' => $rule]), 'warning');
+    drush_log(dt('The rule "@name" is already enabled.', ['@name' => $rule]), 'warning');
   }
 }
 
@@ -238,22 +237,21 @@ function drush_rules_enable($rule) {
  * Disables a Reaction Rule on the site.
  */
 function drush_rules_disable($rule) {
-
   // The $rule argument must be a Reaction Rule.
   if (\Drupal::service('config.storage')->exists('rules.reaction.' . $rule)) {
     $config = \Drupal::configFactory()->getEditable('rules.reaction.' . $rule);
   }
   else {
-    return drush_set_error('', dt('Could not find a Reaction Rule named "!rule-name".', ['!rule-name' => $rule]));
+    return drush_set_error('', dt('Could not find a Reaction Rule named "@name".', ['@name' => $rule]));
   }
 
   if ($config->get('status')) {
     $config->set('status', FALSE);
     $config->save();
-    drush_log(dt('The rule "!name" has been disabled.', ['!name' => $rule]), 'success');
+    drush_log(dt('The rule "@name" has been disabled.', ['@name' => $rule]), 'success');
   }
   else {
-    drush_log(dt('The rule "!name" is already disabled.', ['!name' => $rule]), 'warning');
+    drush_log(dt('The rule "@name" is already disabled.', ['@name' => $rule]), 'warning');
   }
 }
 
@@ -261,7 +259,6 @@ function drush_rules_disable($rule) {
  * Deletes a rule on the site.
  */
 function drush_rules_delete($rule) {
-
   // The $rule argument could refer to a Reaction Rule or a Rules Component.
   if (\Drupal::service('config.storage')->exists('rules.reaction.' . $rule)) {
     $config = \Drupal::configFactory()->getEditable('rules.reaction.' . $rule);
@@ -270,12 +267,12 @@ function drush_rules_delete($rule) {
     $config = \Drupal::configFactory()->getEditable('rules.component.' . $rule);
   }
   else {
-    return drush_set_error('', dt('Could not find a Reaction Rule or a Rules Component named "!rule-name".', ['!rule-name' => $rule]));
+    return drush_set_error('', dt('Could not find a Reaction Rule or a Rules Component named "@name".', ['@name' => $rule]));
   }
 
-  if (drush_confirm(dt('Are you sure you want to delete the rule named "!rule-name"? This action cannot be undone.', ['!rule-name' => $rule]))) {
+  if (drush_confirm(dt('Are you sure you want to delete the rule named "@name"? This action cannot be undone.', ['@name' => $rule]))) {
     $config->delete();
-    drush_log(dt('The rule "!name" has been deleted.', ['!name' => $rule]), 'success');
+    drush_log(dt('The rule "@name" has been deleted.', ['@name' => $rule]), 'success');
   }
   else {
     drush_user_abort();
@@ -286,16 +283,15 @@ function drush_rules_delete($rule) {
  * Exports a single rule.
  */
 function drush_rules_export($rule) {
-
   // The $rule argument could refer to a Reaction Rule or a Rules Component.
   $config = \Drupal::service('config.storage')->read('rules.reaction.' . $rule);
   if (empty($config)) {
     $config = \Drupal::service('config.storage')->read('rules.component.' . $rule);
     if (empty($config)) {
-      return drush_set_error('', dt('Could not find a Reaction Rule or a Rules Component named "!rule-name".', ['!rule-name' => $rule]));
+      return drush_set_error('', dt('Could not find a Reaction Rule or a Rules Component named "@name".', ['@name' => $rule]));
     }
   }
 
   drush_print(Yaml::encode($config), 0, NULL, FALSE);
-  drush_log(dt('The rule "!name" has been exported.', ['!name' => $rule]), 'success');
+  drush_log(dt('The rule "@name" has been exported.', ['@name' => $rule]), 'success');
 }
