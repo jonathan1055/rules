@@ -4,7 +4,6 @@ language: php
 sudo: true
 
 php:
-  - 5.5
   - 5.6
   - 7
 
@@ -13,12 +12,19 @@ env:
     # Make the script re-usable for other modules.
     - MODULE=rules
   matrix:
-    - DRUPAL_CORE=8.3.x
-    - DRUPAL_CORE=8.4.x
-    - DRUPAL_CORE=8.5.x
+    - DRUPAL_CORE=8.6.x
+    - DRUPAL_CORE=8.7.x
+    - DRUPAL_CORE=8.8.x
 
 matrix:
   fast_finish: true
+  # Core 8.8 no longer supports PHP5, so don't run that combination.
+  exclude:
+    - php: 5.6
+      env: DRUPAL_CORE=8.8.x
+
+services:
+  - mysql
 
 mysql:
   database: $MODULE
@@ -56,14 +62,20 @@ before_script:
   # Reference $MODULE in build site.
   - ln -s $TESTDIR modules/$MODULE
   # Install dependencies.
-  - travis_retry git clone --branch 8.x-1.x --depth 1 https://github.com/fago/typed_data.git modules/typed_data
+  - travis_retry git clone --branch 8.x-1.x --depth 1 https://git.drupalcode.org/project/typed_data.git modules/typed_data
 
   # Run composer install for Drupal 8.1 and up. We need an up-to-date composer
   # when installing Drupal 8.1.
   - travis_retry composer self-update && travis_retry composer install
   # Run composer install in the module directory in order to fetch dev
   # dependencies there. This includes phpcs & coder for checking coding style.
-  - travis_retry composer install -d $TESTDIR 
+  - travis_retry composer install -d $TESTDIR
+
+  # If running Core 8.6 or 8.7 the following script will upgrade to phpunit 6
+  # which is required in PHP7. The script has now been deleted from Core 8.8.
+  - if [[ $DRUPAL_CORE == "8.6.x" || $DRUPAL_CORE == "8.7.x" ]]; then
+      travis_retry composer run-script drupal-phpunit-upgrade;
+    fi
 
   # Start a web server on port 8888, run in the background.
   - php -S localhost:8888 &
