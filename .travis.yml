@@ -11,6 +11,8 @@ env:
   global:
     # Make the script re-usable for other modules.
     - MODULE=rules
+    # Allow this many deprecation warnings (total on core 8.8 at 11.09.2019)
+    - SYMFONY_DEPRECATIONS_HELPER=11551
   matrix:
     - DRUPAL_CORE=8.6.x
     - DRUPAL_CORE=8.7.x
