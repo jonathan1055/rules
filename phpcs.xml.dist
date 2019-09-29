@@ -10,6 +10,10 @@
   <arg name="extensions" value="inc,install,module,php,profile,test,theme,yml"/>
   <arg value="s"/>
 
+  <!-- Include all Drupal and DrupalPractice sniffs by default, then adjust. -->
+  <rule ref="Drupal"/>
+  <rule ref="DrupalPractice"/>
+
   <rule ref="Drupal.NamingConventions.ValidVariableName.LowerCamelName">
     <!-- Annotations must use the same property names as in the configuration. -->
     <exclude-pattern>src/Annotation</exclude-pattern>
@@ -33,9 +37,12 @@
     <exclude name="Drupal.Commenting.DocComment.MissingShort"/>
   </rule>
 
+  <!-- Allow empty lines after comments, we don't care. -->
+  <rule ref="Drupal">
+    <exclude name="Drupal.Commenting.InlineComment.SpacingAfter"/>
+  </rule>
   <rule ref="DrupalPractice">
-    <!-- Allow empty lines after comments, we don't care. -->
-    <exclude name="DrupalPractice.Commenting.CommentEmptyLine"/>
+    <exclude name="DrupalPractice.Commenting.CommentEmptyLine.SpacingAfter"/>
   </rule>
 
   <!-- We always want short array syntax only. -->

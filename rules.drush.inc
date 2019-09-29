@@ -94,6 +94,8 @@ function rules_drush_command() {
     'core' => ['8+'],
   ];
   /*
+   * @codingStandardsIgnoreStart
+   *
    * @todo Not yet implemented.
    *
    * $items['rules-revert'] = [
@@ -108,6 +110,7 @@ function rules_drush_command() {
    *     'drush rules-revert test_rule' => dt('Restores a module-provided Rule to its original state. If the Rule hasn\'t been customized on the site, this has no effect.'),
    *   ],
    * ];
+   * @codingStandardsIgnoreEnd
    */
 
   return $items;
@@ -134,10 +137,13 @@ function rules_drush_help($section) {
       return dt('Disables/deactivates a Reaction Rule on your site.');
 
     /*
+     * @codingStandardsIgnoreStart
+     *
      * @todo Not yet implemented.
      *
      * case 'drush:rules-revert':
      *   return dt('Reverts a module-provided rule to its original state on your site.');
+     * @codingStandardsIgnoreEnd
      */
 
     case 'drush:rules-delete':
