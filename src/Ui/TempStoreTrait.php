@@ -4,8 +4,8 @@ namespace Drupal\rules\Ui;
 
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\TempStore\SharedTempStoreFactory;
 use Drupal\Core\Url;
-use Drupal\user\SharedTempStoreFactory;
 
 /**
  * Provides methods for modified rules components in temporary storage.
@@ -21,14 +21,14 @@ trait TempStoreTrait {
   /**
    * The tempstore factory.
    *
-   * @var \Drupal\user\SharedTempStoreFactory
+   * @var \Drupal\Core\TempStore\SharedTempStoreFactory
    */
   protected $tempStoreFactory;
 
   /**
    * The temporary store for the rules component.
    *
-   * @var \Drupal\user\SharedTempStore
+   * @var \Drupal\Core\TempStore\SharedTempStore
    */
   protected $tempStore;
 
@@ -69,12 +69,12 @@ trait TempStoreTrait {
   /**
    * Retrieves the temporary storage service if not already present.
    *
-   * @return \Drupal\user\SharedTempStoreFactory
+   * @return \Drupal\Core\TempStore\SharedTempStoreFactory
    *   The factory.
    */
   protected function getTempStoreFactory() {
     if (!isset($this->tempStoreFactory)) {
-      $this->tempStoreFactory = \Drupal::service('user.shared_tempstore');
+      $this->tempStoreFactory = \Drupal::service('tempstore.shared');
     }
     return $this->tempStoreFactory;
   }
@@ -82,7 +82,7 @@ trait TempStoreTrait {
   /**
    * Setter injection for the temporary storage factory.
    *
-   * @param \Drupal\user\SharedTempStoreFactory $temp_store_factory
+   * @param \Drupal\Core\TempStore\SharedTempStoreFactory $temp_store_factory
    *   The factory.
    */
   public function setTempStoreFactory(SharedTempStoreFactory $temp_store_factory) {
@@ -190,7 +190,7 @@ trait TempStoreTrait {
   /**
    * Gets the temporary storage repository from the factory.
    *
-   * @return \Drupal\user\SharedTempStore
+   * @return \Drupal\Core\TempStore\SharedTempStore
    *   The shareds storage.
    */
   private function getTempStore() {
