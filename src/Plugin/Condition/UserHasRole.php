@@ -15,10 +15,12 @@ use Drupal\user\UserInterface;
  *   category = @Translation("User"),
  *   context = {
  *     "user" = @ContextDefinition("entity:user",
- *       label = @Translation("User")
+ *       label = @Translation("User"),
+ *       description = @Translation("Specifies the user account to check."),
  *     ),
  *     "roles" = @ContextDefinition("entity:user_role",
  *       label = @Translation("Roles"),
+ *       description = @Translation("Specifies the roles to check for."),
  *       multiple = TRUE
  *     ),
  *     "operation" = @ContextDefinition("string",

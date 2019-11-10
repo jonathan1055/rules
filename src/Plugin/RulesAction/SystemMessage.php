@@ -18,10 +18,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   category = @Translation("System"),
  *   context = {
  *     "message" = @ContextDefinition("string",
- *       label = @Translation("Message")
+ *       label = @Translation("Message"),
+ *       description = @Translation("The text to display. HTML is allowed.")
  *     ),
  *     "type" = @ContextDefinition("string",
- *       label = @Translation("Message type")
+ *       label = @Translation("Message type"),
+ *       description = @Translation("The message type: status, warning, or error.")
  *     ),
  *     "repeat" = @ContextDefinition("boolean",
  *       label = @Translation("Repeat message"),

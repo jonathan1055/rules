@@ -14,17 +14,19 @@ use Drupal\rules\Core\RulesActionBase;
  *   context = {
  *     "type" = @ContextDefinition("string",
  *       label = @Translation("Type"),
+ *       description = @Translation("Specifies the type of the variable that should be added."),
  *       assignment_restriction = "input"
  *     ),
  *     "value" = @ContextDefinition("any",
- *       label = @Translation("Value")
+ *       label = @Translation("Value"),
+ *       description = @Translation("Optionally, specify the initial value of the variable.")
  *     ),
  *   },
  *   provides = {
  *     "variable_added" = @ContextDefinition("any",
- *        label = @Translation("Added variable")
- *      ),
- *    }
+ *       label = @Translation("Added variable")
+ *     ),
+ *   }
  * )
  */
 class VariableAdd extends RulesActionBase {

@@ -15,10 +15,12 @@ use Drupal\user\UserInterface;
  *   category = @Translation("User"),
  *   context = {
  *     "user" = @ContextDefinition("entity:user",
- *       label = @Translation("User")
+ *       label = @Translation("User"),
+ *       description = @Translation("The user whose roles should be changed.")
  *     ),
  *     "roles" = @ContextDefinition("entity:user_role",
  *       label = @Translation("Roles"),
+ *       description = @Translation("One or more role ids to add."),
  *       multiple = TRUE
  *     ),
  *   }

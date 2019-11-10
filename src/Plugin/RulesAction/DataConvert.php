@@ -12,21 +12,24 @@ use Drupal\rules\Exception\InvalidArgumentException;
  *   category = @Translation("Data"),
  *   context = {
  *     "value" = @ContextDefinition("any",
- *       label = @Translation("Value")
+ *       label = @Translation("Value"),
+ *       description = @Translation("The first input value for the calculation.")
  *     ),
  *     "target_type" = @ContextDefinition("string",
- *       label = @Translation("Target type")
+ *       label = @Translation("Target type"),
+ *       description = @Translation("The data type to convert a value to.")
  *     ),
  *     "rounding_behavior" = @ContextDefinition("string",
  *       label = @Translation("Rounding behavior"),
+ *       description = @Translation("For integer target types, specify how the conversion result should be rounded."),
  *       default_value = NULL,
  *       required = FALSE
  *     ),
  *   },
  *   provides = {
  *     "conversion_result" = @ContextDefinition("any",
- *        label = @Translation("Conversion result")
- *      ),
+ *       label = @Translation("Conversion result")
+ *     ),
  *   }
  * )
  * @todo Add rounding_behaviour default value "round".

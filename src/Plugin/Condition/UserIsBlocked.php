@@ -14,7 +14,8 @@ use Drupal\user\UserInterface;
  *   category = @Translation("User"),
  *   context = {
  *     "user" = @ContextDefinition("entity:user",
- *       label = @Translation("User")
+ *       label = @Translation("User"),
+ *       description = @Translation("Specifies the user account to check.")
  *     ),
  *   }
  * )

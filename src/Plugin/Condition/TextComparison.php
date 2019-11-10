@@ -13,7 +13,8 @@ use Drupal\rules\Core\RulesConditionBase;
  *   category = @Translation("Data"),
  *   context = {
  *     "text" = @ContextDefinition("string",
- *       label = @Translation("Text")
+ *       label = @Translation("Text"),
+ *       description = @Translation("Specifies the text data to evaluate.")
  *     ),
  *     "operator" = @ContextDefinition("string",
  *       label = @Translation("Operator"),
@@ -22,7 +23,8 @@ use Drupal\rules\Core\RulesConditionBase;
  *       required = FALSE
  *     ),
  *     "match" = @ContextDefinition("string",
- *        label = @Translation("Matching text")
+ *       label = @Translation("Matching text"),
+ *       description = @Translation("A string or pattern (in the case of regex) to search for in the given text data.")
  *     ),
  *   }
  * )

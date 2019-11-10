@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     ),
  *     "field_name" = @ContextDefinition("string",
  *       label = @Translation("Field name"),
- *       description = @Translation("Name of the field by which the entity is to be selected..")
+ *       description = @Translation("Name of the field by which the entity is to be selected.")
  *     ),
  *     "field_value" = @ContextDefinition("any",
  *       label = @Translation("Field value"),
@@ -35,10 +35,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     ),
  *   },
  *   provides = {
- *      "entity_fetched" = @ContextDefinition("entity",
- *        label = @Translation("Fetched entity"),
- *        multiple = TRUE
- *      ),
+ *     "entity_fetched" = @ContextDefinition("entity",
+ *       label = @Translation("Fetched entity"),
+ *       multiple = TRUE
+ *     ),
  *   }
  * )
  *

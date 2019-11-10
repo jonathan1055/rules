@@ -22,8 +22,8 @@ use Drupal\rules\Core\RulesConditionBase;
  *       default_value = "=="
  *     ),
  *     "value" = @ContextDefinition("any",
- *        label = @Translation("Data value"),
- *        description = @Translation("The value to compare the data with.")
+ *       label = @Translation("Data value"),
+ *       description = @Translation("The value to compare the data with.")
  *     ),
  *   }
  * )

@@ -14,7 +14,8 @@ use Drupal\rules\Core\RulesConditionBase;
  *   category = @Translation("Node"),
  *   context = {
  *     "node" = @ContextDefinition("entity:node",
- *       label = @Translation("Node")
+ *       label = @Translation("Node"),
+ *       description = @Translation("Specifies the node for which to evaluate the condition.")
  *     ),
  *   }
  * )
