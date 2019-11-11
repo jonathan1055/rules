@@ -55,7 +55,7 @@ abstract class RulesIntegrationTestBase extends UnitTestCase {
   /**
    * @var \Drupal\Core\Entity\EntityTypeBundleInfoInterface|\Prophecy\Prophecy\ProphecyInterface
    */
-  protected $entityTypeBundledInfo;
+  protected $entityTypeBundleInfo;
 
   /**
    * @var \Drupal\Core\TypedData\TypedDataManagerInterface
