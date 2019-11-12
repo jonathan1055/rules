@@ -33,6 +33,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class RuleExpression extends ExpressionBase implements RuleExpressionInterface, ContainerFactoryPluginInterface {
 
   /**
+   * The rules expression plugin manager.
+   *
+   * @var \Drupal\rules\Engine\ExpressionManagerInterface
+   */
+  protected $expressionManager;
+
+  /**
    * List of conditions that must be met before actions are executed.
    *
    * @var \Drupal\rules\Engine\ConditionExpressionContainerInterface
@@ -69,6 +76,7 @@ class RuleExpression extends ExpressionBase implements RuleExpressionInterface, 
     $this->conditions->setRoot($this->getRoot());
     $this->actions = $expression_manager->createInstance('rules_action_set', $configuration['actions']);
     $this->actions->setRoot($this->getRoot());
+    $this->expressionManager = $expression_manager;
   }
 
   /**
