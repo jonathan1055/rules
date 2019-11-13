@@ -4,7 +4,7 @@ namespace Drupal\rules\Form\Expression;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\rules\Context\ContextConfig;
-use Drupal\Core\Plugin\Context\ContextDefinitionInterface;
+use Drupal\rules\Context\ContextDefinitionInterface;
 use Drupal\rules\Context\DataProcessorManagerTrait;
 
 /**
@@ -27,20 +27,23 @@ trait ContextFormTrait {
     ];
 
     // If the form has been submitted already take the mode from the submitted
-    // values, otherwise default to existing configuration. And if that does not
-    // exist default to the "input" mode.
+    // value, otherwise check for restriction setting, then check existing
+    // configuration, and if that does not exist default to the "input" mode.
     $mode = $form_state->get('context_' . $context_name);
     if (!$mode) {
-      if (isset($configuration['context_mapping'][$context_name])) {
-        $mode = 'selector';
+      if ($mode = $context_definition->getAssignmentRestriction()) {
+        // If there is an assignmentRestriction value, use this for mode.
+      }
+      elseif (isset($configuration['context_mapping'][$context_name])) {
+        $mode = ContextDefinitionInterface::ASSIGNMENT_RESTRICTION_SELECTOR;
       }
       else {
-        $mode = 'input';
+        $mode = ContextDefinitionInterface::ASSIGNMENT_RESTRICTION_INPUT;
       }
       $form_state->set('context_' . $context_name, $mode);
     }
 
-    $title = $mode == 'selector' ? $this->t('Data selector') : $this->t('Value');
+    $title = $mode == ContextDefinitionInterface::ASSIGNMENT_RESTRICTION_SELECTOR ? $this->t('Data selector') : $this->t('Value');
 
     if (isset($configuration['context_values'][$context_name])) {
       $default_value = $configuration['context_values'][$context_name];
@@ -60,7 +63,7 @@ trait ContextFormTrait {
 
     $element = &$form['context'][$context_name]['setting'];
 
-    if ($mode == 'selector') {
+    if ($mode == ContextDefinitionInterface::ASSIGNMENT_RESTRICTION_SELECTOR) {
       $element['#description'] = $this->t("The data selector helps you drill down into the data available to Rules. <em>To make entity fields appear in the data selector, you may have to use the condition 'entity has field' (or 'content is of type').</em> More useful tips about data selection is available in <a href=':url'>the online documentation</a>.", [
         ':url' => 'https://www.drupal.org/node/1300042',
       ]);
@@ -81,17 +84,22 @@ trait ContextFormTrait {
       }
     }
 
-    $value = $mode == 'selector' ? $this->t('Switch to the direct input mode') : $this->t('Switch to data selection');
-    $form['context'][$context_name]['switch_button'] = [
-      '#type' => 'submit',
-      '#name' => 'context_' . $context_name,
-      '#attributes' => ['class' => ['rules-switch-button']],
-      '#parameter' => $context_name,
-      '#value' => $value,
-      '#submit' => [static::class . '::switchContextMode'],
-      // Do not validate!
-      '#limit_validation_errors' => [],
-    ];
+    // If the context is not restricted to one mode or the other then provide a
+    // button to switch between the two modes.
+    if (empty($context_definition->getAssignmentRestriction())) {
+      $value = $mode == ContextDefinitionInterface::ASSIGNMENT_RESTRICTION_SELECTOR ? $this->t('Switch to the direct input mode') : $this->t('Switch to data selection');
+      $form['context'][$context_name]['switch_button'] = [
+        '#type' => 'submit',
+        '#name' => 'context_' . $context_name,
+        '#attributes' => ['class' => ['rules-switch-button']],
+        '#parameter' => $context_name,
+        '#value' => $value,
+        '#submit' => [static::class . '::switchContextMode'],
+        // Do not validate!
+        '#limit_validation_errors' => [],
+      ];
+    }
+
     return $form;
   }
 
@@ -145,7 +153,7 @@ trait ContextFormTrait {
   public static function switchContextMode(array &$form, FormStateInterface $form_state) {
     $element_name = $form_state->getTriggeringElement()['#name'];
     $mode = $form_state->get($element_name);
-    $switched_mode = $mode == 'selector' ? 'input' : 'selector';
+    $switched_mode = $mode == ContextDefinitionInterface::ASSIGNMENT_RESTRICTION_SELECTOR ? ContextDefinitionInterface::ASSIGNMENT_RESTRICTION_INPUT : ContextDefinitionInterface::ASSIGNMENT_RESTRICTION_SELECTOR;
     $form_state->set($element_name, $switched_mode);
 
     $form_state->setRebuild();
