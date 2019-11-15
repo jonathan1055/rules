@@ -18,7 +18,9 @@ use Drupal\rules\Core\RulesConditionBase;
  *     ),
  *     "operator" = @ContextDefinition("string",
  *       label = @Translation("Operator"),
- *       description = @Translation("The comparison operator.")
+ *       description = @Translation("The comparison operator."),
+ *       default_value = "==",
+ *       required = FALSE
  *     ),
  *     "value" = @ContextDefinition("integer",
  *       label = @Translation("Count"),
@@ -28,7 +30,6 @@ use Drupal\rules\Core\RulesConditionBase;
  * )
  *
  * @todo Add access callback information from Drupal 7?
- * @todo set ContextDefinition default value
  * @todo Set ContextDefinition options list
  * @todo Set ContextDefinition restriction
  */

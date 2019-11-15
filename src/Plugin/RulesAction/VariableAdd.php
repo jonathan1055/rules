@@ -19,7 +19,8 @@ use Drupal\rules\Core\RulesActionBase;
  *     ),
  *     "value" = @ContextDefinition("any",
  *       label = @Translation("Value"),
- *       description = @Translation("Optionally, specify the initial value of the variable.")
+ *       description = @Translation("Optionally, specify the initial value of the variable."),
+ *       required = FALSE
  *     ),
  *   },
  *   provides = {

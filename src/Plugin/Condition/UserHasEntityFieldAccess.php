@@ -27,11 +27,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     ),
  *     "operation" = @ContextDefinition("string",
  *       label = @Translation("Access operation"),
- *       description = @Translation("The access type to check.")
+ *       description = @Translation("The access type to check."),
+ *       default_value = "view",
+ *       required = FALSE
  *     ),
  *     "user" = @ContextDefinition("entity:user",
  *       label = @Translation("User"),
- *       description = @Translation("Specifies the user account for which to check access. If left empty, the currently logged in user will be used.")
+ *       description = @Translation("Specifies the user account for which to check access. If left empty, the currently logged in user will be used."),
+ *       required = FALSE
  *     ),
  *   }
  * )

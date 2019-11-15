@@ -23,12 +23,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     ),
  *     "type" = @ContextDefinition("string",
  *       label = @Translation("Message type"),
- *       description = @Translation("The message type: status, warning, or error.")
+ *       description = @Translation("The message type: status, warning, or error."),
+ *       default_value = "status",
+ *       required = FALSE
  *     ),
  *     "repeat" = @ContextDefinition("boolean",
  *       label = @Translation("Repeat message"),
  *       description = @Translation("If disabled and the message has been already shown, then the message won't be repeated."),
- *       default_value = NULL,
+ *       default_value = TRUE,
  *       required = FALSE
  *     ),
  *   }
