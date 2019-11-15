@@ -19,6 +19,7 @@ use Drupal\rules\Core\RulesConditionBase;
  *     "operator" = @ContextDefinition("string",
  *       label = @Translation("Operator"),
  *       description = @Translation("The comparison operator."),
+ *       assignment_restriction = "input",
  *       default_value = "==",
  *       required = FALSE
  *     ),
@@ -31,7 +32,6 @@ use Drupal\rules\Core\RulesConditionBase;
  *
  * @todo Add access callback information from Drupal 7?
  * @todo Set ContextDefinition options list
- * @todo Set ContextDefinition restriction
  */
 class DataListCountIs extends RulesConditionBase {
 

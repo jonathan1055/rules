@@ -20,11 +20,13 @@ use Drupal\rules\Core\RulesConditionBase;
  *     ),
  *     "type" = @ContextDefinition("string",
  *       label = @Translation("Type"),
- *       description = @Translation("The type of the evaluated entity.")
+ *       description = @Translation("The type of the evaluated entity."),
+ *       assignment_restriction = "input"
  *     ),
  *     "bundle" = @ContextDefinition("string",
  *       label = @Translation("Bundle"),
- *       description = @Translation("The bundle of the evaluated entity.")
+ *       description = @Translation("The bundle of the evaluated entity."),
+ *       assignment_restriction = "input"
  *     ),
  *   }
  * )

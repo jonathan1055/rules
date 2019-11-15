@@ -18,7 +18,8 @@ use Drupal\rules\Core\RulesActionBase;
  *     ),
  *     "operator" = @ContextDefinition("string",
  *       label = @Translation("Operator"),
- *       description = @Translation("The calculation operator.")
+ *       description = @Translation("The calculation operator."),
+ *       assignment_restriction = "input"
  *     ),
  *     "input_2" = @ContextDefinition("float",
  *       label = @Translation("Input value 2"),

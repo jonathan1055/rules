@@ -14,7 +14,8 @@ use Drupal\rules\Core\RulesActionBase;
  *   context = {
  *     "list" = @ContextDefinition("list",
  *       label = @Translation("List"),
- *       description = @Translation("The data list from which an item is to be removed.")
+ *       description = @Translation("The data list from which an item is to be removed."),
+ *       assignment_restriction = "selector"
  *     ),
  *     "item" = @ContextDefinition("any",
  *       label = @Translation("Item"),

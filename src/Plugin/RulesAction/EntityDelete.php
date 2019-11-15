@@ -15,7 +15,8 @@ use Drupal\rules\Core\RulesActionBase;
  *   context = {
  *     "entity" = @ContextDefinition("entity",
  *       label = @Translation("Entity"),
- *       description = @Translation("Specifies the entity, which should be deleted permanently.")
+ *       description = @Translation("Specifies the entity, which should be deleted permanently."),
+ *       assignment_restriction = "selector"
  *     ),
  *   }
  * )

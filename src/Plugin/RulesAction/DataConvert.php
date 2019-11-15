@@ -13,11 +13,13 @@ use Drupal\rules\Exception\InvalidArgumentException;
  *   context = {
  *     "value" = @ContextDefinition("any",
  *       label = @Translation("Value"),
- *       description = @Translation("The first input value for the calculation.")
+ *       description = @Translation("The first input value for the calculation."),
+ *       assignment_restriction = "selector"
  *     ),
  *     "target_type" = @ContextDefinition("string",
  *       label = @Translation("Target type"),
- *       description = @Translation("The data type to convert a value to.")
+ *       description = @Translation("The data type to convert a value to."),
+ *       assignment_restriction = "input"
  *     ),
  *     "rounding_behavior" = @ContextDefinition("string",
  *       label = @Translation("Rounding behavior"),
@@ -33,7 +35,6 @@ use Drupal\rules\Exception\InvalidArgumentException;
  *   }
  * )
  * @todo Add rounding_behaviour default value "round".
- * @todo Add various input restrictions.
  * @todo Add options_list for target type.
  * @todo Specify the right data type for the provided result.
  */

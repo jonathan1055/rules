@@ -15,11 +15,13 @@ use Drupal\rules\Core\RulesActionBase;
  *   context = {
  *     "entity" = @ContextDefinition("entity",
  *       label = @Translation("Entity"),
- *       description = @Translation("Specifies the entity, which should be saved permanently.")
+ *       description = @Translation("Specifies the entity, which should be saved permanently."),
+ *       assignment_restriction = "selector"
  *     ),
  *     "immediate" = @ContextDefinition("boolean",
  *       label = @Translation("Force saving immediately"),
  *       description = @Translation("Usually saving is postponed till the end of the evaluation, so that multiple saves can be fold into one. If this set, saving is forced to happen immediately."),
+ *       assignment_restriction = "input",
  *       default_value = FALSE,
  *       required = FALSE
  *     ),

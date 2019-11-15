@@ -15,7 +15,8 @@ use Drupal\Core\Entity\EntityInterface;
  *   context = {
  *     "list" = @ContextDefinition("list",
  *       label = @Translation("List"),
- *       description = @Translation("The list to be checked.")
+ *       description = @Translation("The list to be checked."),
+ *       assignment_restriction = "selector"
  *     ),
  *     "item" = @ContextDefinition("any",
  *       label = @Translation("Item"),
@@ -26,7 +27,6 @@ use Drupal\Core\Entity\EntityInterface;
  *
  * @todo Add access callback information from Drupal 7?
  * @todo Add group information from Drupal 7?
- * @todo Set ContextDefinition restriction
  * @todo Add info alter
  */
 class DataListContains extends RulesConditionBase {

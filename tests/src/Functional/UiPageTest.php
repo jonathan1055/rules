@@ -66,7 +66,7 @@ class UiPageTest extends RulesBrowserTestBase {
     $this->fillField('Condition', 'rules_node_is_promoted');
     $this->pressButton('Continue');
 
-    $this->fillField('context[node][setting]', '1');
+    $this->fillField('context[node][setting]', 'node');
     $this->pressButton('Save');
 
     $assert->statusCodeEquals(200);
@@ -87,7 +87,7 @@ class UiPageTest extends RulesBrowserTestBase {
     $this->fillField('Condition', 'rules_node_is_promoted');
     $this->pressButton('Continue');
 
-    $this->fillField('context[node][setting]', '1');
+    $this->fillField('context[node][setting]', 'node');
     $this->pressButton('Save');
 
     /** @var \Drupal\Tests\WebAssert $assert */

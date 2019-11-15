@@ -26,6 +26,7 @@ use Drupal\user\UserInterface;
  *     "operation" = @ContextDefinition("string",
  *       label = @Translation("Match roles"),
  *       description = @Translation("If matching against all selected roles, the user must have <em>all</em> the roles selected."),
+ *       assignment_restriction = "input",
  *       default_value = "AND",
  *       required = FALSE
  *     ),

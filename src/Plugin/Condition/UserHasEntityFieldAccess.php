@@ -19,21 +19,25 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   context = {
  *     "entity" = @ContextDefinition("entity",
  *       label = @Translation("Entity"),
- *       description = @Translation("Specifies the entity for which to evaluate the condition.")
+ *       description = @Translation("Specifies the entity for which to evaluate the condition."),
+ *       assignment_restriction = "selector"
  *     ),
  *     "field" = @ContextDefinition("string",
  *       label = @Translation("Field"),
- *       description = @Translation("The name of the field to check for.")
+ *       description = @Translation("The name of the field to check for."),
+ *       assignment_restriction = "input"
  *     ),
  *     "operation" = @ContextDefinition("string",
  *       label = @Translation("Access operation"),
  *       description = @Translation("The access type to check."),
+ *       assignment_restriction = "input",
  *       default_value = "view",
  *       required = FALSE
  *     ),
  *     "user" = @ContextDefinition("entity:user",
  *       label = @Translation("User"),
  *       description = @Translation("Specifies the user account for which to check access. If left empty, the currently logged in user will be used."),
+ *       assignment_restriction = "selector",
  *       required = FALSE
  *     ),
  *   }

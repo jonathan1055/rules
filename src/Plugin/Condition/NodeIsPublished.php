@@ -15,7 +15,8 @@ use Drupal\rules\Core\RulesConditionBase;
  *   context = {
  *     "node" = @ContextDefinition("entity:node",
  *       label = @Translation("Node"),
- *       description = @Translation("Specifies the node for which to evaluate the condition.")
+ *       description = @Translation("Specifies the node for which to evaluate the condition."),
+ *       assignment_restriction = "selector"
  *     ),
  *   }
  * )

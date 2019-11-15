@@ -14,7 +14,8 @@ use Drupal\rules\Core\RulesActionBase;
  *   context = {
  *     "list" = @ContextDefinition("list",
  *       label = @Translation("List"),
- *       description = @Translation("The data list, to which an item is to be added.")
+ *       description = @Translation("The data list, to which an item is to be added."),
+ *       assignment_restriction = "selector"
  *     ),
  *     "item" = @ContextDefinition("any",
  *       label = @Translation("Item"),
@@ -36,7 +37,6 @@ use Drupal\rules\Core\RulesActionBase;
  * )
  *
  * @todo Add access callback information from Drupal 7?
- * @todo Set ContextDefinition restriction
  */
 class DataListItemAdd extends RulesActionBase {
 
