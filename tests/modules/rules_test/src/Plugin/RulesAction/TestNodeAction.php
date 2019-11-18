@@ -2,6 +2,7 @@
 
 namespace Drupal\rules_test\Plugin\RulesAction;
 
+use Drupal\node\NodeInterface;
 use Drupal\rules\Core\RulesActionBase;
 
 /**
@@ -24,11 +25,14 @@ use Drupal\rules\Core\RulesActionBase;
 class TestNodeAction extends RulesActionBase {
 
   /**
-   * {@inheritdoc}
+   * Sets the node title.
+   *
+   * @param \Drupa\node\NodeInterface $node
+   *   The node.
+   * @param string $title
+   *   The title.
    */
-  public function execute() {
-    $node = $this->getContextValue('node');
-    $title = $this->getContextValue('title');
+  protected function doExecute(NodeInterface $node, $title) {
     $node->setTitle($title);
   }
 

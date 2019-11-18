@@ -27,10 +27,12 @@ use Drupal\rules\Core\RulesActionBase;
 class TestStringAction extends RulesActionBase {
 
   /**
-   * {@inheritdoc}
+   * Concatenates the text with itself.
+   *
+   * @param string $text
+   *   The text to concatenate.
    */
-  public function execute() {
-    $text = $this->getContextValue('text');
+  protected function doExecute($text) {
     $this->setProvidedValue('concatenated', $text . $text);
   }
 

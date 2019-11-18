@@ -61,10 +61,12 @@ class TestLogAction extends RulesActionBase implements ContainerFactoryPluginInt
   }
 
   /**
-   * {@inheritdoc}
+   * Writes a message to the log.
+   *
+   * @param string $message
+   *   Message string that should be logged.
    */
-  public function execute() {
-    $message = $this->getContextValue('message');
+  protected function doExecute($message) {
     if (empty($message)) {
       $message = 'action called';
     }
