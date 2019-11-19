@@ -147,7 +147,7 @@ class RulesTestCase extends DrupalWebTestCase {
     $action2->executeByArgs(array('node' => $node));
     $this->assertEqual($node->status, 1, 'Action executed correctly');
 
-    // Test calling an extended + overriden method.
+    // Test calling an extended + overridden method.
     $this->assertEqual($action2->help(), 'custom', 'Using custom help callback.');
 
     // Inspect the cache

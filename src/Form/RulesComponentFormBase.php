@@ -72,14 +72,14 @@ abstract class RulesComponentFormBase extends EntityForm {
       '#type' => 'textfield',
       '#title' => $this->t('Tags'),
       '#default_value' => implode(', ', $this->entity->getTags()),
-      '#description' => $this->t('Enter a list of comma-separated tags here; e.g., "notification, publishing". Tags are used for filtering available components in the administration interface.'),
+      '#description' => $this->t('Enter a list of comma-separated keywords here; e.g., "notification, publishing". Tags are keywords used for filtering available components in the administration interface.'),
       '#required' => FALSE,
     ];
 
     $form['settings']['description'] = [
       '#type' => 'textarea',
       '#default_value' => $this->entity->getDescription(),
-      '#description' => $this->t('Enter a description for this component, to help document what this component is indended to do.'),
+      '#description' => $this->t('Enter a description for this component, to help document what this component is intended to do.'),
       '#title' => $this->t('Description'),
     ];
 

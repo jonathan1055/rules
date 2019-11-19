@@ -155,7 +155,7 @@ class RulesTriggerTestCase extends DrupalWebTestCase {
   /**
    * Ensure the recursion prevention still allows to let the rule trigger again
    * during evaluation of the same event set, if the event isn't caused by the
-   * rule itself - thus we won't run in an infinte loop.
+   * rule itself - thus we won't run in an infinite loop.
    */
   function testRecursionOnDifferentArguments() {
     // Create rule1 - which might recurse.

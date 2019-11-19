@@ -270,7 +270,7 @@ class EventIntegrationTest extends RulesKernelTestBase {
   }
 
   /**
-   * Provides test data for testentityOrigfinal().
+   * Provides test data for testEntityOriginal().
    */
   public function providerTestEntityOriginal() {
     return [

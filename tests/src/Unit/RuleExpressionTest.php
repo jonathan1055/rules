@@ -183,8 +183,8 @@ class RuleExpressionTest extends RulesUnitTestBase {
       Argument::type(ExecutionStateInterface::class))->shouldBeCalledTimes(1);
 
     $nested = new RuleExpression([], 'rules_rule', [], $this->expressionManager->reveal());
-    // We need to replace the action and conditon container to not have the same
-    // instances as in the outer rule.
+    // We need to replace the action and condition container to not have the
+    // same instances as in the outer rule.
     $nested->setConditions(new AndExpression([], 'rules_and', [], $this->expressionManager->reveal()));
     $nested->setActions(new ActionSetExpression([], 'rules_action_set', [], $this->expressionManager->reveal()));
 

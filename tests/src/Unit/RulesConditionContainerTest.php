@@ -171,7 +171,7 @@ class RulesConditionContainerTest extends RulesUnitTestBase {
 }
 
 /**
- * Class used for overriding evalute() as this does not work with PHPunit.
+ * Class used for overriding evaluate() as this does not work with PHPunit.
  */
 abstract class RulesConditionContainerTestStub extends ConditionExpressionContainer {
 

@@ -315,7 +315,7 @@ class RulesIntegrationTestCase extends DrupalWebTestCase {
     $rule->execute($node);
 
     $tid = $term_wrapped->getIdentifier();
-    $this->assertEqual(array_values($node->field_tags[LANGUAGE_NONE]), array(0 => array('tid' => $tid)), 'Entity has field conditions evaluted.');
+    $this->assertEqual(array_values($node->field_tags[LANGUAGE_NONE]), array(0 => array('tid' => $tid)), 'Entity has field conditions evaluated.');
 
     // Test loading a non-node entity.
     $action = rules_action('entity_fetch', array('type' => 'taxonomy_term', 'id' => $tid));

@@ -2,7 +2,7 @@ This files in this directory are here in order to keep track of tests that were
 present in Drupal 7 but have not yet been ported to Drupal 8.
 
 The tests are split into five separate files, each containing one class, because
-that is more managable than one huge file.
+that is more manageable than one huge file.
 
 Any functions in these tests that have a Drupal 8 equivalent may removed. If
 you find something that needs to be removed please open an issue as a "task"

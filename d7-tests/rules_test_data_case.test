@@ -144,7 +144,7 @@ class RulesTestDataCase extends DrupalWebTestCase {
       $this->pass("Exception was thrown: ". $e->getMessage());
     }
 
-    // Test saving a savable custom, identifiable wrapper.
+    // Test saving a saveable custom, identifiable wrapper.
     $action = rules_action('test_type_save');
     $node = $this->drupalCreateNode(array('status' => 0, 'type' => 'page'));
     $node->status = 1;

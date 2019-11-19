@@ -3,7 +3,7 @@
 namespace Drupal\rules\Ui;
 
 /**
- * Trait for getting the rules_ui handler of the current request.
+ * Trait for getting the rules_ui_handler attribute of the current request.
  *
  * Note that the current route must have the _rules_ui option set for the
  * handler being available. This is done automatically for routes generated for

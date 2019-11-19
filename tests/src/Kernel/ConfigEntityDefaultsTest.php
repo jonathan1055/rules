@@ -26,7 +26,7 @@ class ConfigEntityDefaultsTest extends RulesKernelTestBase {
   ];
 
   /**
-   * Disable strict config schema checking for now.
+   * Ensure strict config schema checking.
    *
    * @var bool
    */
