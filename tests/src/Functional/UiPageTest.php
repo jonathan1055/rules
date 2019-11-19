@@ -109,10 +109,10 @@ class UiPageTest extends RulesBrowserTestBase {
     // Setup a rule with one condition.
     $this->testCreateReactionRule();
 
-    $this->clickLink('Delete');
-
     /** @var \Drupal\Tests\WebAssert $assert */
     $assert = $this->assertSession();
+
+    $this->clickLink('Delete');
     $assert->pageTextContains('Are you sure you want to delete Condition: Node is promoted from Test rule?');
 
     $this->pressButton('Delete');

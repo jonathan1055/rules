@@ -118,7 +118,7 @@ trait ContextFormTrait {
     $context_config = ContextConfig::create();
     if ($form_state->hasValue('context')) {
       foreach ($form_state->getValue('context') as $context_name => $value) {
-        if ($form_state->get("context_$context_name") == 'selector') {
+        if ($form_state->get("context_$context_name") == ContextDefinitionInterface::ASSIGNMENT_RESTRICTION_SELECTOR) {
           $context_config->map($context_name, $value['setting']);
         }
         else {

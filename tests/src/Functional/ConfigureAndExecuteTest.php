@@ -49,7 +49,6 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
       'administer rules',
       'administer site configuration',
     ]);
-
   }
 
   /**
@@ -74,11 +73,7 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     $this->fillField('Condition', 'rules_data_comparison');
     $this->pressButton('Continue');
 
-    // @todo This should not be necessary once the data context is set to
-    // selector by default anyway.
-    $this->pressButton('Switch to data selection');
     $this->fillField('context[data][setting]', 'node.title.0.value');
-
     $this->fillField('context[value][setting]', 'Test title');
     $this->pressButton('Save');
 
@@ -93,13 +88,13 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     // One more save to permanently store the rule.
     $this->pressButton('Save');
 
+    /** @var \Drupal\Tests\WebAssert $assert */
+    $assert = $this->assertSession();
+
     // Add a node now and check if our rule triggers.
     $this->drupalGet('node/add/article');
     $this->fillField('Title', 'Test title');
     $this->pressButton('Save');
-
-    /** @var \Drupal\Tests\WebAssert $assert */
-    $assert = $this->assertSession();
     $assert->pageTextContains('Title matched "Test title"!');
 
     // Edit the rule and negate the condition.
@@ -111,7 +106,10 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     $this->pressButton('Save');
 
     // Need to clear cache so that the edited version will be used.
+    // @todo Can this be removed when
+    // https://www.drupal.org/project/rules/issues/2769511 is fixed?
     drupal_flush_all_caches();
+
     // Create node with same title and check that the message is not shown.
     $this->drupalGet('node/add/article');
     $this->fillField('Title', 'Test title');
@@ -231,31 +229,34 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     ]);
     $config_entity->save();
 
+    /** @var \Drupal\Tests\WebAssert $assert */
+    $assert = $this->assertSession();
+
     // Display the rule edit page to show the actions and conditions.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule');
 
-    // Edit condition 1, assert that the switch button is shown for data, and
+    // Edit condition 1, assert that the switch button is shown for value, and
     // that the default entry field is regular text entry not a selector.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule/edit/' . $condition1->getUuid());
-    $this->assertSession()->buttonExists('edit-context-data-switch-button');
-    $this->assertTrue($this->xpath('//input[@id="edit-context-data-setting" and not(contains(@class, "rules-autocomplete"))]'), 'The entry field is plain text input.');
+    $assert->buttonExists('edit-context-value-switch-button');
+    $this->assertTrue($this->xpath('//input[@id="edit-context-value-setting" and not(contains(@class, "rules-autocomplete"))]'), 'The entry field is plain text input.');
 
     // Edit condition 2, assert that the switch button is not shown for node,
     // and that the entry field is a rules-autocomplete selector.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule/edit/' . $condition2->getUuid());
-    $this->assertSession()->buttonNotExists('edit-context-node-switch-button');
+    $assert->buttonNotExists('edit-context-node-switch-button');
     $this->assertTrue($this->xpath('//input[@id="edit-context-node-setting" and contains(@class, "rules-autocomplete")]'), 'The entry field is a selector with class rules-autocomplete');
 
     // Edit action 1, assert that the switch button is shown for message, and
     // that the default entry field is a regular text entry not a selector.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule/edit/' . $action1->getUuid());
-    $this->assertSession()->buttonExists('edit-context-message-switch-button');
+    $assert->buttonExists('edit-context-message-switch-button');
     $this->assertTrue($this->xpath('//input[@id="edit-context-message-setting" and not(contains(@class, "rules-autocomplete"))]'), 'The entry field is plain text input.');
 
     // Edit action 2, assert that the switch button is not shown for type, and
     // that the entry field is a regular text entry not a selector.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule/edit/' . $action2->getUuid());
-    $this->assertSession()->buttonNotExists('edit-context-type-switch-button');
+    $assert->buttonNotExists('edit-context-type-switch-button');
     $this->assertTrue($this->xpath('//input[@id="edit-context-type-setting" and not(contains(@class, "rules-autocomplete"))]'), 'The entry field is plain text input.');
   }
 

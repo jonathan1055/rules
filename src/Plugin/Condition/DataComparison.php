@@ -14,7 +14,8 @@ use Drupal\rules\Core\RulesConditionBase;
  *   context = {
  *     "data" = @ContextDefinition("any",
  *       label = @Translation("Data to compare"),
- *       description = @Translation("The data to be compared, specified by using a data selector, e.g. 'node.uid.entity.name.value'.")
+ *       description = @Translation("The data to be compared, specified by using a data selector, e.g. 'node.uid.entity.name.value'."),
+ *       assignment_restriction = "selector"
  *     ),
  *     "operation" = @ContextDefinition("string",
  *       label = @Translation("Operator"),

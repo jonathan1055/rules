@@ -31,7 +31,7 @@ class RulesUiEmbedTest extends RulesBrowserTestBase {
     $this->clickLink('Add condition');
     $this->fillField('Condition', 'rules_data_comparison');
     $this->pressButton('Continue');
-    $this->fillField('context[data][setting]', '123');
+    $this->fillField('context[data][setting]', '@user.current_user_context:current_user.uid.value');
     $this->fillField('context[value][setting]', '234');
     $this->pressButton('Save');
 
@@ -40,12 +40,13 @@ class RulesUiEmbedTest extends RulesBrowserTestBase {
     $assert = $this->assertSession();
     $assert->pageTextContains('Data comparison');
     $this->clickLink('Edit');
-    $assert->fieldValueEquals('context[data][setting]', '123');
+    $assert->fieldValueEquals('context[data][setting]', '@user.current_user_context:current_user.uid.value');
     $assert->fieldValueEquals('context[value][setting]', '234');
     $this->fillField('context[value][setting]', '123');
     $this->pressButton('Save');
     $assert->pageTextContains('Data comparison');
-    // One more save to permanently store the changes.
+
+    // One more save, with the values we want, to permanently store the changes.
     $this->fillField('css_file', 'css/test2.css');
     $this->pressButton('Save configuration');
     $assert->pageTextContains('The configuration options have been saved.');
