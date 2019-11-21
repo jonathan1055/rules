@@ -54,6 +54,13 @@ trait TempStoreTrait {
   protected $renderer;
 
   /**
+   * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
    * Retrieves the renderer service if not already present.
    *
    * @return \Drupal\Core\Render\RendererInterface
