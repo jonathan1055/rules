@@ -189,7 +189,8 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
       "terminator nr",
       "whitespace at end of input",
     ];
-    $rule = \Drupal::configFactory()->get('rules.reaction.test_rule');
+    $config_factory = $this->container->get('config.factory');
+    $rule = $config_factory->get('rules.reaction.test_rule');
     $this->assertEquals($expected_config_value, $rule->get('expression.conditions.conditions.0.context_values.types'));
   }
 
