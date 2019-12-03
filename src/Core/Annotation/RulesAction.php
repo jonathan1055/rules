@@ -49,14 +49,16 @@ class RulesAction extends Plugin {
    * The permission required to access the configuration UI for this plugin.
    *
    * @var string[]
-   *   Array of permission string as declared in a *.permissions.yml file.
+   *   Array of permission strings as declared in a *.permissions.yml file. If
+   *   any one of these permissions apply for the relevant user, we allow
+   *   access.
    */
   public $configure_permission;
 
   /**
-   * Defines the used context of the action plugin.
+   * An array of context definitions describing the context used by the plugin.
    *
-   * Array keys are the names of the contexts and values context definitions.
+   * Array keys are the names of the contexts and values are context definitions.
    *
    * @var \Drupal\Core\Annotation\ContextDefinition[]
    */
@@ -65,7 +67,7 @@ class RulesAction extends Plugin {
   /**
    * Defines the provided context of the action plugin.
    *
-   * Array keys are the names of the contexts and values context definitions.
+   * Array keys are the names of the contexts and values are context definitions.
    *
    * @var \Drupal\Core\Annotation\ContextDefinition[]
    */

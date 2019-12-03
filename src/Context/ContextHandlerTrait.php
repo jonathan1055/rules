@@ -70,7 +70,7 @@ trait ContextHandlerTrait {
     if ($plugin instanceof ContextAwarePluginInterface) {
       // Getting context values may lead to undocumented exceptions if context
       // is not set right now. So catch those exceptions.
-      // @todo Remove ones https://www.drupal.org/node/2677162 got fixed.
+      // @todo Remove once https://www.drupal.org/node/2677162 is fixed in core.
       try {
         $plugin->refineContextDefinitions($selected_data);
       }
@@ -131,7 +131,7 @@ trait ContextHandlerTrait {
       $selected_data = $this->getSelectedData($metadata_state);
       // Getting context values may lead to undocumented exceptions if context
       // is not set right now. So catch those exceptions.
-      // @todo Remove ones https://www.drupal.org/node/2677162 got fixed.
+      // @todo Remove once https://www.drupal.org/node/2677162 is fixed in core.
       try {
         $plugin->refineContextDefinitions($selected_data);
       }

@@ -91,8 +91,6 @@ class IpIsBannedTest extends RulesIntegrationTestBase {
     $this->assertFalse($this->condition->evaluate());
 
     // Ban an IPv4 address and an IPv6 address.
-
-    // Create array of IP addresses to ban.
     $ip_addresses_to_ban = [
       // TEST-NET-1 IPv4.
       'IPv4' => ['ip' => '192.0.2.0'],

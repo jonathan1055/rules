@@ -13,7 +13,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * Dispatches new logger-items as SystemLoggerEvent.
  */
 class RulesLog implements LoggerInterface {
-
   use RfcLoggerTrait;
   use DependencySerializationTrait;
 
@@ -53,8 +52,8 @@ class RulesLog implements LoggerInterface {
     // Remove any backtraces since they may contain an unserializable variable.
     unset($context['backtrace']);
 
-    // Convert PSR3-style messages to SafeMarkup::format() style so they can be
-    // translated at runtime.
+    // Convert PSR3-style messages to \Drupal\Component\Render\FormattableMarkup
+    // style, so they can be translated at runtime.
     $message_placeholders = $this->parser->parseMessagePlaceholders($message, $context);
 
     $logger_entry = [
