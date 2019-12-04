@@ -274,11 +274,11 @@ trait TempStoreTrait {
     $lock = $this->getLockMetaData();
     $username = [
       '#theme' => 'username',
-      '#account' => $this->getEntityTypeManager()->getStorage('user')->load($lock->owner),
+      '#account' => $this->getEntityTypeManager()->getStorage('user')->load($lock->getOwnerId()),
     ];
     $lock_message_substitutions = [
       '@user' => $this->getRenderer()->render($username),
-      '@age' => $this->getDateFormatter()->formatTimeDiffSince($lock->updated),
+      '@age' => $this->getDateFormatter()->formatTimeDiffSince($lock->getUpdated()),
       '@component_type' => $this->getRulesUiHandler()->getPluginDefinition()->component_type_label,
       ':url' => Url::fromRoute($this->getRulesUiHandler()->getPluginDefinition()->base_route . '.break_lock', \Drupal::routeMatch()->getRawParameters()->all())->toString(),
     ];
