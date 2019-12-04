@@ -236,29 +236,29 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     // Display the rule edit page to show the actions and conditions.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule');
 
-    // Edit condition 1, assert that the switch button is shown for value, and
+    // Edit condition 1, assert that the switch button is shown for value and
     // that the default entry field is regular text entry not a selector.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule/edit/' . $condition1->getUuid());
     $assert->buttonExists('edit-context-value-switch-button');
-    $this->assertTrue($this->xpath('//input[@id="edit-context-value-setting" and not(contains(@class, "rules-autocomplete"))]'), 'The entry field is plain text input.');
+    $assert->elementExists('xpath', '//input[@id="edit-context-value-setting" and not(contains(@class, "rules-autocomplete"))]');
 
-    // Edit condition 2, assert that the switch button is not shown for node,
-    // and that the entry field is a rules-autocomplete selector.
+    // Edit condition 2, assert that the switch button is NOT shown for node
+    // and that the entry field is a selector with class rules-autocomplete.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule/edit/' . $condition2->getUuid());
     $assert->buttonNotExists('edit-context-node-switch-button');
-    $this->assertTrue($this->xpath('//input[@id="edit-context-node-setting" and contains(@class, "rules-autocomplete")]'), 'The entry field is a selector with class rules-autocomplete');
+    $assert->elementExists('xpath', '//input[@id="edit-context-node-setting" and contains(@class, "rules-autocomplete")]');
 
-    // Edit action 1, assert that the switch button is shown for message, and
+    // Edit action 1, assert that the switch button is shown for message and
     // that the default entry field is a regular text entry not a selector.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule/edit/' . $action1->getUuid());
     $assert->buttonExists('edit-context-message-switch-button');
-    $this->assertTrue($this->xpath('//input[@id="edit-context-message-setting" and not(contains(@class, "rules-autocomplete"))]'), 'The entry field is plain text input.');
+    $assert->elementExists('xpath', '//input[@id="edit-context-message-setting" and not(contains(@class, "rules-autocomplete"))]');
 
-    // Edit action 2, assert that the switch button is not shown for type, and
+    // Edit action 2, assert that the switch button is NOT shown for type and
     // that the entry field is a regular text entry not a selector.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule/edit/' . $action2->getUuid());
     $assert->buttonNotExists('edit-context-type-switch-button');
-    $this->assertTrue($this->xpath('//input[@id="edit-context-type-setting" and not(contains(@class, "rules-autocomplete"))]'), 'The entry field is plain text input.');
+    $assert->elementExists('xpath', '//input[@id="edit-context-type-setting" and not(contains(@class, "rules-autocomplete"))]');
   }
 
 }
