@@ -65,6 +65,19 @@ rules_expression.rules_and:
       sequence:
         - type: rules_expression.[id]
 
+rules_expression.rules_or:
+  type: rules_expression
+  label: 'Rules Or'
+  mapping:
+    negate:
+      type: boolean
+      label: 'Negate'
+    conditions:
+      type: sequence
+      label: 'Conditions'
+      sequence:
+        - type: rules_expression.[id]
+
 rules_expression.rules_action_set:
   type: rules_expression
   label: 'Action set'
