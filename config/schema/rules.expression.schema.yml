@@ -1,16 +1,6 @@
 rules_expression:
   type: mapping
   label: 'Rules expression'
-  id:
-    type: string
-    label: 'Plugin ID'
-  uuid:
-    type: string
-    label: 'UUID'
-
-rules_expression.rules_condition:
-  type: rules_expression
-  label: 'Rules condition configuration'
   mapping:
     id:
       type: string
@@ -18,6 +8,11 @@ rules_expression.rules_condition:
     uuid:
       type: string
       label: 'UUID'
+
+rules_expression.rules_condition:
+  type: rules_expression
+  label: 'Rules condition configuration'
+  mapping:
     condition_id:
       type: string
       label: 'Condition plugin ID'
@@ -41,12 +36,6 @@ rules_expression.rules_action:
   type: rules_expression
   label: 'Rules action configuration'
   mapping:
-    id:
-      type: string
-      label: 'Plugin ID'
-    uuid:
-      type: string
-      label: 'UUID'
     action_id:
       type: string
       label: 'Action plugin ID'
@@ -67,12 +56,6 @@ rules_expression.rules_and:
   type: rules_expression
   label: 'Rules And'
   mapping:
-    id:
-      type: string
-      label: 'Plugin ID'
-    uuid:
-      type: string
-      label: 'UUID'
     negate:
       type: boolean
       label: 'Negate'
@@ -86,12 +69,6 @@ rules_expression.rules_action_set:
   type: rules_expression
   label: 'Action set'
   mapping:
-    id:
-      type: string
-      label: 'Plugin ID'
-    uuid:
-      type: string
-      label: 'UUID'
     actions:
       type: sequence
       label: 'Actions'
@@ -102,12 +79,6 @@ rules_expression.rules_rule:
   type: rules_expression
   label: 'Rule'
   mapping:
-    id:
-      type: string
-      label: 'Plugin ID'
-    uuid:
-      type: string
-      label: 'UUID'
     conditions:
       type: rules_expression.[id]
       label: 'Conditions'
