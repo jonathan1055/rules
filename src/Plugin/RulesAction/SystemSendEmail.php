@@ -28,7 +28,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     ),
  *     "message" = @ContextDefinition("string",
  *       label = @Translation("Message"),
- *       description = @Translation("The email's message body.")
+ *       description = @Translation("The email's message body. This must be plain text, but may contain tokens.")
  *     ),
  *     "reply" = @ContextDefinition("email",
  *       label = @Translation("Reply to"),

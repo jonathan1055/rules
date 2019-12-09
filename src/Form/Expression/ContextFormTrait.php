@@ -11,7 +11,6 @@ use Drupal\rules\Context\DataProcessorManagerTrait;
  * Provides form logic for handling contexts when configuring an expression.
  */
 trait ContextFormTrait {
-
   use DataProcessorManagerTrait;
 
   /**

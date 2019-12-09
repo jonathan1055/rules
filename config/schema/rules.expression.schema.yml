@@ -10,7 +10,7 @@ rules_expression:
 
 rules_expression.rules_condition:
   type: rules_expression
-  label: "Rules condition configuration"
+  label: 'Rules condition configuration'
   mapping:
     id:
       type: string
@@ -39,7 +39,7 @@ rules_expression.rules_condition:
 
 rules_expression.rules_action:
   type: rules_expression
-  label: "Rules action configuration"
+  label: 'Rules action configuration'
   mapping:
     id:
       type: string
@@ -100,7 +100,7 @@ rules_expression.rules_action_set:
 
 rules_expression.rules_rule:
   type: rules_expression
-  label: "Rule"
+  label: 'Rule'
   mapping:
     id:
       type: string

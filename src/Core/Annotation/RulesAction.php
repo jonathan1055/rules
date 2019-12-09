@@ -58,7 +58,8 @@ class RulesAction extends Plugin {
   /**
    * An array of context definitions describing the context used by the plugin.
    *
-   * Array keys are the names of the contexts and values are context definitions.
+   * Array keys are the names of the context variables and values are the
+   * context definitions.
    *
    * @var \Drupal\Core\Annotation\ContextDefinition[]
    */
@@ -67,7 +68,8 @@ class RulesAction extends Plugin {
   /**
    * Defines the provided context of the action plugin.
    *
-   * Array keys are the names of the contexts and values are context definitions.
+   * Array keys are the names of the context variables and values are the
+   * context definitions.
    *
    * @var \Drupal\Core\Annotation\ContextDefinition[]
    */

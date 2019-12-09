@@ -9,12 +9,12 @@ use Drupal\rules\Core\RulesConditionBase;
  *
  * @Condition(
  *   id = "rules_list_count_is",
- *   label = @Translation("List Count Comparison"),
+ *   label = @Translation("List count comparison"),
  *   category = @Translation("Data"),
  *   context = {
  *     "list" = @ContextDefinition("list",
  *       label = @Translation("List"),
- *       description = @Translation("A multi value data element to have its count compared, specified by using a data selector, eg 'node.uid.entity.roles'.")
+ *       description = @Translation("A multi-valued data element to have its count compared, specified by using a data selector, eg 'node.uid.entity.roles'.")
  *     ),
  *     "operator" = @ContextDefinition("string",
  *       label = @Translation("Operator"),

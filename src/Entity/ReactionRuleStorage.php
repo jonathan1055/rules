@@ -56,7 +56,7 @@ class ReactionRuleStorage extends ConfigEntityStorage {
    * @param \Drupal\Core\State\StateInterface $state_service
    *   The state service.
    * @param \Drupal\Core\DrupalKernelInterface $drupal_kernel
-   *   The drupal kernel.
+   *   The Drupal kernel.
    * @param \Drupal\rules\Core\RulesEventManager $event_manager
    *   The Rules event manager.
    * @param \Drupal\Core\Cache\MemoryCache\MemoryCacheInterface|null $memory_cache
