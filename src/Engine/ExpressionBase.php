@@ -125,6 +125,7 @@ abstract class ExpressionBase extends PluginBase implements ExpressionInterface 
    */
   public function setRoot(ExpressionInterface $root) {
     $this->root = $root;
+    return $this;
   }
 
   /**
@@ -146,6 +147,7 @@ abstract class ExpressionBase extends PluginBase implements ExpressionInterface 
    */
   public function setUuid($uuid) {
     $this->uuid = $uuid;
+    return $this;
   }
 
 }

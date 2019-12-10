@@ -36,9 +36,12 @@ trait RulesUiHandlerTrait {
    *
    * @param \Drupal\rules\Ui\RulesUiHandlerInterface $rules_ui_handler
    *   The Rules UI handler to set.
+   *
+   * @return $this
    */
   public function setRulesUiHandler(RulesUiHandlerInterface $rules_ui_handler) {
     $this->rulesUiHandler = $rules_ui_handler;
+    return $this;
   }
 
 }

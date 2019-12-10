@@ -91,9 +91,12 @@ trait TempStoreTrait {
    *
    * @param \Drupal\Core\TempStore\SharedTempStoreFactory $temp_store_factory
    *   The factory.
+   *
+   * @return $this
    */
   public function setTempStoreFactory(SharedTempStoreFactory $temp_store_factory) {
     $this->tempStoreFactory = $temp_store_factory;
+    return $this;
   }
 
   /**
@@ -114,9 +117,12 @@ trait TempStoreTrait {
    *
    * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
    *   The service.
+   *
+   * @return $this
    */
   public function setDateFormatter(DateFormatterInterface $date_formatter) {
     $this->dateFormatter = $date_formatter;
+    return $this;
   }
 
   /**

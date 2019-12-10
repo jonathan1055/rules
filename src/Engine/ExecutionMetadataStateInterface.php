@@ -33,6 +33,8 @@ interface ExecutionMetadataStateInterface {
    *   Variable name of the data definition.
    * @param \Drupal\Core\TypedData\DataDefinitionInterface $definition
    *   The data definition that represents the variable.
+   *
+   * @return $this
    */
   public function setDataDefinition($name, DataDefinitionInterface $definition);
 

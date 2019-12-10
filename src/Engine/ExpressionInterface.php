@@ -52,6 +52,8 @@ interface ExpressionInterface extends ExecutableInterface, ConfigurablePluginInt
    *
    * @param \Drupal\rules\Engine\ExpressionInterface $root
    *   The root expression object.
+   *
+   * @return $this
    */
   public function setRoot(ExpressionInterface $root);
 
@@ -76,6 +78,8 @@ interface ExpressionInterface extends ExecutableInterface, ConfigurablePluginInt
    *
    * @param string $uuid
    *   The UUID to set.
+   *
+   * @return $this
    */
   public function setUuid($uuid);
 
