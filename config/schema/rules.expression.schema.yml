@@ -9,6 +9,10 @@ rules_expression:
       type: string
       label: 'UUID'
 
+rules_expression.*:
+  type: rules_expression
+  label: 'Rules expression default configuration'
+
 rules_expression.rules_condition:
   type: rules_expression
   label: 'Rules condition configuration'
