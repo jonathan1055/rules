@@ -6,24 +6,30 @@ sudo: true
 php:
   - 5.6
   - 7
+  - 7.3
 
 env:
   global:
     # Make the script re-usable for other modules.
     - MODULE=rules
-    # Allow this many deprecation warnings (total on core 8.8 at 11.09.2019)
-    - SYMFONY_DEPRECATIONS_HELPER=11551
+    # Allow this many deprecation warnings (total on core 8.7 at 11 Dec 2019)
+    - SYMFONY_DEPRECATIONS_HELPER=11209
   matrix:
-    - DRUPAL_CORE=8.6.x
     - DRUPAL_CORE=8.7.x
     - DRUPAL_CORE=8.8.x
+    - DRUPAL_CORE=8.9.x
 
 matrix:
   fast_finish: true
-  # Core 8.8 no longer supports PHP5, so don't run that combination.
+  # PHP7.3 is not supported on Core 8.7 and earlier.
+  # PHP5 is not supported on Core 8.8 and later.
   exclude:
+    - php: 7.3
+      env: DRUPAL_CORE=8.7.x
     - php: 5.6
       env: DRUPAL_CORE=8.8.x
+    - php: 5.6
+      env: DRUPAL_CORE=8.9.x
 
 services:
   - mysql
