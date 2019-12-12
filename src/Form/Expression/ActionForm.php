@@ -4,6 +4,7 @@ namespace Drupal\rules\Form\Expression;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\rules\Context\Form\ContextFormTrait;
 use Drupal\rules\Core\RulesActionManagerInterface;
 use Drupal\rules\Engine\ActionExpressionInterface;
 use Drupal\rules\Ui\RulesUiHandlerTrait;
@@ -12,7 +13,6 @@ use Drupal\rules\Ui\RulesUiHandlerTrait;
  * UI form for adding/editing a Rules action.
  */
 class ActionForm implements ExpressionFormInterface {
-
   use ContextFormTrait;
   use StringTranslationTrait;
   use RulesUiHandlerTrait;
