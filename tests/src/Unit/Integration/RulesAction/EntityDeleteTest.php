@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\rules\Unit\Integration\Action;
+namespace Drupal\Tests\rules\Unit\Integration\RulesAction;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Tests\rules\Unit\Integration\RulesEntityIntegrationTestBase;

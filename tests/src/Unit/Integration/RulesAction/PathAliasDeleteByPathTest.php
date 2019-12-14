@@ -1,15 +1,15 @@
 <?php
 
-namespace Drupal\Tests\rules\Unit\Integration\Action;
+namespace Drupal\Tests\rules\Unit\Integration\RulesAction;
 
 use Drupal\Core\Path\AliasStorageInterface;
 use Drupal\Tests\rules\Unit\Integration\RulesIntegrationTestBase;
 
 /**
- * @coversDefaultClass \Drupal\rules\Plugin\RulesAction\PathAliasDeleteByAlias
+ * @coversDefaultClass \Drupal\rules\Plugin\RulesAction\PathAliasDeleteByPath
  * @group RulesAction
  */
-class PathAliasDeleteByAliasTest extends RulesIntegrationTestBase {
+class PathAliasDeleteByPathTest extends RulesIntegrationTestBase {
 
   /**
    * The action to be tested.
@@ -34,7 +34,7 @@ class PathAliasDeleteByAliasTest extends RulesIntegrationTestBase {
     $this->aliasStorage = $this->prophesize(AliasStorageInterface::class);
     $this->container->set('path.alias_storage', $this->aliasStorage->reveal());
 
-    $this->action = $this->actionManager->createInstance('rules_path_alias_delete_by_alias');
+    $this->action = $this->actionManager->createInstance('rules_path_alias_delete_by_path');
   }
 
   /**
@@ -43,7 +43,7 @@ class PathAliasDeleteByAliasTest extends RulesIntegrationTestBase {
    * @covers ::summary
    */
   public function testSummary() {
-    $this->assertEquals('Delete path alias', $this->action->summary());
+    $this->assertEquals('Delete all aliases for a path', $this->action->summary());
   }
 
   /**
@@ -52,11 +52,13 @@ class PathAliasDeleteByAliasTest extends RulesIntegrationTestBase {
    * @covers ::execute
    */
   public function testActionExecution() {
-    $alias = '/about/team';
 
-    $this->aliasStorage->delete(['alias' => $alias])->shouldBeCalledTimes(1);
+    $path = '/node/1';
 
-    $this->action->setContextValue('alias', $alias);
+    $this->aliasStorage->delete(['source' => $path])->shouldBeCalledTimes(1);
+
+    $this->action
+      ->setContextValue('path', $path);
 
     $this->action->execute();
   }
