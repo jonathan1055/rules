@@ -12,7 +12,7 @@ use Drupal\rules\Core\RulesActionBase;
  *   id = "rules_entity_save",
  *   label = @Translation("Save entity"),
  *   category = @Translation("Entity"),
- *   context = {
+ *   context_definitions = {
  *     "entity" = @ContextDefinition("entity",
  *       label = @Translation("Entity"),
  *       description = @Translation("Specifies the entity, which should be saved permanently."),

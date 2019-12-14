@@ -10,7 +10,7 @@ use Drupal\rules\Exception\InvalidArgumentException;
  *   id = "rules_data_convert",
  *   label = @Translation("Convert data"),
  *   category = @Translation("Data"),
- *   context = {
+ *   context_definitions = {
  *     "value" = @ContextDefinition("any",
  *       label = @Translation("Value"),
  *       description = @Translation("The first input value for the calculation."),

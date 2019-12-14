@@ -66,7 +66,7 @@ class RulesComponentActionDeriver extends DeriverBase implements ContainerDerive
         ]),
         'category' => $this->t('Components'),
         'component_id' => $rules_component->id(),
-        'context' => $rules_component->getContextDefinitions(),
+        'context_definitions' => $rules_component->getContextDefinitions(),
         'provides' => $rules_component->getProvidedContextDefinitions(),
       ] + $base_plugin_definition;
     }

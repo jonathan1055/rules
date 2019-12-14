@@ -63,7 +63,7 @@ class RulesAction extends Plugin {
    *
    * @var \Drupal\Core\Annotation\ContextDefinition[]
    */
-  public $context = [];
+  public $context_definitions = [];
 
   /**
    * Defines the provided context of the action plugin.

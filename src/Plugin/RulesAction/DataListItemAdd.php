@@ -11,7 +11,7 @@ use Drupal\rules\Core\RulesActionBase;
  *   id = "rules_list_item_add",
  *   label = @Translation("Add list item"),
  *   category = @Translation("Data"),
- *   context = {
+ *   context_definitions = {
  *     "list" = @ContextDefinition("list",
  *       label = @Translation("List"),
  *       description = @Translation("The data list, to which an item is to be added."),

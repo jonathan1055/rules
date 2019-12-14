@@ -12,7 +12,7 @@ use Drupal\user\UserInterface;
  *   id = "rules_send_account_email",
  *   label = @Translation("Send account email"),
  *   category = @Translation("User"),
- *   context = {
+ *   context_definitions = {
  *     "user" = @ContextDefinition("entity:user",
  *       label = @Translation("User"),
  *       description = @Translation("The user to whom we send the email.")

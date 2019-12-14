@@ -13,7 +13,7 @@ use Drupal\user\UserInterface;
  *   id = "rules_user_role_add",
  *   label = @Translation("Add user role"),
  *   category = @Translation("User"),
- *   context = {
+ *   context_definitions = {
  *     "user" = @ContextDefinition("entity:user",
  *       label = @Translation("User"),
  *       description = @Translation("The user whose roles should be changed.")

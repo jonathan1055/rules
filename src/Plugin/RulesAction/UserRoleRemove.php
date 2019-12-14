@@ -13,7 +13,7 @@ use Drupal\rules\Exception\InvalidArgumentException;
  *   id = "rules_user_role_remove",
  *   label = @Translation("Remove user role"),
  *   category = @Translation("User"),
- *   context = {
+ *   context_definitions = {
  *     "user" = @ContextDefinition("entity:user",
  *       label = @Translation("User"),
  *       description = @Translation("The user whose roles should be changed.")

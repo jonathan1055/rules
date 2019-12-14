@@ -98,7 +98,7 @@ class RulesComponentActionTest extends RulesEntityIntegrationTestBase {
     $this->prophesizeStorage([$rules_config]);
 
     $definition = $this->actionManager->getDefinition('rules_component:test_rule');
-    $this->assertEquals($context_definitions, $definition['context']);
+    $this->assertEquals($context_definitions, $definition['context_definitions']);
     $this->assertEquals($provided_definitions, $definition['provides']);
   }
 

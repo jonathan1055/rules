@@ -11,7 +11,7 @@ use Drupal\rules\Core\RulesActionBase;
  *   id = "rules_data_set",
  *   label = @Translation("Set a data value"),
  *   category = @Translation("Data"),
- *   context = {
+ *   context_definitions = {
  *     "data" = @ContextDefinition("any",
  *       label = @Translation("Data"),
  *       description = @Translation("Specifies the data to be modified using a data selector, e.g. 'node.author.name'."),

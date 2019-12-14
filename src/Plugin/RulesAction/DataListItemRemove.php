@@ -11,7 +11,7 @@ use Drupal\rules\Core\RulesActionBase;
  *   id = "rules_list_item_remove",
  *   label = @Translation("Remove item from list"),
  *   category = @Translation("Data"),
- *   context = {
+ *   context_definitions = {
  *     "list" = @ContextDefinition("list",
  *       label = @Translation("List"),
  *       description = @Translation("The data list from which an item is to be removed."),

@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "rules_entity_fetch_by_field",
  *   label = @Translation("Fetch entities by field"),
  *   category = @Translation("Entity"),
- *   context = {
+ *   context_definitions = {
  *     "type" = @ContextDefinition("string",
  *       label = @Translation("Entity type"),
  *       description = @Translation("Specifies the type of the entity that should be fetched.")

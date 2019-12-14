@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
  *   id = "rules_page_redirect",
  *   label = @Translation("Page redirect"),
  *   category = @Translation("System"),
- *   context = {
+ *   context_definitions = {
  *     "url" = @ContextDefinition("string",
  *       label = @Translation("URL"),
  *       description = @Translation("A Drupal path, path alias, or external URL to redirect to. Enter (optional) queries after ? and (optional) anchor after #.")

@@ -11,7 +11,7 @@ use Drupal\rules\Core\RulesActionBase;
  *   id = "rules_data_calculate_value",
  *   label = @Translation("Calculates a numeric value"),
  *   category = @Translation("Data"),
- *   context = {
+ *   context_definitions = {
  *     "input_1" = @ContextDefinition("float",
  *       label = @Translation("Input value 1"),
  *       description = @Translation("The first input value for the calculation.")

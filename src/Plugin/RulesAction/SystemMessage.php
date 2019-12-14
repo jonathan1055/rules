@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "rules_system_message",
  *   label = @Translation("Show a message on the site"),
  *   category = @Translation("System"),
- *   context = {
+ *   context_definitions = {
  *     "message" = @ContextDefinition("string",
  *       label = @Translation("Message"),
  *       description = @Translation("The text to display. HTML is allowed.")

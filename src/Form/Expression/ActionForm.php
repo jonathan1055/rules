@@ -133,7 +133,7 @@ class ActionForm implements ExpressionFormInterface {
     }
 
     $action_definition = $this->actionManager->getDefinition($action_id);
-    $context_config = $this->getContextConfigFromFormValues($form_state, $action_definition['context']);
+    $context_config = $this->getContextConfigFromFormValues($form_state, $action_definition['context_definitions']);
 
     $configuration = $context_config->toArray();
     $configuration['action_id'] = $action_id;

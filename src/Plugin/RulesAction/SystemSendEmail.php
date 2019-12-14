@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "rules_send_email",
  *   label = @Translation("Send email"),
  *   category = @Translation("System"),
- *   context = {
+ *   context_definitions = {
  *     "to" = @ContextDefinition("email",
  *       label = @Translation("Send to"),
  *       description = @Translation("Email address(es) drupal will send an email to."),
