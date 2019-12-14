@@ -27,7 +27,8 @@ class ActionSetExpression extends ActionExpressionContainer {
    * {@inheritdoc}
    */
   public function executeWithState(ExecutionStateInterface $state) {
-    foreach ($this->actions as $action) {
+    // Use the iterator to ensure the actions are sorted.
+    foreach ($this as $action) {
       $action->executeWithState($state);
     }
   }

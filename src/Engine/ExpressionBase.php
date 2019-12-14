@@ -38,6 +38,13 @@ abstract class ExpressionBase extends PluginBase implements ExpressionInterface 
   protected $uuid;
 
   /**
+   * The weight (list order) of this expression.
+   *
+   * @var int
+   */
+  protected $weight = 0;
+
+  /**
    * Constructor.
    *
    * @param array $configuration
@@ -71,6 +78,7 @@ abstract class ExpressionBase extends PluginBase implements ExpressionInterface 
     return [
       'id' => $this->getPluginId(),
       'uuid' => $this->uuid,
+      'weight' => $this->weight,
     ] + $this->configuration;
   }
 
@@ -81,6 +89,9 @@ abstract class ExpressionBase extends PluginBase implements ExpressionInterface 
     $this->configuration = $configuration + $this->defaultConfiguration();
     if (isset($configuration['uuid'])) {
       $this->uuid = $configuration['uuid'];
+    }
+    if (isset($configuration['weight'])) {
+      $this->weight = $configuration['weight'];
     }
     return $this;
   }
@@ -147,6 +158,21 @@ abstract class ExpressionBase extends PluginBase implements ExpressionInterface 
    */
   public function setUuid($uuid) {
     $this->uuid = $uuid;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getWeight() {
+    return $this->weight;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setWeight($weight) {
+    $this->weight = $weight;
     return $this;
   }
 

@@ -38,7 +38,8 @@ class LoopExpression extends ActionExpressionContainer {
 
     foreach ($list_data as $item) {
       $state->setVariableData($list_item_name, $item);
-      foreach ($this->actions as $action) {
+      // Use the iterator to ensure the conditions are sorted.
+      foreach ($this as $action) {
         $action->executeWithState($state);
       }
     }

@@ -19,7 +19,8 @@ class OrExpression extends ConditionExpressionContainer {
    * {@inheritdoc}
    */
   public function evaluate(ExecutionStateInterface $state) {
-    foreach ($this->conditions as $condition) {
+    // Use the iterator to ensure the conditions are sorted.
+    foreach ($this as $condition) {
       if ($condition->executeWithState($state)) {
         return TRUE;
       }

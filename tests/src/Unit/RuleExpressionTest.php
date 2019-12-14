@@ -143,8 +143,11 @@ class RuleExpressionTest extends RulesUnitTestBase {
     $this->testActionExpression->executeWithState(
       Argument::type(ExecutionStateInterface::class))->shouldBeCalledTimes(1);
 
+    $this->trueConditionExpression->getWeight()->willReturn(0);
+
     $second_condition = $this->prophesize(ConditionExpressionInterface::class);
     $second_condition->getUuid()->willReturn('true_uuid2');
+    $second_condition->getWeight()->willReturn(0);
 
     $second_condition->executeWithState(Argument::type(ExecutionStateInterface::class))
       ->willReturn(TRUE);
@@ -165,6 +168,10 @@ class RuleExpressionTest extends RulesUnitTestBase {
     // The execute method on the action must never be called.
     $this->testActionExpression->executeWithState(
       Argument::type(ExecutionStateInterface::class))->shouldNotBeCalled();
+    $this->testActionExpression->getWeight()->willReturn(0);
+
+    $this->trueConditionExpression->getWeight()->willReturn(0);
+    $this->falseConditionExpression->getWeight()->willReturn(0);
 
     $this->rule
       ->addExpressionObject($this->trueConditionExpression->reveal())
@@ -225,6 +232,11 @@ class RuleExpressionTest extends RulesUnitTestBase {
     $second_action = $this->prophesize(ActionExpression::class);
     $second_action->getUuid()->willReturn('action_uuid2');
     $this->rule->addExpressionObject($second_action->reveal());
+
+    $this->trueConditionExpression->getWeight()->willReturn(0);
+    $this->falseConditionExpression->getWeight()->willReturn(0);
+    $this->testActionExpression->getWeight()->willReturn(0);
+    $second_action->getWeight()->willReturn(0);
 
     // Delete the first action.
     $uuid = $this->testActionExpression->reveal()->getUuid();

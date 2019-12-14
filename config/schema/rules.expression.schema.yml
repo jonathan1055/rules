@@ -8,6 +8,9 @@ rules_expression:
     uuid:
       type: string
       label: 'UUID'
+    weight:
+      type: integer
+      label: 'Weight'
 
 rules_expression.*:
   type: rules_expression

@@ -36,6 +36,13 @@ abstract class RulesUnitTestBase extends UnitTestCase {
   protected $testActionExpression;
 
   /**
+   * A mocked dummy action object.
+   *
+   * @var \Drupal\rules\Engine\ActionExpressionInterface|\Prophecy\Prophecy\ProphecyInterface
+   */
+  protected $testFirstActionExpression;
+
+  /**
    * The mocked expression manager object.
    *
    * @var \Drupal\rules\Engine\ExpressionPluginManager|\Prophecy\Prophecy\ProphecyInterface
@@ -48,22 +55,33 @@ abstract class RulesUnitTestBase extends UnitTestCase {
   protected function setUp() {
     parent::setUp();
 
+    // A Condition that's always TRUE.
     $this->trueConditionExpression = $this->prophesize(ConditionExpressionInterface::class);
     $this->trueConditionExpression->getUuid()->willReturn('true_uuid1');
+    $this->trueConditionExpression->getWeight()->willReturn(0);
 
     $this->trueConditionExpression->execute()->willReturn(TRUE);
     $this->trueConditionExpression->executeWithState(
       Argument::type(ExecutionStateInterface::class))->willReturn(TRUE);
 
+    // A Condition that's always FALSE.
     $this->falseConditionExpression = $this->prophesize(ConditionExpressionInterface::class);
     $this->falseConditionExpression->getUuid()->willReturn('false_uuid1');
+    $this->falseConditionExpression->getWeight()->willReturn(0);
 
     $this->falseConditionExpression->execute()->willReturn(FALSE);
     $this->falseConditionExpression->executeWithState(
       Argument::type(ExecutionStateInterface::class))->willReturn(FALSE);
 
+    // An Action with a low weight.
+    $this->testFirstActionExpression = $this->prophesize(ActionExpressionInterface::class);
+    $this->testFirstActionExpression->getUuid()->willReturn('action_uuid0');
+    $this->testFirstActionExpression->getWeight()->willReturn(-1);
+
+    // An Action with a heavier weight.
     $this->testActionExpression = $this->prophesize(ActionExpressionInterface::class);
     $this->testActionExpression->getUuid()->willReturn('action_uuid1');
+    $this->testActionExpression->getWeight()->willReturn(0);
 
     $this->expressionManager = $this->prophesize(ExpressionManagerInterface::class);
   }

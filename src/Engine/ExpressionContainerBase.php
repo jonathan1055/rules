@@ -30,6 +30,29 @@ abstract class ExpressionContainerBase extends ExpressionBase implements Express
   }
 
   /**
+   * Sorts an array of expressions by 'weight' property.
+   *
+   * Callback for uasort().
+   *
+   * @param \Drupal\rules\Engine\ExpressionInterface $a
+   *   First item for comparison.
+   * @param \Drupal\rules\Engine\ExpressionInterface $b
+   *   Second item for comparison.
+   *
+   * @return int
+   *   The comparison result for uasort().
+   */
+  public static function sortByWeightProperty(ExpressionInterface $a, ExpressionInterface $b) {
+    $a_weight = $a->getWeight();
+    $b_weight = $b->getWeight();
+    if ($a_weight == $b_weight) {
+      return 0;
+    }
+
+    return ($a_weight < $b_weight) ? -1 : 1;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function addExpression($plugin_id, ContextConfig $config = NULL) {

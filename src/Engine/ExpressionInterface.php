@@ -84,6 +84,24 @@ interface ExpressionInterface extends ExecutableInterface, ConfigurablePluginInt
   public function setUuid($uuid);
 
   /**
+   * Returns the list order of this expression.
+   *
+   * @return int
+   *   The list order of this expression.
+   */
+  public function getWeight();
+
+  /**
+   * Sets the list order of this expression in an expression tree.
+   *
+   * @param int $weight
+   *   The weight to set.
+   *
+   * @return $this
+   */
+  public function setWeight($weight);
+
+  /**
    * Verifies that this expression is configured correctly.
    *
    * Example: All configured data selectors must be valid.

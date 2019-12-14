@@ -74,7 +74,8 @@ abstract class ActionExpressionContainer extends ExpressionContainerBase impleme
     // We need to update the configuration in case actions have been added or
     // changed.
     $configuration['actions'] = [];
-    foreach ($this->actions as $action) {
+    // Use the iterator, which sorts the actions by weight.
+    foreach ($this as $action) {
       $configuration['actions'][] = $action->getConfiguration();
     }
     return $configuration;
@@ -84,7 +85,9 @@ abstract class ActionExpressionContainer extends ExpressionContainerBase impleme
    * {@inheritdoc}
    */
   public function getIterator() {
-    return new \ArrayIterator($this->actions);
+    $iterator = new \ArrayIterator($this->actions);
+    $iterator->uasort([ExpressionContainerBase::class, 'sortByWeightProperty']);
+    return $iterator;
   }
 
   /**

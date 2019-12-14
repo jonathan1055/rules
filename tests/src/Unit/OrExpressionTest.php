@@ -62,6 +62,7 @@ class OrExpressionTest extends RulesUnitTestBase {
 
     $second_condition = $this->prophesize(ConditionExpressionInterface::class);
     $second_condition->getUuid()->willReturn('true_uuid2');
+    $second_condition->getWeight()->willReturn(0);
 
     $second_condition->executeWithState(Argument::type(ExecutionStateInterface::class))
       ->willReturn(TRUE)
@@ -84,6 +85,7 @@ class OrExpressionTest extends RulesUnitTestBase {
 
     $second_condition = $this->prophesize(ConditionExpressionInterface::class);
     $second_condition->getUuid()->willReturn('false_uuid2');
+    $second_condition->getWeight()->willReturn(0);
 
     $second_condition->executeWithState(Argument::type(ExecutionStateInterface::class))
       ->willReturn(FALSE)

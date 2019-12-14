@@ -102,7 +102,8 @@ abstract class ConditionExpressionContainer extends ExpressionContainerBase impl
     // We need to update the configuration in case conditions have been added or
     // changed.
     $configuration['conditions'] = [];
-    foreach ($this->conditions as $condition) {
+    // Use the iterator, which sorts the conditions by weight.
+    foreach ($this as $condition) {
       $configuration['conditions'][] = $condition->getConfiguration();
     }
     return $configuration;
@@ -112,7 +113,9 @@ abstract class ConditionExpressionContainer extends ExpressionContainerBase impl
    * {@inheritdoc}
    */
   public function getIterator() {
-    return new \ArrayIterator($this->conditions);
+    $iterator = new \ArrayIterator($this->conditions);
+    $iterator->uasort([ExpressionContainerBase::class, 'sortByWeightProperty']);
+    return $iterator;
   }
 
   /**
