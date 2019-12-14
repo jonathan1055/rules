@@ -12,7 +12,7 @@ use Drupal\rules\Core\RulesActionBase;
  *   id = "rules_test_node",
  *   label = @Translation("Test node title action"),
  *   category = @Translation("Tests"),
- *   context = {
+ *   context_definitions = {
  *     "node" = @ContextDefinition("entity:node",
  *       label = @Translation("Node to set the title on")
  *     ),

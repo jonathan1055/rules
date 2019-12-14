@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "rules_test_log",
  *   label = @Translation("Test action logging"),
  *   category = @Translation("Tests"),
- *   context = {
+ *   context_definitions = {
  *     "message" = @ContextDefinition("string",
  *       label = @Translation("Message to log"),
  *       required = FALSE

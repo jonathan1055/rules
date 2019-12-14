@@ -11,7 +11,7 @@ use Drupal\rules\Core\RulesActionBase;
  *   id = "rules_test_string",
  *   label = @Translation("Test concatenate action"),
  *   category = @Translation("Tests"),
- *   context = {
+ *   context_definitions = {
  *     "text" = @ContextDefinition("string",
  *       label = @Translation("Text to concatenate")
  *     ),

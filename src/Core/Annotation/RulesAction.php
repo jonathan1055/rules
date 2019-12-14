@@ -66,7 +66,7 @@ class RulesAction extends Plugin {
   public $context_definitions = [];
 
   /**
-   * Defines the provided context of the action plugin.
+   * Defines the provided context_definitions of the action plugin.
    *
    * Array keys are the names of the context variables and values are the
    * context definitions.

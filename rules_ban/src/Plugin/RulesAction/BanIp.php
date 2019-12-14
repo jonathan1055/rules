@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "rules_ban_ip",
  *   label = @Translation("Ban an IP address"),
  *   category = @Translation("Ban"),
- *   context = {
+ *   context_definitions = {
  *     "ip" = @ContextDefinition("string",
  *       label = @Translation("IP Address"),
  *       description = @Translation("Ban an IP address using the Ban Module. If no IP is provided, the current user IP is used."),
