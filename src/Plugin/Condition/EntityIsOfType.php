@@ -12,7 +12,7 @@ use Drupal\rules\Core\RulesConditionBase;
  *   id = "rules_entity_is_of_type",
  *   label = @Translation("Entity is of type"),
  *   category = @Translation("Entity"),
- *   context = {
+ *   context_definitions = {
  *     "entity" = @ContextDefinition("entity",
  *       label = @Translation("Entity"),
  *       description = @Translation("Specifies the entity for which to evaluate the condition."),

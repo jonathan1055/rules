@@ -66,12 +66,12 @@ class RulesEventManager extends DefaultPluginManager implements CategorizingPlug
    */
   public function processDefinition(&$definition, $plugin_id) {
     parent::processDefinition($definition, $plugin_id);
-    if (!isset($definition['context'])) {
-      $definition['context'] = [];
+    if (!isset($definition['context_definitions'])) {
+      $definition['context_definitions'] = [];
     }
-    // Convert the flat context arrays into ContextDefinition objects.
-    foreach ($definition['context'] as $context_name => $values) {
-      $definition['context'][$context_name] = ContextDefinition::createFromArray($values);
+    // Convert the flat context_definitions arrays to ContextDefinition objects.
+    foreach ($definition['context_definitions'] as $context_name => $values) {
+      $definition['context_definitions'][$context_name] = ContextDefinition::createFromArray($values);
     }
   }
 

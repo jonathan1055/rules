@@ -12,7 +12,7 @@ use Drupal\Core\Entity\EntityInterface;
  *   id = "rules_list_contains",
  *   label = @Translation("List contains item"),
  *   category = @Translation("Data"),
- *   context = {
+ *   context_definitions = {
  *     "list" = @ContextDefinition("list",
  *       label = @Translation("List"),
  *       description = @Translation("The list to be checked."),

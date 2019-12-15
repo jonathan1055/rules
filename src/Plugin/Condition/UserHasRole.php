@@ -13,7 +13,7 @@ use Drupal\user\UserInterface;
  *   id = "rules_user_has_role",
  *   label = @Translation("User has role(s)"),
  *   category = @Translation("User"),
- *   context = {
+ *   context_definitions = {
  *     "user" = @ContextDefinition("entity:user",
  *       label = @Translation("User"),
  *       description = @Translation("Specifies the user account to check."),

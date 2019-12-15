@@ -17,11 +17,11 @@ trait ContextFormTrait {
    * Provides the form part for a context parameter.
    */
   public function buildContextForm(array $form, FormStateInterface $form_state, $context_name, ContextDefinitionInterface $context_definition, array $configuration) {
-    $form['context'][$context_name] = [
+    $form['context_definitions'][$context_name] = [
       '#type' => 'fieldset',
       '#title' => $context_definition->getLabel(),
     ];
-    $form['context'][$context_name]['description'] = [
+    $form['context_definitions'][$context_name]['description'] = [
       '#markup' => $context_definition->getDescription(),
     ];
 
@@ -53,14 +53,14 @@ trait ContextFormTrait {
     else {
       $default_value = $context_definition->getDefaultValue();
     }
-    $form['context'][$context_name]['setting'] = [
+    $form['context_definitions'][$context_name]['setting'] = [
       '#type' => 'textfield',
       '#title' => $title,
       '#required' => $context_definition->isRequired(),
       '#default_value' => $default_value,
     ];
 
-    $element = &$form['context'][$context_name]['setting'];
+    $element = &$form['context_definitions'][$context_name]['setting'];
 
     if ($mode == ContextDefinitionInterface::ASSIGNMENT_RESTRICTION_SELECTOR) {
       $element['#description'] = $this->t("The data selector helps you drill down into the available data. <em>To make entity fields appear in the data selector, you may have to use the condition 'entity has field' (or 'content is of type').</em> More useful tips about data selection is available in <a href=':url'>the online documentation</a>.", [
@@ -87,7 +87,7 @@ trait ContextFormTrait {
     // button to switch between the two modes.
     if (empty($context_definition->getAssignmentRestriction())) {
       $value = $mode == ContextDefinitionInterface::ASSIGNMENT_RESTRICTION_SELECTOR ? $this->t('Switch to the direct input mode') : $this->t('Switch to data selection');
-      $form['context'][$context_name]['switch_button'] = [
+      $form['context_definitions'][$context_name]['switch_button'] = [
         '#type' => 'submit',
         '#name' => 'context_' . $context_name,
         '#attributes' => ['class' => ['rules-switch-button']],
@@ -115,8 +115,8 @@ trait ContextFormTrait {
    */
   protected function getContextConfigFromFormValues(FormStateInterface $form_state, array $context_definitions) {
     $context_config = ContextConfig::create();
-    if ($form_state->hasValue('context')) {
-      foreach ($form_state->getValue('context') as $context_name => $value) {
+    if ($form_state->hasValue('context_definitions')) {
+      foreach ($form_state->getValue('context_definitions') as $context_name => $value) {
         if ($form_state->get("context_$context_name") == ContextDefinitionInterface::ASSIGNMENT_RESTRICTION_SELECTOR) {
           $context_config->map($context_name, $value['setting']);
         }

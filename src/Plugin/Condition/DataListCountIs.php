@@ -11,7 +11,7 @@ use Drupal\rules\Core\RulesConditionBase;
  *   id = "rules_list_count_is",
  *   label = @Translation("List count comparison"),
  *   category = @Translation("Data"),
- *   context = {
+ *   context_definitions = {
  *     "list" = @ContextDefinition("list",
  *       label = @Translation("List"),
  *       description = @Translation("A multi-valued data element to have its count compared, specified by using a data selector, eg 'node.uid.entity.roles'.")

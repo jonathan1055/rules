@@ -11,7 +11,7 @@ use Drupal\rules\Core\RulesConditionBase;
  *   id = "rules_test_string_condition",
  *   label = @Translation("Test condition using a string"),
  *   category = @Translation("Tests"),
- *   context = {
+ *   context_definitions = {
  *     "text" = @ContextDefinition("string",
  *       label = @Translation("Text to compare")
  *     ),

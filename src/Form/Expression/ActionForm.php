@@ -87,7 +87,7 @@ class ActionForm implements ExpressionFormInterface {
 
     $context_definitions = $action->getContextDefinitions();
 
-    $form['context']['#tree'] = TRUE;
+    $form['context_definitions']['#tree'] = TRUE;
     foreach ($context_definitions as $context_name => $context_definition) {
       $form = $this->buildContextForm($form, $form_state, $context_name, $context_definition, $configuration);
     }

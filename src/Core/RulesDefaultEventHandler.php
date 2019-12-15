@@ -18,7 +18,7 @@ class RulesDefaultEventHandler extends PluginBase implements RulesEventHandlerIn
     if ($this instanceof RulesConfigurableEventHandlerInterface) {
       $this->refineContextDefinitions();
     }
-    return !empty($definition['context']) ? $definition['context'] : [];
+    return !empty($definition['context_definitions']) ? $definition['context_definitions'] : [];
   }
 
   /**

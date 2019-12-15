@@ -105,7 +105,7 @@ class GenericEventSubscriber implements EventSubscriberInterface {
 
     // Setup the execution state.
     $state = ExecutionState::create();
-    foreach ($event_definition['context'] as $context_name => $context_definition) {
+    foreach ($event_definition['context_definitions'] as $context_name => $context_definition) {
       // If this is a GenericEvent get the context for the rule from the event
       // arguments.
       if ($event instanceof GenericEvent) {

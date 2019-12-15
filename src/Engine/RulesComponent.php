@@ -171,7 +171,7 @@ class RulesComponent {
       // @todo Correctly handle multiple events to intersect available context.
       // @todo Use setter injection for the service.
       $event_definition = \Drupal::service('plugin.manager.rules_event')->getDefinition($event_name);
-      foreach ($event_definition['context'] as $context_name => $context_definition) {
+      foreach ($event_definition['context_definitions'] as $context_name => $context_definition) {
         $this->addContextDefinition($context_name, $context_definition);
       }
     }

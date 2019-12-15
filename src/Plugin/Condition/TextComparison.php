@@ -11,7 +11,7 @@ use Drupal\rules\Core\RulesConditionBase;
  *   id = "rules_text_comparison",
  *   label = @Translation("Text comparison"),
  *   category = @Translation("Data"),
- *   context = {
+ *   context_definitions = {
  *     "text" = @ContextDefinition("string",
  *       label = @Translation("Text"),
  *       description = @Translation("Specifies the text data to evaluate."),

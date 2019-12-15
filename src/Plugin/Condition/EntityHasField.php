@@ -12,7 +12,7 @@ use Drupal\rules\Core\RulesConditionBase;
  *   id = "rules_entity_has_field",
  *   label = @Translation("Entity has field"),
  *   category = @Translation("Entity"),
- *   context = {
+ *   context_definitions = {
  *     "entity" = @ContextDefinition("entity",
  *       label = @Translation("Entity"),
  *       description = @Translation("Specifies the entity for which to evaluate the condition."),

@@ -1,14 +1,14 @@
 rules_user_login:
   label: 'User has logged in'
   category: 'User'
-  context:
+  context_definitions:
     account:
       type: 'entity:user'
       label: 'Logged in user'
 rules_user_logout:
   label: 'User has logged out'
   category: 'User'
-  context:
+  context_definitions:
     account:
       type: 'entity:user'
       label: 'Logged out user'
@@ -44,7 +44,7 @@ rules_system_cron:
 rules_system_logger_event:
   label: 'System log entry is created'
   category: 'System'
-  context:
+  context_definitions:
     # @todo Create a TypedData logger-entry object: https://www.drupal.org/node/2625238
     logger_entry:
       type: 'any'

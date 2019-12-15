@@ -73,16 +73,16 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     $this->fillField('Condition', 'rules_data_comparison');
     $this->pressButton('Continue');
 
-    $this->fillField('context[data][setting]', 'node.title.0.value');
-    $this->fillField('context[value][setting]', 'Test title');
+    $this->fillField('context_definitions[data][setting]', 'node.title.0.value');
+    $this->fillField('context_definitions[value][setting]', 'Test title');
     $this->pressButton('Save');
 
     $this->clickLink('Add action');
     $this->fillField('Action', 'rules_system_message');
     $this->pressButton('Continue');
 
-    $this->fillField('context[message][setting]', 'Title matched "Test title"!');
-    $this->fillField('context[type][setting]', 'status');
+    $this->fillField('context_definitions[message][setting]', 'Title matched "Test title"!');
+    $this->fillField('context_definitions[type][setting]', 'status');
     $this->pressButton('Save');
 
     // One more save to permanently store the rule.
@@ -140,7 +140,7 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     $this->fillField('Condition', 'rules_node_is_of_type');
     $this->pressButton('Continue');
 
-    $this->fillField('context[node][setting]', 'node');
+    $this->fillField('context_definitions[node][setting]', 'node');
 
     $suboptimal_user_input = [
       "  \r\nwhitespace at beginning of input\r\n",
@@ -161,7 +161,7 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
       "terminator nr\n\r",
       "whitespace at end of input\r\n        \r\n",
     ];
-    $this->fillField('context[types][setting]', implode($suboptimal_user_input));
+    $this->fillField('context_definitions[types][setting]', implode($suboptimal_user_input));
     $this->pressButton('Save');
 
     // One more save to permanently store the rule.
@@ -239,26 +239,26 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     // Edit condition 1, assert that the switch button is shown for value and
     // that the default entry field is regular text entry not a selector.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule/edit/' . $condition1->getUuid());
-    $assert->buttonExists('edit-context-value-switch-button');
-    $assert->elementExists('xpath', '//input[@id="edit-context-value-setting" and not(contains(@class, "rules-autocomplete"))]');
+    $assert->buttonExists('edit-context-definitions-value-switch-button');
+    $assert->elementExists('xpath', '//input[@id="edit-context-definitions-value-setting" and not(contains(@class, "rules-autocomplete"))]');
 
     // Edit condition 2, assert that the switch button is NOT shown for node
     // and that the entry field is a selector with class rules-autocomplete.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule/edit/' . $condition2->getUuid());
-    $assert->buttonNotExists('edit-context-node-switch-button');
-    $assert->elementExists('xpath', '//input[@id="edit-context-node-setting" and contains(@class, "rules-autocomplete")]');
+    $assert->buttonNotExists('edit-context-definitions-node-switch-button');
+    $assert->elementExists('xpath', '//input[@id="edit-context-definitions-node-setting" and contains(@class, "rules-autocomplete")]');
 
     // Edit action 1, assert that the switch button is shown for message and
     // that the default entry field is a regular text entry not a selector.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule/edit/' . $action1->getUuid());
-    $assert->buttonExists('edit-context-message-switch-button');
-    $assert->elementExists('xpath', '//input[@id="edit-context-message-setting" and not(contains(@class, "rules-autocomplete"))]');
+    $assert->buttonExists('edit-context-definitions-message-switch-button');
+    $assert->elementExists('xpath', '//input[@id="edit-context-definitions-message-setting" and not(contains(@class, "rules-autocomplete"))]');
 
     // Edit action 2, assert that the switch button is NOT shown for type and
     // that the entry field is a regular text entry not a selector.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule/edit/' . $action2->getUuid());
-    $assert->buttonNotExists('edit-context-type-switch-button');
-    $assert->elementExists('xpath', '//input[@id="edit-context-type-setting" and not(contains(@class, "rules-autocomplete"))]');
+    $assert->buttonNotExists('edit-context-definitions-type-switch-button');
+    $assert->elementExists('xpath', '//input[@id="edit-context-definitions-type-setting" and not(contains(@class, "rules-autocomplete"))]');
   }
 
 }

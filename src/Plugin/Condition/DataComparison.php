@@ -11,7 +11,7 @@ use Drupal\rules\Core\RulesConditionBase;
  *   id = "rules_data_comparison",
  *   label = @Translation("Data comparison"),
  *   category = @Translation("Data"),
- *   context = {
+ *   context_definitions = {
  *     "data" = @ContextDefinition("any",
  *       label = @Translation("Data to compare"),
  *       description = @Translation("The data to be compared, specified by using a data selector, e.g. 'node.uid.entity.name.value'."),
@@ -85,9 +85,9 @@ class DataComparison extends RulesConditionBase {
    */
   public function refineContextDefinitions(array $selected_data) {
     if (isset($selected_data['data'])) {
-      $this->pluginDefinition['context']['value']->setDataType($selected_data['data']->getDataType());
+      $this->pluginDefinition['context_definitions']['value']->setDataType($selected_data['data']->getDataType());
       if ($this->getContextValue('operation') == 'IN') {
-        $this->pluginDefinition['context']['value']->setMultiple();
+        $this->pluginDefinition['context_definitions']['value']->setMultiple();
       }
     }
   }
