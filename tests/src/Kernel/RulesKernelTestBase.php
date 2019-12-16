@@ -31,9 +31,9 @@ abstract class RulesKernelTestBase extends KernelTestBase {
   protected $typedDataManager;
 
   /**
-   * Rules logger.
+   * Rules debug logger.
    *
-   * @var \Drupal\rules\Logger\RulesLoggerChannel
+   * @var \Drupal\rules\Logger\RulesDebugLoggerChannel
    */
   protected $logger;
 
@@ -70,7 +70,7 @@ abstract class RulesKernelTestBase extends KernelTestBase {
   protected function setUp() {
     parent::setUp();
 
-    $this->logger = $this->container->get('logger.channel.rules');
+    $this->logger = $this->container->get('logger.channel.rules_debug');
     // Clear the log from any stale entries that are bleeding over from previous
     // tests.
     $this->logger->clearLogs();
@@ -106,7 +106,7 @@ abstract class RulesKernelTestBase extends KernelTestBase {
    * @param int $log_item_index
    *   Log item's index in log entries stack.
    */
-  protected function assertRulesLogEntryExists($message, $log_item_index = 0) {
+  protected function assertRulesDebugLogEntryExists($message, $log_item_index = 0) {
     // Test that the action has logged something.
     $logs = $this->logger->getLogs();
     $this->assertEquals($logs[$log_item_index]['message'], $message);

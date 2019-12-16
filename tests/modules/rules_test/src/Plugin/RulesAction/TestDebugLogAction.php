@@ -4,15 +4,15 @@ namespace Drupal\rules_test\Plugin\RulesAction;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\rules\Core\RulesActionBase;
-use Drupal\rules\Logger\RulesLoggerChannel;
+use Drupal\rules\Logger\RulesDebugLoggerChannel;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides an action writing something to the Rules log.
+ * Provides an action writing something to the Rules debug logger channel.
  *
  * @RulesAction(
- *   id = "rules_test_log",
- *   label = @Translation("Test action logging"),
+ *   id = "rules_test_debug_log",
+ *   label = @Translation("Test action debug logging"),
  *   category = @Translation("Tests"),
  *   context_definitions = {
  *     "message" = @ContextDefinition("string",
@@ -22,17 +22,17 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   }
  * )
  */
-class TestLogAction extends RulesActionBase implements ContainerFactoryPluginInterface {
+class TestDebugLogAction extends RulesActionBase implements ContainerFactoryPluginInterface {
 
   /**
-   * Rules logger instance.
+   * Rules debug logger instance.
    *
-   * @var \Drupal\rules\Logger\RulesLoggerChannel
+   * @var \Drupal\rules\Logger\RulesDebugLoggerChannel
    */
   protected $logger;
 
   /**
-   * Constructs a TestLogAction object.
+   * Constructs a TestDebugLogAction object.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
@@ -40,10 +40,10 @@ class TestLogAction extends RulesActionBase implements ContainerFactoryPluginInt
    *   The plugin ID for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\rules\Logger\RulesLoggerChannel $logger
-   *   Rules logger object.
+   * @param \Drupal\rules\Logger\RulesDebugLoggerChannel $logger
+   *   Rules debug logger object.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RulesLoggerChannel $logger) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RulesDebugLoggerChannel $logger) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->logger = $logger;
   }
@@ -56,7 +56,7 @@ class TestLogAction extends RulesActionBase implements ContainerFactoryPluginInt
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('logger.channel.rules')
+      $container->get('logger.channel.rules_debug')
     );
   }
 

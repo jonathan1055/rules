@@ -82,7 +82,7 @@ class ConfigurableEventHandlerTest extends RulesKernelTestBase {
   public function testConfigurableEventHandler() {
     // Create rule1 with the 'rules_entity_presave:node--page' event.
     $rule1 = $this->expressionManager->createRule();
-    $rule1->addAction('rules_test_log',
+    $rule1->addAction('rules_test_debug_log',
       ContextConfig::create()
         ->map('message', 'node.field_integer.0.value')
     );
@@ -97,7 +97,7 @@ class ConfigurableEventHandlerTest extends RulesKernelTestBase {
 
     // Create rule2 with the 'rules_entity_presave:node' event.
     $rule2 = $this->expressionManager->createRule();
-    $rule2->addAction('rules_test_log',
+    $rule2->addAction('rules_test_debug_log',
       ContextConfig::create()
         ->map('message', 'node.field_integer.1.value')
     );
@@ -111,7 +111,7 @@ class ConfigurableEventHandlerTest extends RulesKernelTestBase {
     $config_entity2->save();
 
     // The logger instance has changed, refresh it.
-    $this->logger = $this->container->get('logger.channel.rules');
+    $this->logger = $this->container->get('logger.channel.rules_debug');
 
     // Add node.field_integer.0.value to rules log message, read result.
     $this->node->field_integer->setValue(['0' => 11, '1' => 22]);
@@ -126,9 +126,9 @@ class ConfigurableEventHandlerTest extends RulesKernelTestBase {
     $event_dispatcher->dispatch("rules_entity_presave:$entity_type_id", $event);
 
     // Test that the action in the rule1 logged node value.
-    $this->assertRulesLogEntryExists(11, 1);
+    $this->assertRulesDebugLogEntryExists(11, 1);
     // Test that the action in the rule2 logged node value.
-    $this->assertRulesLogEntryExists(22, 0);
+    $this->assertRulesDebugLogEntryExists(22, 0);
   }
 
 }

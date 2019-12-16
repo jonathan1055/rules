@@ -63,11 +63,11 @@ class RulesEngineTest extends RulesKernelTestBase {
     $this->assertTrue($rule->getConditions()->execute());
 
     // Add an action to it and execute the rule.
-    $rule->addAction('rules_test_log');
+    $rule->addAction('rules_test_debug_log');
     $rule->execute();
 
     // Test that the action logged something.
-    $this->assertRulesLogEntryExists('action called');
+    $this->assertRulesDebugLogEntryExists('action called');
   }
 
   /**
@@ -79,7 +79,7 @@ class RulesEngineTest extends RulesKernelTestBase {
     $rule->addCondition('rules_test_string_condition', ContextConfig::create()
       ->map('text', 'test')
     );
-    $rule->addAction('rules_test_log');
+    $rule->addAction('rules_test_debug_log');
 
     RulesComponent::create($rule)
       ->addContextDefinition('test', ContextDefinition::create('string'))
@@ -87,7 +87,7 @@ class RulesEngineTest extends RulesKernelTestBase {
       ->execute();
 
     // Test that the action logged something.
-    $this->assertRulesLogEntryExists('action called');
+    $this->assertRulesDebugLogEntryExists('action called');
   }
 
   /**
@@ -103,7 +103,7 @@ class RulesEngineTest extends RulesKernelTestBase {
       ->map('text', 'provided_text')
     );
 
-    $rule->addAction('rules_test_log');
+    $rule->addAction('rules_test_debug_log');
 
     $component = RulesComponent::create($rule);
 
@@ -112,7 +112,7 @@ class RulesEngineTest extends RulesKernelTestBase {
 
     $component->execute();
     // Test that the action logged something.
-    $this->assertRulesLogEntryExists('action called');
+    $this->assertRulesDebugLogEntryExists('action called');
   }
 
   /**

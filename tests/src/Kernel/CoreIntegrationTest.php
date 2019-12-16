@@ -70,12 +70,15 @@ class CoreIntegrationTest extends RulesKernelTestBase {
       ->map('text', 'node.uid.entity.name.value')
     );
 
-    $rule->addAction('rules_test_log');
+    $rule->addAction('rules_test_debug_log');
 
     RulesComponent::create($rule)
       ->addContextDefinition('node', ContextDefinition::create('entity:node'))
       ->setContextValue('node', $node)
       ->execute();
+
+    // Test that the action logged something.
+    $this->assertRulesDebugLogEntryExists('action called');
   }
 
   /**

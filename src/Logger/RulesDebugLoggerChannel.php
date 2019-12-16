@@ -5,11 +5,19 @@ namespace Drupal\rules\Logger;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Logger\LoggerChannel;
 use Drupal\Core\Messenger\MessengerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Logs rules log entries in the available loggers.
  */
-class RulesLoggerChannel extends LoggerChannel {
+class RulesDebugLoggerChannel extends LoggerChannel {
+
+  /**
+   * The logger.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  protected $logger;
 
   /**
    * A configuration object with rules settings.
@@ -33,15 +41,18 @@ class RulesLoggerChannel extends LoggerChannel {
   protected $logs = [];
 
   /**
-   * Creates RulesLoggerChannel object.
+   * Creates RulesDebugLoggerChannel object.
    *
+   * @param \Psr\Log\LoggerInterface $logger
+   *   The logger.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   Config factory instance.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
    *   The messenger service.
    */
-  public function __construct(ConfigFactoryInterface $config_factory, MessengerInterface $messenger) {
-    parent::__construct('rules');
+  public function __construct(LoggerInterface $logger, ConfigFactoryInterface $config_factory, MessengerInterface $messenger) {
+    parent::__construct('rules_debug');
+    $this->logger = $logger;
     $this->config = $config_factory->get('rules.settings');
     $this->messenger = $messenger;
   }

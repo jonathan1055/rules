@@ -21,8 +21,11 @@ services:
     class: Drupal\rules\Ui\RulesUiManager
     arguments: ['@module_handler']
   logger.channel.rules:
-    class: Drupal\rules\Logger\RulesLoggerChannel
-    arguments: ['@config.factory', '@messenger']
+    parent: logger.channel_base
+    arguments: ['rules']
+  logger.channel.rules_debug:
+    class: Drupal\rules\Logger\RulesDebugLoggerChannel
+    arguments: ['@logger.channel.rules', '@config.factory', '@messenger']
   logger.ruleslog:
     class: Drupal\rules\Logger\RulesLog
     arguments: ['@event_dispatcher', '@logger.log_message_parser']

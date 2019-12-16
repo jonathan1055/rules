@@ -4,17 +4,17 @@ namespace Drupal\Tests\rules\Unit;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Logger\RfcLogLevel;
-use Drupal\rules\Logger\RulesLoggerChannel;
+use Drupal\rules\Logger\RulesDebugLoggerChannel;
 use Drupal\Tests\UnitTestCase;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
 /**
- * @coversDefaultClass \Drupal\rules\Logger\RulesLoggerChannel
+ * @coversDefaultClass \Drupal\rules\Logger\RulesDebugLoggerChannel
  * @group Rules
  */
-class RulesLoggerChannelTest extends UnitTestCase {
+class RulesDebugLoggerChannelTest extends UnitTestCase {
 
   /**
    * The Drupal service container.
@@ -22,6 +22,13 @@ class RulesLoggerChannelTest extends UnitTestCase {
    * @var \Drupal\Core\DependencyInjection\Container
    */
   protected $container;
+
+  /**
+   * The Rules logger.channel.rules service.
+   *
+   * @var \Psr\Log\LoggerInterface
+   */
+  protected $rulesLogger;
 
   /**
    * The messenger service.
@@ -36,6 +43,8 @@ class RulesLoggerChannelTest extends UnitTestCase {
   protected function setUp() {
     parent::setUp();
     $container = new ContainerBuilder();
+    $this->rulesLogger = $this->prophesize(LoggerInterface::class)->reveal();
+    $container->set('logger.channel.rules', $this->rulesLogger);
     $this->messenger = new TestMessenger();
     $container->set('messenger', $this->messenger);
     \Drupal::setContainer($container);
@@ -77,7 +86,7 @@ class RulesLoggerChannelTest extends UnitTestCase {
         'log_level_screen' => $psr3_log_error_level,
       ],
     ]);
-    $channel = new RulesLoggerChannel($config, $this->messenger);
+    $channel = new RulesDebugLoggerChannel($this->rulesLogger, $config, $this->messenger);
     $logger = $this->prophesize(LoggerInterface::class);
     $logger->log($rfc_message_level, $message, Argument::type('array'))
       ->shouldBeCalledTimes($expect_system_log);
