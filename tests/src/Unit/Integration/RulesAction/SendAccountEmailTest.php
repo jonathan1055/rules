@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\rules\Unit\Integration\RulesAction {
 
+  use Drupal\Core\Logger\LoggerChannelInterface;
+  use Drupal\Core\Logger\LoggerChannelFactoryInterface;
   use Drupal\Tests\rules\Unit\Integration\RulesEntityIntegrationTestBase;
   use Drupal\user\UserInterface;
 
@@ -10,6 +12,11 @@ namespace Drupal\Tests\rules\Unit\Integration\RulesAction {
    * @group RulesAction
    */
   class SendAccountEmailTest extends RulesEntityIntegrationTestBase {
+
+    /**
+     * @var \Drupal\Core\Logger\LoggerChannelInterface|\Prophecy\Prophecy\ProphecyInterface
+     */
+    protected $logger;
 
     /**
      * The action to be tested.
@@ -25,6 +32,14 @@ namespace Drupal\Tests\rules\Unit\Integration\RulesAction {
       parent::setUp();
 
       $this->enableModule('user');
+
+      // Mock the logger.factory service, make it return the Rules logger
+      // channel, and register it in the container.
+      $this->logger = $this->prophesize(LoggerChannelInterface::class);
+      $logger_factory = $this->prophesize(LoggerChannelFactoryInterface::class);
+      $logger_factory->get('rules')->willReturn($this->logger->reveal());
+      $this->container->set('logger.factory', $logger_factory->reveal());
+
       $this->action = $this->actionManager->createInstance('rules_send_account_email');
     }
 
@@ -44,6 +59,7 @@ namespace Drupal\Tests\rules\Unit\Integration\RulesAction {
      */
     public function testActionExecution() {
       $account = $this->prophesizeEntity(UserInterface::class);
+      $account->mail = 'klausi@example.com';
       $mail_type = 'test_mail_type';
       $this->action->setContextValue('user', $account->reveal())
         ->setContextValue('email_type', $mail_type);
@@ -78,6 +94,8 @@ namespace {
           $notifications_sent[$op] = 0;
         }
         $notifications_sent[$op]++;
+        // Return, because we check 'result' for indication of success.
+        return ['result' => $notifications_sent];
       }
       return $notifications_sent;
     }

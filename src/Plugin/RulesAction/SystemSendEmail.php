@@ -72,7 +72,7 @@ class SystemSendEmail extends RulesActionBase implements ContainerFactoryPluginI
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
    * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
-   *   The alias storage service.
+   *   The Rules logger channel.
    * @param \Drupal\Core\Mail\MailManagerInterface $mail_manager
    *   The mail manager service.
    */

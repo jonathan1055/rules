@@ -2,6 +2,7 @@
 
 namespace Drupal\rules_ban\Plugin\RulesAction;
 
+use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\ban\BanIpManagerInterface;
 use Drupal\rules\Core\RulesActionBase;
@@ -28,6 +29,13 @@ abstract class RulesBanActionBase extends RulesActionBase implements ContainerFa
   protected $requestStack;
 
   /**
+   * The logger channel the action will write log messages to.
+   *
+   * @var \Drupal\Core\Logger\LoggerChannelInterface
+   */
+  protected $logger;
+
+  /**
    * Constructs the RulesBanActionBase object.
    *
    * @param array $configuration
@@ -40,11 +48,14 @@ abstract class RulesBanActionBase extends RulesActionBase implements ContainerFa
    *   The ban manager.
    * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
    *   The corresponding request stack.
+   * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
+   *   The Rules logger channel.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, BanIpManagerInterface $ban_manager, RequestStack $request_stack) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, BanIpManagerInterface $ban_manager, RequestStack $request_stack, LoggerChannelInterface $logger) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->banManager = $ban_manager;
     $this->requestStack = $request_stack;
+    $this->logger = $logger;
   }
 
   /**
@@ -56,7 +67,8 @@ abstract class RulesBanActionBase extends RulesActionBase implements ContainerFa
       $plugin_id,
       $plugin_definition,
       $container->get('ban.ip_manager'),
-      $container->get('request_stack')
+      $container->get('request_stack'),
+      $container->get('logger.factory')->get('rules')
     );
   }
 

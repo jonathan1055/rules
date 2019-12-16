@@ -37,6 +37,7 @@ class UnBanIp extends RulesBanActionBase {
     }
 
     $this->banManager->unbanIp($ip);
+    $this->logger->notice('Removed ban on IP address %ip', ['%ip' => $ip]);
   }
 
 }

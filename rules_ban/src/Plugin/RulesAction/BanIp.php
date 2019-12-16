@@ -37,6 +37,7 @@ class BanIp extends RulesBanActionBase {
     }
 
     $this->banManager->banIp($ip);
+    $this->logger->notice('Banned IP address %ip', ['%ip' => $ip]);
   }
 
 }

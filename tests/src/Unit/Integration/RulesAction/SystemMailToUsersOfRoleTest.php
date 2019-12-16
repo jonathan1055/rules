@@ -51,11 +51,15 @@ class SystemMailToUsersOfRoleTest extends RulesEntityIntegrationTestBase {
     parent::setUp();
     $this->enableModule('user');
 
+    // Mock the logger.factory service, make it return the Rules logger channel,
+    // and register it in the container.
     $this->logger = $this->prophesize(LoggerChannelInterface::class);
     $logger_factory = $this->prophesize(LoggerChannelFactoryInterface::class);
     $logger_factory->get('rules')->willReturn($this->logger->reveal());
+    $this->container->set('logger.factory', $logger_factory->reveal());
 
     $this->mailManager = $this->prophesize(MailManagerInterface::class);
+    $this->container->set('plugin.manager.mail', $this->mailManager->reveal());
 
     // Create an array of dummy users with the 'recipient' role.
     $this->accounts = [];
@@ -77,10 +81,6 @@ class SystemMailToUsersOfRoleTest extends RulesEntityIntegrationTestBase {
     $this->userStorage = $this->prophesize(UserStorageInterface::class);
     $this->entityTypeManager->getStorage('user')
       ->willReturn($this->userStorage->reveal());
-
-    // @todo This is wrong, the logger is no factory.
-    $this->container->set('logger.factory', $logger_factory->reveal());
-    $this->container->set('plugin.manager.mail', $this->mailManager->reveal());
 
     $this->action = $this->actionManager->createInstance('rules_email_to_users_of_role');
   }
@@ -128,13 +128,13 @@ class SystemMailToUsersOfRoleTest extends RulesEntityIntegrationTestBase {
       ->willReturn(['result' => TRUE])
       ->shouldBeCalledTimes(3);
 
-    $this->logger->notice(
-      // @todo Assert the actual message here, but PHPunit goes into an endless
-      // loop with that.
-      Argument::any(), Argument::any()
-    )->shouldBeCalledTimes(1);
-
     $this->action->execute();
+
+    $this->logger->notice('Successfully sent email to %number out of %count users having the role(s) %roles', [
+      '%number' => 3,
+      '%count' => count($this->accounts),
+      '%roles' => implode(', ', $rids),
+    ])->shouldHaveBeenCalled();
   }
 
   /**
@@ -173,13 +173,13 @@ class SystemMailToUsersOfRoleTest extends RulesEntityIntegrationTestBase {
       ->willReturn(['result' => TRUE])
       ->shouldBeCalledTimes(1);
 
-    $this->logger->notice(
-      // @todo Assert the actual message here, but PHPunit goes into an endless
-      // with that.
-      Argument::any(), Argument::any()
-    )->shouldBeCalledTimes(1);
-
     $this->action->execute();
+
+    $this->logger->notice('Successfully sent email to %number out of %count users having the role(s) %roles', [
+      '%number' => 1,
+      '%count' => 1,
+      '%roles' => implode(', ', $rids),
+    ])->shouldHaveBeenCalled();
   }
 
 }

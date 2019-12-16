@@ -7,7 +7,6 @@ use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Mail\MailManagerInterface;
 use Drupal\Tests\rules\Unit\Integration\RulesIntegrationTestBase;
-use Prophecy\Argument;
 
 /**
  * @coversDefaultClass \Drupal\rules\Plugin\RulesAction\SystemSendEmail
@@ -37,15 +36,15 @@ class SystemSendEmailTest extends RulesIntegrationTestBase {
    */
   protected function setUp() {
     parent::setUp();
+    $this->mailManager = $this->prophesize(MailManagerInterface::class);
+    $this->container->set('plugin.manager.mail', $this->mailManager->reveal());
+
+    // Mock the logger.factory service, make it return the Rules logger channel,
+    // and register it in the container.
     $this->logger = $this->prophesize(LoggerChannelInterface::class);
     $logger_factory = $this->prophesize(LoggerChannelFactoryInterface::class);
     $logger_factory->get('rules')->willReturn($this->logger->reveal());
-
-    $this->mailManager = $this->prophesize(MailManagerInterface::class);
-
-    // @todo This is wrong, the logger is no factory.
     $this->container->set('logger.factory', $logger_factory->reveal());
-    $this->container->set('plugin.manager.mail', $this->mailManager->reveal());
 
     $this->action = $this->actionManager->createInstance('rules_send_email');
   }
@@ -85,13 +84,11 @@ class SystemSendEmailTest extends RulesIntegrationTestBase {
       ->willReturn(['result' => TRUE])
       ->shouldBeCalledTimes(1);
 
-    $this->logger->notice(
-      // @todo Assert the actual message here, but PHPunit goes into an endless
-      // loop with that.
-      Argument::any(), Argument::any()
-    )->shouldBeCalledTimes(1);
-
     $this->action->execute();
+
+    $this->logger
+      ->notice('Successfully sent email to %recipient', ['%recipient' => implode(', ', $to)])
+      ->shouldHaveBeenCalled();
   }
 
   /**
@@ -120,13 +117,11 @@ class SystemSendEmailTest extends RulesIntegrationTestBase {
       ->willReturn(['result' => TRUE])
       ->shouldBeCalledTimes(1);
 
-    $this->logger->notice(
-      // @todo Assert the actual message here, but PHPunit goes into an endless
-      // with that.
-      Argument::any(), Argument::any()
-    )->shouldBeCalledTimes(1);
-
     $this->action->execute();
+
+    $this->logger
+      ->notice('Successfully sent email to %recipient', ['%recipient' => implode(', ', $to)])
+      ->shouldHaveBeenCalled();
   }
 
 }

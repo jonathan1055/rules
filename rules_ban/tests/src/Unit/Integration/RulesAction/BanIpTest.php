@@ -1,17 +1,19 @@
 <?php
 
-namespace Drupal\Tests\rules_ban\Unit\Integration\Action;
+namespace Drupal\Tests\rules_ban\Unit\Integration\RulesAction;
 
+use Drupal\Core\Logger\LoggerChannelInterface;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\ban\BanIpManagerInterface;
 use Drupal\Tests\rules\Unit\Integration\RulesIntegrationTestBase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * @coversDefaultClass \Drupal\rules_ban\Plugin\RulesAction\UnBanIp
+ * @coversDefaultClass \Drupal\rules_ban\Plugin\RulesAction\BanIp
  * @group RulesAction
  */
-class UnBanIpTest extends RulesIntegrationTestBase {
+class BanIpTest extends RulesIntegrationTestBase {
 
   /**
    * The action to be tested.
@@ -36,11 +38,15 @@ class UnBanIpTest extends RulesIntegrationTestBase {
   protected $requestStack;
 
   /**
+   * @var \Drupal\Core\Logger\LoggerChannelInterface|\Prophecy\Prophecy\ProphecyInterface
+   */
+  protected $logger;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
-
     // Must enable our module to make its plugins discoverable.
     $this->enableModule('rules_ban');
 
@@ -58,7 +64,15 @@ class UnBanIpTest extends RulesIntegrationTestBase {
     $this->requestStack->getCurrentRequest()->willReturn($this->request->reveal());
     $this->container->set('request_stack', $this->requestStack->reveal());
 
-    $this->action = $this->actionManager->createInstance('rules_unban_ip');
+    // Mock the logger.factory service, make it return the Rules logger channel,
+    // and register it in the container.
+    $this->logger = $this->prophesize(LoggerChannelInterface::class);
+    $logger_factory = $this->prophesize(LoggerChannelFactoryInterface::class);
+    $logger_factory->get('rules')->willReturn($this->logger->reveal());
+    $this->container->set('logger.factory', $logger_factory->reveal());
+
+    // Instantiate the rules_ban_ip action.
+    $this->action = $this->actionManager->createInstance('rules_ban_ip');
   }
 
   /**
@@ -67,7 +81,7 @@ class UnBanIpTest extends RulesIntegrationTestBase {
    * @covers ::summary
    */
   public function testSummary() {
-    $this->assertEquals('Remove the ban on an IP address', $this->action->summary());
+    $this->assertEquals('Ban an IP address', $this->action->summary());
   }
 
   /**
@@ -85,10 +99,11 @@ class UnBanIpTest extends RulesIntegrationTestBase {
     $ipv4 = '192.0.2.0';
     $this->action->setContextValue('ip', $ipv4);
 
-    $this->banManager->unbanIp($ipv4)->shouldBeCalledTimes(1);
+    $this->banManager->banIp($ipv4)->shouldBeCalledTimes(1);
 
     $this->action->execute();
 
+    $this->logger->notice('Banned IP address %ip', ['%ip' => $ipv4])->shouldHaveBeenCalled();
   }
 
   /**
@@ -106,10 +121,11 @@ class UnBanIpTest extends RulesIntegrationTestBase {
     $ipv6 = '2002:0:0:0:0:0:c000:200';
     $this->action->setContextValue('ip', $ipv6);
 
-    $this->banManager->unbanIp($ipv6)->shouldBeCalledTimes(1);
+    $this->banManager->banIp($ipv6)->shouldBeCalledTimes(1);
 
     $this->action->execute();
 
+    $this->logger->notice('Banned IP address %ip', ['%ip' => $ipv6])->shouldHaveBeenCalled();
   }
 
   /**
@@ -125,9 +141,11 @@ class UnBanIpTest extends RulesIntegrationTestBase {
 
     $this->request->getClientIp()->willReturn($ip)->shouldBeCalledTimes(1);
 
-    $this->banManager->unbanIp($ip)->shouldBeCalledTimes(1);
+    $this->banManager->banIp($ip)->shouldBeCalledTimes(1);
 
     $this->action->execute();
+
+    $this->logger->notice('Banned IP address %ip', ['%ip' => $ip])->shouldHaveBeenCalled();
   }
 
 }

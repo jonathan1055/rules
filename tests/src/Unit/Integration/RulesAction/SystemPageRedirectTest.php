@@ -5,10 +5,10 @@ namespace Drupal\Tests\rules\Unit\Integration\RulesAction {
   use Drupal\Tests\rules\Unit\Integration\RulesIntegrationTestBase;
   use Drupal\Core\Logger\LoggerChannelInterface;
   use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+  use Drupal\Core\Path\CurrentPathStack;
   use Symfony\Component\HttpFoundation\ParameterBag;
   use Symfony\Component\HttpFoundation\Request;
   use Symfony\Component\HttpFoundation\RequestStack;
-  use Drupal\Core\Path\CurrentPathStack;
 
   /**
    * @coversDefaultClass \Drupal\rules\Plugin\RulesAction\SystemPageRedirect
@@ -17,18 +17,11 @@ namespace Drupal\Tests\rules\Unit\Integration\RulesAction {
   class SystemPageRedirectTest extends RulesIntegrationTestBase {
 
     /**
-     * A mocked logger.
+     * A mocked Rules logger.channel.rules_debug service.
      *
      * @var \Drupal\Core\Logger\LoggerChannelInterface|\Prophecy\Prophecy\ProphecyInterface
      */
     protected $logger;
-
-    /**
-     * The mocked logger factory service.
-     *
-     * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface|\Prophecy\Prophecy\ProphecyInterface
-     */
-    protected $loggerFactory;
 
     /**
      * The mocked request stack service.
@@ -71,14 +64,10 @@ namespace Drupal\Tests\rules\Unit\Integration\RulesAction {
     protected function setUp() {
       parent::setUp();
 
-      // Mock a logger.
+      // Mock the Rules debug logger service, make it return our mocked logger,
+      // and register it in the container.
       $this->logger = $this->prophesize(LoggerChannelInterface::class);
-
-      // Mock the logger service, make it return our mocked logger, and register
-      // it in the container.
-      $this->loggerFactory = $this->prophesize(LoggerChannelFactoryInterface::class);
-      $this->loggerFactory->get('rules')->willReturn($this->logger->reveal());
-      $this->container->set('logger.factory', $this->loggerFactory->reveal());
+      $this->container->set('logger.channel.rules_debug', $this->logger->reveal());
 
       // Mock a parameter bag.
       $this->parameterBag = $this->prophesize(ParameterBag::class);
@@ -158,7 +147,7 @@ namespace {
     function batch_set($batch_definition) {
       if ($batch_definition) {
         $batch = &batch_get();
-        // Nothing more then current_set should be mocked for testing purposes.
+        // Nothing more than current_set should be mocked for testing purposes.
         $batch['current_set'] = $batch_definition;
       }
     }
