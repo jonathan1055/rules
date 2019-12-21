@@ -91,12 +91,12 @@ trait ContextHandlerTrait {
         // but valid (e.g. a reference on an empty property). In that case
         // isAllowedNull determines whether the context is conform.
         if (!isset($this->configuration['context_mapping'][$name])) {
-          throw new EvaluationException("Required context $name is missing for plugin "
-            . $plugin->getPluginId() . '.');
+          throw new EvaluationException("Required context '$name' is missing for plugin '"
+            . $plugin->getPluginId() . "'.");
         }
         elseif (!$definition->isAllowedNull()) {
-          throw new EvaluationException("The context for $name is NULL, but the context $name in "
-            . $plugin->getPluginId() . ' requires a value.');
+          throw new EvaluationException("The context for '$name' is NULL, but the context '$name' in '"
+            . $plugin->getPluginId() . "' requires a value.");
         }
       }
     }

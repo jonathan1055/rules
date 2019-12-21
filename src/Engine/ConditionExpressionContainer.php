@@ -48,8 +48,9 @@ abstract class ConditionExpressionContainer extends ExpressionContainerBase impl
     if (!$expression instanceof ConditionExpressionInterface) {
       throw new InvalidExpressionException('Only condition expressions can be added to a condition container.');
     }
-    if ($this->getExpression($expression->getUuid())) {
-      throw new InvalidExpressionException('A condition with the same UUID already exists in the container.');
+    $uuid = $expression->getUuid();
+    if ($this->getExpression($uuid)) {
+      throw new InvalidExpressionException("A condition with UUID $uuid already exists in the container.");
     }
     $this->conditions[] = $expression;
     return $this;

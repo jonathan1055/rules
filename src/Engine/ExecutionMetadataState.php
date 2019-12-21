@@ -13,7 +13,6 @@ use Drupal\typed_data\Exception\TypedDataException;
  * The state used during configuration time holding data definitions.
  */
 class ExecutionMetadataState implements ExecutionMetadataStateInterface {
-
   use DataFetcherTrait;
   use GlobalContextRepositoryTrait;
 
@@ -62,7 +61,7 @@ class ExecutionMetadataState implements ExecutionMetadataStateInterface {
    */
   public function getDataDefinition($name) {
     if (!array_key_exists($name, $this->dataDefinitions)) {
-      throw new IntegrityException("Unable to get variable $name, it is not defined.");
+      throw new IntegrityException("Unable to get variable '$name'; it is not defined.");
     }
     return $this->dataDefinitions[$name];
   }

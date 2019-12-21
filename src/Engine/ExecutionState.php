@@ -18,7 +18,6 @@ use Drupal\typed_data\DataFetcherTrait;
  * for elements in the current PHP-variable-scope.
  */
 class ExecutionState implements ExecutionStateInterface {
-
   use DataFetcherTrait;
   use GlobalContextRepositoryTrait;
   use TypedDataTrait;
@@ -104,7 +103,7 @@ class ExecutionState implements ExecutionStateInterface {
       // you're reacting on a "Drupal is initializing" event ... Need to handle
       // a problem here gracefully - maybe disable the rule that caused the
       // problem?
-      throw new EvaluationException("Unable to get variable $name, it is not defined.");
+      throw new EvaluationException("Unable to get variable '$name'; it is not defined.");
     }
     return $this->variables[$name];
   }
@@ -122,7 +121,7 @@ class ExecutionState implements ExecutionStateInterface {
   public function hasVariable($name) {
     if (!array_key_exists($name, $this->variables)) {
       // If there is no such variable, lazy-add global context variables. That
-      // way can save time fetching global context if it is not needed.
+      // way we can save time fetching global context if it is not needed.
       if (!($name[0] === '@' && strpos($name, ':') !== FALSE)) {
         return FALSE;
       }

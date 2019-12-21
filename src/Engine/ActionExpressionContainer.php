@@ -48,8 +48,9 @@ abstract class ActionExpressionContainer extends ExpressionContainerBase impleme
     if (!$expression instanceof ActionExpressionInterface) {
       throw new InvalidExpressionException('Only action expressions can be added to an action container.');
     }
-    if ($this->getExpression($expression->getUuid())) {
-      throw new InvalidExpressionException('An action with the same UUID already exists in the container.');
+    $uuid = $expression->getUuid();
+    if ($this->getExpression($uuid)) {
+      throw new InvalidExpressionException("An action with UUID $uuid already exists in the container.");
     }
     $this->actions[] = $expression;
     return $this;
