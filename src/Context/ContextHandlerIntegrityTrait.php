@@ -5,11 +5,11 @@ namespace Drupal\rules\Context;
 use Drupal\Core\Plugin\Context\ContextDefinitionInterface as CoreContextDefinitionInterface;
 use Drupal\Core\Plugin\ContextAwarePluginInterface as CoreContextAwarePluginInterface;
 use Drupal\Core\TypedData\DataDefinitionInterface;
-//@codingStandardsIgnoreStart
 use Drupal\rules\Context\ContextDefinitionInterface as RulesContextDefinitionInterface;
+//@codingStandardsIgnoreStart
 use Drupal\rules\Context\ContextProviderInterface;
-use Drupal\rules\Exception\IntegrityException;
 //@codingStandardsIgnoreEnd
+use Drupal\rules\Exception\IntegrityException;
 use Drupal\rules\Engine\ExecutionMetadataStateInterface;
 use Drupal\rules\Engine\IntegrityViolation;
 use Drupal\rules\Engine\IntegrityViolationList;

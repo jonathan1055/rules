@@ -3,7 +3,6 @@
 namespace Drupal\rules\Commands;
 
 use Consolidation\OutputFormatters\StructuredData\RowsOfFields;
-use Consolidation\OutputFormatters\StructuredData\UnstructuredData;
 use Drupal\Core\Config\CachedStorage;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Serialization\Yaml;
@@ -81,7 +80,6 @@ class RulesCommands extends DrushCommands {
    *   event: Event
    *   active: Active
    * @default-fields machine-name,label,event,active
-   *
    *
    * @return \Consolidation\OutputFormatters\StructuredData\RowsOfFields
    *   The data.
@@ -244,13 +242,12 @@ class RulesCommands extends DrushCommands {
    * @command rules:export
    * @aliases rexp,rules-export
    *
+   * @codingStandardsIgnoreStart
    * @usage drush rules:export test_rule > rules.reaction.test_rule.yml
    *   Exports the Rule with machine name 'test_rule' and saves it in a .yml file.
    * @usage drush rules:list --pipe --type=component | xargs -I{}  sh -c "drush rules:export '{}' > 'rules.component.{}.yml'"
    *   Exports all Rules Components into individual YAML files.
-   *
-   * @return \Consolidation\OutputFormatters\StructuredData\UnstructuredData
-   *   The YAML data to display
+   * @codingStandardsIgnoreEnd
    *
    * @throws \Exception
    */
