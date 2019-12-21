@@ -15,5 +15,12 @@
     "require-dev": {
         "drupal/typed_data": "1.x-dev"
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "extra": {
+        "drush": {
+            "services": {
+                "drush.services.yml": "^9"
+            }
+        }
+    }
 }
