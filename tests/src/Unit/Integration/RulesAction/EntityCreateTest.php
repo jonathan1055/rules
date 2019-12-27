@@ -119,7 +119,7 @@ class EntityCreateTest extends RulesEntityIntegrationTestBase {
   public function testActionExecution() {
     $this->action->setContextValue('bundle', 'test');
     $this->action->execute();
-    $entity = $this->action->getProvidedContext('entity')->getContextValue();
+    $entity = $this->action->getProvidedContext('test_created')->getContextValue();
     $this->assertEquals(self::ENTITY_REPLACEMENT, $entity);
   }
 
@@ -150,7 +150,7 @@ class EntityCreateTest extends RulesEntityIntegrationTestBase {
     $this->action->setContextValue('bundle', 'bundle_test');
     $this->action->refineContextDefinitions([]);
     $this->assertEquals(
-      $this->action->getProvidedContextDefinition('entity')
+      $this->action->getProvidedContextDefinition('test_created')
         ->getDataType(), 'entity:test:bundle_test'
     );
   }

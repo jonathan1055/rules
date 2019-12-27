@@ -261,7 +261,7 @@ class CoreIntegrationTest extends RulesKernelTestBase {
     );
     // Set the title of the new node so that it is marked for auto-saving.
     $nested_rule->addAction('rules_data_set', ContextConfig::create()
-      ->map('data', 'entity.title')
+      ->map('data', 'node_created.title')
       ->setValue('value', 'new title')
     );
 
