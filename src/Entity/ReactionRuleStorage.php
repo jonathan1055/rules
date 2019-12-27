@@ -94,7 +94,8 @@ class ReactionRuleStorage extends ConfigEntityStorage {
    */
   protected function getRegisteredEvents() {
     $events = [];
-    foreach ($this->loadMultiple() as $rules_config) {
+    // 'status' == TRUE when the reaction rule is active.
+    foreach ($this->loadByProperties(['status' => TRUE]) as $rules_config) {
       foreach ($rules_config->getEventNames() as $event_name) {
         $event_name = $this->eventManager->getEventBaseName($event_name);
         if (!isset($events[$event_name])) {
