@@ -80,10 +80,14 @@ class RulesDebugLoggerChannelTest extends UnitTestCase {
 
     $config = $this->getConfigFactoryStub([
       'rules.settings' => [
-        'log' => $log,
-        'debug_screen' => $debug_screen,
-        'log_level_system' => $psr3_log_error_level,
-        'log_level_screen' => $psr3_log_error_level,
+        'system_log' => [
+          'log_level' => $psr3_log_error_level,
+        ],
+        'debug_log' => [
+          'enabled' => $debug_screen,
+          'system_debug' => $log,
+          'log_level' => $psr3_log_error_level,
+        ],
       ],
     ]);
     $channel = new RulesDebugLoggerChannel($this->rulesLogger, $config, $this->messenger);
