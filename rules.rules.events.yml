@@ -1,23 +1,13 @@
-rules_user_login:
-  label: 'User has logged in'
-  category: 'User'
-  context_definitions:
-    account:
-      type: 'entity:user'
-      label: 'Logged in user'
-rules_user_logout:
-  label: 'User has logged out'
-  category: 'User'
-  context_definitions:
-    account:
-      type: 'entity:user'
-      label: 'Logged out user'
 kernel.request:
   label: 'Drupal is initializing'
   category: 'System'
   # @todo Should this event have the request as context? Should we define a
   # request data type?
   help: "Be aware that some actions might initialize the theme system. After that, it's impossible for any module to change the used theme."
+kernel.terminate:
+  label: 'Drupal is terminating'
+  category: 'System'
+
 rules_entity_presave:
   label: 'Before saving an entity'
   deriver: '\Drupal\rules\Plugin\RulesEvent\EntityPresaveDeriver'
@@ -49,3 +39,18 @@ rules_system_logger_event:
     logger_entry:
       type: 'any'
       label: 'Logger entry'
+
+rules_user_login:
+  label: 'User has logged in'
+  category: 'User'
+  context_definitions:
+    account:
+      type: 'entity:user'
+      label: 'Logged in user'
+rules_user_logout:
+  label: 'User has logged out'
+  category: 'User'
+  context_definitions:
+    account:
+      type: 'entity:user'
+      label: 'Logged out user'

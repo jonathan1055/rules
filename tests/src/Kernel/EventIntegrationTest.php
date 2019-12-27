@@ -185,6 +185,40 @@ class EventIntegrationTest extends RulesKernelTestBase {
   }
 
   /**
+   * Test that Drupal terminating triggers the Rules debug logger listener.
+   */
+  public function testTerminateEvent() {
+    $rule = $this->expressionManager->createRule();
+    $rule->addCondition('rules_test_true');
+    $rule->addAction('rules_test_debug_log');
+
+    $config_entity = $this->storage->create([
+      'id' => 'test_rule',
+      'events' => [['event_name' => KernelEvents::TERMINATE]],
+      'expression' => $rule->getConfiguration(),
+    ]);
+    $config_entity->save();
+
+    // The logger instance has changed, refresh it.
+    $this->logger = $this->container->get('logger.channel.rules_debug');
+
+    $dispatcher = $this->container->get('event_dispatcher');
+
+    // Remove all the listeners except Rules before triggering an event.
+    $listeners = $dispatcher->getListeners(KernelEvents::TERMINATE);
+    foreach ($listeners as $listener) {
+      if (empty($listener[1]) || $listener[1] != 'onRulesEvent') {
+        $dispatcher->removeListener(KernelEvents::TERMINATE, $listener);
+      }
+    }
+    // Manually trigger the initialization event.
+    $dispatcher->dispatch(KernelEvents::TERMINATE);
+
+    // Test that the action in the rule logged something.
+    $this->assertRulesDebugLogEntryExists('action called');
+  }
+
+  /**
    * Test that rules config supports multiple events.
    */
   public function testMultipleEvents() {
