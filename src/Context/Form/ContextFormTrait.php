@@ -103,6 +103,33 @@ trait ContextFormTrait {
   }
 
   /**
+   * Provides the form part for a 'provided' context parameter.
+   */
+  public function buildProvidedContextForm(array $form, FormStateInterface $form_state, $provides_name, ContextDefinitionInterface $provides_definition, array $configuration) {
+    if (isset($configuration['provides_mapping'][$provides_name])) {
+      $default_name = $configuration['provides_mapping'][$provides_name];
+    }
+    else {
+      $default_name = $provides_name;
+    }
+
+    $form['provides'][$provides_name] = [
+      '#type' => 'fieldset',
+      '#title' => $provides_definition->getLabel(),
+    ];
+
+    $form['provides'][$provides_name]['name'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Variable name'),
+      '#description' => $this->t('The variable name must contain only lowercase letters, numbers, and underscores and must be unique in the current scope.'),
+      '#required' => TRUE,
+      '#default_value' => $default_name,
+    ];
+
+    return $form;
+  }
+
+  /**
    * Creates a context config object from the submitted form values.
    *
    * @param \Drupal\Core\Form\FormStateInterface $form_state
