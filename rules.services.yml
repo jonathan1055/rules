@@ -26,6 +26,9 @@ services:
   logger.channel.rules_debug:
     class: Drupal\rules\Logger\RulesDebugLoggerChannel
     arguments: ['@logger.channel.rules', '@config.factory', '@messenger']
+  logger.rules_debug_log:
+    class: Drupal\rules\Logger\RulesDebugLog
+    arguments: ['@session']
   logger.ruleslog:
     class: Drupal\rules\Logger\RulesLog
     arguments: ['@event_dispatcher', '@logger.log_message_parser']
