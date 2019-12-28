@@ -77,7 +77,7 @@ class RulesSettingsForm extends ConfigFormBase {
       '#type' => 'radios',
       '#title' => $this->t('Debug log level'),
       '#options' => [
-        LogLevel::INFO => $this->t('Log everything'),
+        LogLevel::DEBUG => $this->t('Log everything'),
         LogLevel::WARNING => $this->t('Log warnings and errors only'),
         LogLevel::ERROR => $this->t('Log errors only'),
       ],

@@ -3,4 +3,4 @@ system_log:
 debug_log:
   enabled: false
   system_debug: false
-  log_level: info
+  log_level: debug
