@@ -7,3 +7,8 @@ rules.autocomplete:
     - core/drupalSettings
     - core/drupal.ajax
     - core/jquery.ui.autocomplete
+
+rules_ui.styles:
+  css:
+    theme:
+      css/rules_ui.css: {}
