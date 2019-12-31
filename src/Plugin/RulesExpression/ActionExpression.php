@@ -109,7 +109,7 @@ class ActionExpression extends ExpressionBase implements ContainerFactoryPluginI
   public function getLabel() {
     if (!empty($this->configuration['action_id'])) {
       $definition = $this->actionManager->getDefinition($this->configuration['action_id']);
-      return $this->t('Action: @label', ['@label' => $definition['label']]);
+      return $definition['label'];
     }
     return parent::getLabel();
   }

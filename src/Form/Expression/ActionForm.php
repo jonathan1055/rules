@@ -87,7 +87,7 @@ class ActionForm implements ExpressionFormInterface {
     ];
     $form['summary']['description'] = [
       '#type' => 'container',
-      '#markup' => $this->t('Action: @summary', ['@summary' => $action->summary()]),
+      '#plain_text' => $this->t('Action: @summary', ['@summary' => $action->summary()]),
       '#attributes' => ['class' => ['form-item']],
     ];
 

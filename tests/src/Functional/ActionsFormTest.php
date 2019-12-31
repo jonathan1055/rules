@@ -74,7 +74,7 @@ class ActionsFormTest extends RulesBrowserTestBase {
     // Edit the action and check that the page is generated without error.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/' . $expr_id . '/edit/' . $action->getUuid());
     $assert->statusCodeEquals(200);
-    $assert->pageTextContains('Edit Action:');
+    $assert->pageTextContains('Edit ' . $action->getLabel());
   }
 
   /**

@@ -113,7 +113,7 @@ class UiPageTest extends RulesBrowserTestBase {
     $assert = $this->assertSession();
 
     $this->clickLink('Delete');
-    $assert->pageTextContains('Are you sure you want to delete Condition: Node is promoted from Test rule?');
+    $assert->pageTextContains('Are you sure you want to delete Node is promoted from Test rule?');
 
     $this->pressButton('Delete');
     $assert->pageTextContains('You have unsaved changes.');
@@ -149,13 +149,13 @@ class UiPageTest extends RulesBrowserTestBase {
     /** @var \Drupal\Tests\WebAssert $assert */
     $assert = $this->assertSession();
     // Check that the label shows up on the Rule edit page.
-    $assert->pageTextContains('Condition: Node is promoted');
+    $assert->pageTextContains('Node is promoted');
 
     // Edit the condition, negate it, then check the label again.
     $this->clickLink('Edit');
     $this->fillField('Negate', 1);
     $this->pressButton('Save');
-    $assert->pageTextContains('Condition: NOT Node is promoted');
+    $assert->pageTextContains('NOT Node is promoted');
   }
 
   /**

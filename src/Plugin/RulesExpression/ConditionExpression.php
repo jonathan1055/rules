@@ -141,10 +141,10 @@ class ConditionExpression extends ExpressionBase implements ConditionExpressionI
     if (!empty($this->configuration['condition_id'])) {
       $definition = $this->conditionManager->getDefinition($this->configuration['condition_id']);
       if ($this->isNegated()) {
-        return $this->t('Condition: @not @label', ['@not' => $this->t('NOT'), '@label' => $definition['label']]);
+        return $this->t('@not @label', ['@not' => $this->t('NOT'), '@label' => $definition['label']]);
       }
       else {
-        return $this->t('Condition: @label', ['@label' => $definition['label']]);
+        return $definition['label'];
       }
     }
     return parent::getLabel();

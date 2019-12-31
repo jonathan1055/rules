@@ -74,7 +74,7 @@ class ConditionsFormTest extends RulesBrowserTestBase {
     // Edit the condition and check that the page is generated without error.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/' . $expr_id . '/edit/' . $condition->getUuid());
     $assert->statusCodeEquals(200);
-    $assert->pageTextContains('Edit Condition:');
+    $assert->pageTextContains('Edit ' . $condition->getLabel());
   }
 
   /**
