@@ -25,7 +25,7 @@ services:
     arguments: ['rules']
   logger.channel.rules_debug:
     class: Drupal\rules\Logger\RulesDebugLoggerChannel
-    arguments: ['@logger.channel.rules', '@config.factory', '@messenger']
+    arguments: ['@logger.rules_debug_log', '@config.factory']
   logger.rules_debug_log:
     class: Drupal\rules\Logger\RulesDebugLog
     arguments: ['@session']

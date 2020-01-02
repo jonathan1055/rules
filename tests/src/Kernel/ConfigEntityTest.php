@@ -52,6 +52,10 @@ class ConfigEntityTest extends RulesKernelTestBase {
     ])->setExpression($action);
     $config_entity->save();
 
+    // The logger instance has changed, refresh it.
+    $this->logger = $this->container->get('logger.channel.rules_debug');
+    $this->logger->addLogger($this->debugLog);
+
     $loaded_entity = $this->storage->load('test_rule');
     $this->assertEquals($action->getConfiguration(), $loaded_entity->get('component')['expression'], 'Action configuration is the same after loading the config.');
 
@@ -68,8 +72,7 @@ class ConfigEntityTest extends RulesKernelTestBase {
    */
   public function testConfigRule() {
     // Create a simple rule with one action and one condition.
-    $rule = $this->expressionManager
-      ->createRule();
+    $rule = $this->expressionManager->createRule();
     $rule->addCondition('rules_test_true');
     $rule->addAction('rules_test_debug_log');
 

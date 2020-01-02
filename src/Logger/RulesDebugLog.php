@@ -4,7 +4,7 @@ namespace Drupal\rules\Logger;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Logger that stores Rules debug logs with the session service.
@@ -18,17 +18,17 @@ class RulesDebugLog implements LoggerInterface {
   /**
    * The session service.
    *
-   * @var \Symfony\Component\HttpFoundation\Session\Session
+   * @var \Symfony\Component\HttpFoundation\Session\SessionInterface
    */
   protected $session;
 
   /**
    * Constructs a RulesDebugLog object.
    *
-   * @param \Symfony\Component\HttpFoundation\Session\Session $session
+   * @param \Symfony\Component\HttpFoundation\Session\SessionInterface $session
    *   The session service.
    */
-  public function __construct(Session $session) {
+  public function __construct(SessionInterface $session) {
     $this->session = $session;
   }
 
@@ -56,8 +56,8 @@ class RulesDebugLog implements LoggerInterface {
       'path' => $context['path'],
     ];
 
-    // Write the $localCopy array back into the session.
-    // It now includes the new log.
+    // Write the $localCopy array back into the session;
+    // it now includes the new log.
     $this->session->set('rules_debug_log', $localCopy);
   }
 
@@ -71,7 +71,8 @@ class RulesDebugLog implements LoggerInterface {
    *   - context: An array of message placeholder replacements.
    *   - level: \Psr\Log\LogLevel level.
    *   - timestamp: Microtime timestamp in float format.
-   *   - scope: TRUE if there are nested logs for this entry.
+   *   - scope: TRUE if there are nested logs for this entry, FALSE if this is
+   *     the last of the nested entries.
    *   - path: Path to edit this component.
    */
   public function getLogs() {

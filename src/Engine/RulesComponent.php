@@ -234,14 +234,14 @@ class RulesComponent {
     // @todo Use injection for the service.
     $rulesDebugLogger = \Drupal::service('logger.channel.rules_debug');
     $rulesDebugLogger->info('RulesComponent: Rule %label fires.', [
-      '%label' => $this->expression->getRoot()->getLabel(),
-      'element' => $this,
+      '%label' => $this->expression->getLabel(),
+      'element' => $this->expression,
       'scope' => TRUE,
     ]);
     $this->expression->executeWithState($this->state);
     $rulesDebugLogger->info('RulesComponent: Rule %label has fired.', [
-      '%label' => $this->expression->getRoot()->getLabel(),
-      'element' => $this,
+      '%label' => $this->expression->getLabel(),
+      'element' => $this->expression,
       'scope' => FALSE,
     ]);
 

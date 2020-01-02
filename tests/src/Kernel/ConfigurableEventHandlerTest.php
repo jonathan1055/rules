@@ -112,6 +112,7 @@ class ConfigurableEventHandlerTest extends RulesKernelTestBase {
 
     // The logger instance has changed, refresh it.
     $this->logger = $this->container->get('logger.channel.rules_debug');
+    $this->logger->addLogger($this->debugLog);
 
     // Add node.field_integer.0.value to rules log message, read result.
     $this->node->field_integer->setValue(['0' => 11, '1' => 22]);

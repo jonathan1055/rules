@@ -64,6 +64,7 @@ class EventIntegrationTest extends RulesKernelTestBase {
 
     // The logger instance has changed, refresh it.
     $this->logger = $this->container->get('logger.channel.rules_debug');
+    $this->logger->addLogger($this->debugLog);
 
     $account = User::create(['name' => 'test_user']);
     // Invoke the hook manually which should trigger the rule.
@@ -90,6 +91,7 @@ class EventIntegrationTest extends RulesKernelTestBase {
 
     // The logger instance has changed, refresh it.
     $this->logger = $this->container->get('logger.channel.rules_debug');
+    $this->logger->addLogger($this->debugLog);
 
     $account = $this->container->get('current_user');
     // Invoke the hook manually which should trigger the rule.
@@ -116,6 +118,7 @@ class EventIntegrationTest extends RulesKernelTestBase {
 
     // The logger instance has changed, refresh it.
     $this->logger = $this->container->get('logger.channel.rules_debug');
+    $this->logger->addLogger($this->debugLog);
 
     // Run cron.
     $this->container->get('cron')->run();
@@ -125,7 +128,7 @@ class EventIntegrationTest extends RulesKernelTestBase {
   }
 
   /**
-   * Test that a Logger message trigger the Rules debug logger listener.
+   * Test that a Logger message triggers the Rules debug logger listener.
    */
   public function testSystemLoggerEvent() {
     $rule = $this->expressionManager->createRule();
@@ -141,6 +144,7 @@ class EventIntegrationTest extends RulesKernelTestBase {
 
     // The logger instance has changed, refresh it.
     $this->logger = $this->container->get('logger.channel.rules_debug');
+    $this->logger->addLogger($this->debugLog);
 
     // Creates a logger-item, that must be dispatched as event.
     $this->container->get('logger.factory')->get('rules_test')
@@ -167,6 +171,7 @@ class EventIntegrationTest extends RulesKernelTestBase {
 
     // The logger instance has changed, refresh it.
     $this->logger = $this->container->get('logger.channel.rules_debug');
+    $this->logger->addLogger($this->debugLog);
 
     $dispatcher = $this->container->get('event_dispatcher');
 
@@ -201,6 +206,7 @@ class EventIntegrationTest extends RulesKernelTestBase {
 
     // The logger instance has changed, refresh it.
     $this->logger = $this->container->get('logger.channel.rules_debug');
+    $this->logger->addLogger($this->debugLog);
 
     $dispatcher = $this->container->get('event_dispatcher');
 
@@ -238,6 +244,7 @@ class EventIntegrationTest extends RulesKernelTestBase {
 
     // The logger instance has changed, refresh it.
     $this->logger = $this->container->get('logger.channel.rules_debug');
+    $this->logger->addLogger($this->debugLog);
 
     $account = User::create(['name' => 'test_user']);
     // Invoke the hook manually which should trigger the rules_user_login event.
@@ -295,6 +302,7 @@ class EventIntegrationTest extends RulesKernelTestBase {
 
     // The logger instance has changed, refresh it.
     $this->logger = $this->container->get('logger.channel.rules_debug');
+    $this->logger->addLogger($this->debugLog);
 
     // Now change the title and trigger the presave event by savoing the node.
     $node->setTitle('new title');

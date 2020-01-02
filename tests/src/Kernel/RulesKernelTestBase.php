@@ -38,6 +38,13 @@ abstract class RulesKernelTestBase extends KernelTestBase {
   protected $logger;
 
   /**
+   * Rules debug log.
+   *
+   * @var \Drupal\rules\Logger\RulesDebugLog
+   */
+  protected $debugLog;
+
+  /**
    * The messenger service.
    *
    * @var \Drupal\Core\Messenger\MessengerInterface
@@ -71,6 +78,7 @@ abstract class RulesKernelTestBase extends KernelTestBase {
     parent::setUp();
 
     $this->logger = $this->container->get('logger.channel.rules_debug');
+    $this->debugLog = $this->container->get('logger.rules_debug_log');
 
     // Turn on debug logging, set error level to collect only errors. This way
     // we can ignore the normal Rules debug messages that would otherwise get
@@ -114,7 +122,7 @@ abstract class RulesKernelTestBase extends KernelTestBase {
    */
   protected function assertRulesDebugLogEntryExists($message, $log_item_index = 0) {
     // Test that the action has logged something.
-    $logs = $this->logger->getLogs();
+    $logs = $this->debugLog->getLogs();
     $this->assertEquals($logs[$log_item_index]['message'], $message);
   }
 

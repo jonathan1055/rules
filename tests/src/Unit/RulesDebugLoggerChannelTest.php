@@ -3,9 +3,11 @@
 namespace Drupal\Tests\rules\Unit;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
+use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Logger\RfcLogLevel;
-use Drupal\rules\Logger\RulesDebugLoggerChannel;
 use Drupal\Tests\UnitTestCase;
+use Drupal\rules\Logger\RulesDebugLog;
+use Drupal\rules\Logger\RulesDebugLoggerChannel;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -24,18 +26,25 @@ class RulesDebugLoggerChannelTest extends UnitTestCase {
   protected $container;
 
   /**
-   * The Rules logger.channel.rules service.
+   * The session service.
+   *
+   * @var \Symfony\Component\HttpFoundation\Session\SessionInterface
+   */
+  protected $session;
+
+  /**
+   * The Rules logger.channel.rules_debug service.
+   *
+   * @var \Psr\Log\LoggerChannelInterface
+   */
+  protected $rulesDebugLogger;
+
+  /**
+   * The Rules logger.rules_debug_log service.
    *
    * @var \Psr\Log\LoggerInterface
    */
-  protected $rulesLogger;
-
-  /**
-   * The messenger service.
-   *
-   * @var \Drupal\Core\Messenger\MessengerInterface
-   */
-  protected $messenger;
+  protected $rulesDebugLog;
 
   /**
    * {@inheritdoc}
@@ -43,10 +52,13 @@ class RulesDebugLoggerChannelTest extends UnitTestCase {
   protected function setUp() {
     parent::setUp();
     $container = new ContainerBuilder();
-    $this->rulesLogger = $this->prophesize(LoggerInterface::class)->reveal();
-    $container->set('logger.channel.rules', $this->rulesLogger);
-    $this->messenger = new TestMessenger();
-    $container->set('messenger', $this->messenger);
+    $this->rulesDebugLogger = $this->prophesize(LoggerChannelInterface::class)->reveal();
+    $container->set('logger.channel.rules_debug', $this->rulesDebugLogger);
+    $this->session = new TestSession();
+    $container->set('session', $this->session);
+
+    $this->rulesDebugLog = new RulesDebugLog($this->session);
+    $container->set('logger.rules_debug_log', $this->rulesDebugLog);
     \Drupal::setContainer($container);
     $this->container = $container;
   }
@@ -58,16 +70,16 @@ class RulesDebugLoggerChannelTest extends UnitTestCase {
    *   Expected PSR3 log level.
    * @param int $rfc_message_level
    *   Expected RFC 5424 log level.
-   * @param int $log
-   *   Is system logging enabled.
-   * @param int $debug_screen
-   *   Is screen logging enabled.
+   * @param bool $system_debug
+   *   Is system debug logging enabled.
+   * @param bool $debug_log_enabled
+   *   Is debug logging enabled.
    * @param string $psr3_log_error_level
    *   Minimum required PSR3 log level at which to log.
    * @param int $expect_system_log
-   *   Amount of logs to be created.
+   *   Number of logs expected to be created.
    * @param int $expect_screen_log
-   *   Amount of messages to be created.
+   *   Number of messages expected to be created.
    * @param string $message
    *   Log message.
    *
@@ -75,8 +87,9 @@ class RulesDebugLoggerChannelTest extends UnitTestCase {
    *
    * @covers ::log
    */
-  public function testLog($psr3_message_level, $rfc_message_level, $log, $debug_screen, $psr3_log_error_level, $expect_system_log, $expect_screen_log, $message) {
-    $this->clearMessages();
+  public function testLog($psr3_message_level, $rfc_message_level, $system_debug, $debug_log_enabled, $psr3_log_error_level, $expect_system_log, $expect_screen_log, $message) {
+    // Clean up after previous test.
+    $this->rulesDebugLog->clearLogs();
 
     $config = $this->getConfigFactoryStub([
       'rules.settings' => [
@@ -84,48 +97,46 @@ class RulesDebugLoggerChannelTest extends UnitTestCase {
           'log_level' => $psr3_log_error_level,
         ],
         'debug_log' => [
-          'enabled' => $debug_screen,
-          'system_debug' => $log,
+          'enabled' => $debug_log_enabled,
+          'system_debug' => $system_debug,
           'log_level' => $psr3_log_error_level,
         ],
       ],
     ]);
-    $channel = new RulesDebugLoggerChannel($this->rulesLogger, $config, $this->messenger);
-    $logger = $this->prophesize(LoggerInterface::class);
-    $logger->log($rfc_message_level, $message, Argument::type('array'))
-      ->shouldBeCalledTimes($expect_system_log);
 
-    $channel->addLogger($logger->reveal());
+    $channel = new RulesDebugLoggerChannel($this->rulesDebugLog, $config);
+    $addedLogger = $this->prophesize(LoggerInterface::class);
+    $addedLogger->log($rfc_message_level, $message, Argument::type('array'))
+      ->shouldBeCalledTimes($expect_screen_log);
 
-    $channel->log($psr3_message_level, $message);
+    $channel->addLogger($addedLogger->reveal());
+    $channel->log($psr3_message_level, $message, []);
 
-    $messages = $this->messenger->all();
+    $messages = $this->rulesDebugLog->getLogs();
     if ($expect_screen_log > 0) {
       $this->assertNotNull($messages);
-      $this->assertArrayEquals([$psr3_message_level => [$message]], $messages);
+      $context = [
+        'channel' => 'rules_debug',
+        'link' => '',
+        'element' => NULL,
+        'scope' => NULL,
+        'path' => NULL,
+      ];
+      $context += $messages[0]['context'];
+      $this->assertArrayEquals([
+        0 => [
+          'message' => $message,
+          'context' => $context,
+          'level' => $psr3_message_level,
+          'timestamp' => $context['timestamp'],
+          'scope' => NULL,
+          'path' => NULL,
+        ],
+      ], $messages, "actual =" . var_export($messages, TRUE));
     }
     else {
-      $this->assertNull($messages);
+      $this->assertCount(0, $messages);
     }
-  }
-
-  /**
-   * Clears the statically stored messages.
-   *
-   * @param null|string $type
-   *   (optional) The type of messages to clear. Defaults to NULL which causes
-   *   all messages to be cleared.
-   *
-   * @return $this
-   */
-  protected function clearMessages($type = NULL) {
-    if (isset($type)) {
-      $this->messenger->deleteByType($type);
-    }
-    else {
-      $this->messenger->deleteAll();
-    }
-    return $this;
   }
 
   /**
@@ -136,8 +147,8 @@ class RulesDebugLoggerChannelTest extends UnitTestCase {
       [
         'psr3_message_level' => LogLevel::DEBUG,
         'rfc_message_level' => RfcLogLevel::DEBUG,
-        'system_log_enabled' => 0,
-        'screen_log_enabled' => 0,
+        'system_debug_enabled' => FALSE,
+        'debug_log_enabled' => FALSE,
         'min_psr3_level' => LogLevel::DEBUG,
         'expected_system_logs' => 0,
         'expected_screen_logs' => 0,
@@ -146,8 +157,8 @@ class RulesDebugLoggerChannelTest extends UnitTestCase {
       [
         'psr3_message_level' => LogLevel::DEBUG,
         'rfc_message_level' => RfcLogLevel::DEBUG,
-        'system_log_enabled' => 0,
-        'screen_log_enabled' => 1,
+        'system_debug_enabled' => FALSE,
+        'debug_log_enabled' => TRUE,
         'min_psr3_level' => LogLevel::DEBUG,
         'expected_system_logs' => 0,
         'expected_screen_logs' => 1,
@@ -156,8 +167,8 @@ class RulesDebugLoggerChannelTest extends UnitTestCase {
       [
         'psr3_message_level' => LogLevel::CRITICAL,
         'rfc_message_level' => RfcLogLevel::CRITICAL,
-        'system_log_enabled' => 1,
-        'screen_log_enabled' => 0,
+        'system_debug_enabled' => TRUE,
+        'debug_log_enabled' => FALSE,
         'min_psr3_level' => LogLevel::DEBUG,
         'expected_system_logs' => 1,
         'expected_screen_logs' => 0,
@@ -166,8 +177,8 @@ class RulesDebugLoggerChannelTest extends UnitTestCase {
       [
         'psr3_message_level' => LogLevel::CRITICAL,
         'rfc_message_level' => RfcLogLevel::CRITICAL,
-        'system_log_enabled' => 1,
-        'screen_log_enabled' => 1,
+        'system_debug_enabled' => TRUE,
+        'debug_log_enabled' => TRUE,
         'min_psr3_level' => LogLevel::DEBUG,
         'expected_system_logs' => 1,
         'expected_screen_logs' => 1,
@@ -176,8 +187,8 @@ class RulesDebugLoggerChannelTest extends UnitTestCase {
       [
         'psr3_message_level' => LogLevel::CRITICAL,
         'rfc_message_level' => RfcLogLevel::CRITICAL,
-        'system_log_enabled' => 1,
-        'screen_log_enabled' => 0,
+        'system_debug_enabled' => TRUE,
+        'debug_log_enabled' => FALSE,
         'min_psr3_level' => LogLevel::DEBUG,
         'expected_system_logs' => 1,
         'expected_screen_logs' => 0,
@@ -186,8 +197,8 @@ class RulesDebugLoggerChannelTest extends UnitTestCase {
       [
         'psr3_message_level' => LogLevel::CRITICAL,
         'rfc_message_level' => RfcLogLevel::CRITICAL,
-        'system_log_enabled' => 1,
-        'screen_log_enabled' => 1,
+        'system_debug_enabled' => TRUE,
+        'debug_log_enabled' => TRUE,
         'min_psr3_level' => LogLevel::DEBUG,
         'expected_system_logs' => 1,
         'expected_screen_logs' => 1,
@@ -196,8 +207,8 @@ class RulesDebugLoggerChannelTest extends UnitTestCase {
       [
         'psr3_message_level' => LogLevel::INFO,
         'rfc_message_level' => RfcLogLevel::INFO,
-        'system_log_enabled' => 1,
-        'screen_log_enabled' => 0,
+        'system_debug_enabled' => TRUE,
+        'debug_log_enabled' => FALSE,
         'min_psr3_level' => LogLevel::CRITICAL,
         'expected_system_logs' => 0,
         'expected_screen_logs' => 0,
@@ -206,8 +217,8 @@ class RulesDebugLoggerChannelTest extends UnitTestCase {
       [
         'psr3_message_level' => LogLevel::INFO,
         'rfc_message_level' => RfcLogLevel::INFO,
-        'system_log_enabled' => 1,
-        'screen_log_enabled' => 1,
+        'system_debug_enabled' => TRUE,
+        'debug_log_enabled' => TRUE,
         'min_psr3_level' => LogLevel::CRITICAL,
         'expected_system_logs' => 0,
         'expected_screen_logs' => 0,

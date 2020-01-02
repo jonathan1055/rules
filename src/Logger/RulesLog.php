@@ -10,7 +10,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Dispatches new logger-items as SystemLoggerEvent.
+ * Logger that dispatches a SystemLoggerEvent when a logger entry is made.
  */
 class RulesLog implements LoggerInterface {
   use RfcLoggerTrait;
