@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\rules\Unit;
 
+use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\rules\Engine\ActionExpressionInterface;
 use Drupal\rules\Engine\ConditionExpressionInterface;
 use Drupal\rules\Engine\ExecutionStateInterface;
@@ -50,6 +51,13 @@ abstract class RulesUnitTestBase extends UnitTestCase {
   protected $expressionManager;
 
   /**
+   * The mocked expression manager object.
+   *
+   * @var \Drupal\rules\src\Logger\|\Prophecy\Prophecy\ProphecyInterface
+   */
+  protected $rulesDebugLogger;
+
+  /**
    * {@inheritdoc}
    */
   protected function setUp() {
@@ -84,6 +92,7 @@ abstract class RulesUnitTestBase extends UnitTestCase {
     $this->testActionExpression->getWeight()->willReturn(0);
 
     $this->expressionManager = $this->prophesize(ExpressionManagerInterface::class);
+    $this->rulesDebugLogger = $this->prophesize(LoggerChannelInterface::class);
   }
 
 }

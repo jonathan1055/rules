@@ -22,9 +22,17 @@ class OrExpression extends ConditionExpressionContainer {
     // Use the iterator to ensure the conditions are sorted.
     foreach ($this as $condition) {
       if ($condition->executeWithState($state)) {
+        $this->rulesDebugLogger->info('%label evaluated to %result.', [
+          '%label' => $this->getLabel(),
+          '%result' => 'TRUE',
+        ]);
         return TRUE;
       }
     }
+    $this->rulesDebugLogger->info('%label evaluated to %result.', [
+      '%label' => $this->getLabel(),
+      '%result' => 'FALSE',
+    ]);
     // An empty OR should return TRUE. Otherwise, if all conditions evaluate
     // to FALSE we return FALSE.
     return empty($this->conditions);

@@ -26,7 +26,7 @@ class AndExpressionTest extends RulesUnitTestBase {
   protected function setUp() {
     parent::setUp();
 
-    $this->and = new AndExpression([], '', [], $this->expressionManager->reveal());
+    $this->and = new AndExpression([], '', ['label' => 'Condition set (AND)'], $this->expressionManager->reveal(), $this->rulesDebugLogger->reveal());
   }
 
   /**

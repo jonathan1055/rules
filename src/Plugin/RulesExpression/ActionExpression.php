@@ -2,6 +2,7 @@
 
 namespace Drupal\rules\Plugin\RulesExpression;
 
+use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\rules\Context\DataProcessorManager;
 use Drupal\rules\Core\RulesActionManagerInterface;
@@ -27,7 +28,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class ActionExpression extends ExpressionBase implements ContainerFactoryPluginInterface, ActionExpressionInterface {
-
   use ContextHandlerIntegrityTrait;
 
   /**
@@ -36,6 +36,13 @@ class ActionExpression extends ExpressionBase implements ContainerFactoryPluginI
    * @var \Drupal\rules\Core\RulesActionManagerInterface
    */
   protected $actionManager;
+
+  /**
+   * The rules debug logger channel.
+   *
+   * @var \Drupal\Core\Logger\LoggerChannelInterface
+   */
+  protected $rulesDebugLogger;
 
   /**
    * Constructs a new class instance.
@@ -52,12 +59,15 @@ class ActionExpression extends ExpressionBase implements ContainerFactoryPluginI
    *   The Rules action manager.
    * @param \Drupal\rules\Context\DataProcessorManager $processor_manager
    *   The data processor plugin manager.
+   * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
+   *   The Rules debug logger channel.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RulesActionManagerInterface $action_manager, DataProcessorManager $processor_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RulesActionManagerInterface $action_manager, DataProcessorManager $processor_manager, LoggerChannelInterface $logger) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
 
     $this->actionManager = $action_manager;
     $this->processorManager = $processor_manager;
+    $this->rulesDebugLogger = $logger;
   }
 
   /**
@@ -66,7 +76,8 @@ class ActionExpression extends ExpressionBase implements ContainerFactoryPluginI
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static($configuration, $plugin_id, $plugin_definition,
       $container->get('plugin.manager.rules_action'),
-      $container->get('plugin.manager.rules_data_processor')
+      $container->get('plugin.manager.rules_data_processor'),
+      $container->get('logger.channel.rules_debug')
     );
   }
 
@@ -87,6 +98,10 @@ class ActionExpression extends ExpressionBase implements ContainerFactoryPluginI
    * {@inheritdoc}
    */
   public function executeWithState(ExecutionStateInterface $state) {
+    $this->rulesDebugLogger->info('Evaluating the action %name.', [
+      '%name' => $this->getLabel(),
+      'element' => $this,
+    ]);
     $action = $this->actionManager->createInstance($this->configuration['action_id']);
 
     $this->prepareContext($action, $state);

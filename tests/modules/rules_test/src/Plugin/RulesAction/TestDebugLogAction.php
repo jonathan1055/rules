@@ -8,7 +8,7 @@ use Drupal\rules\Logger\RulesDebugLoggerChannel;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides an action writing something to the Rules debug logger channel.
+ * Provides an action writing an error to the Rules debug logger channel.
  *
  * @RulesAction(
  *   id = "rules_test_debug_log",
@@ -61,16 +61,16 @@ class TestDebugLogAction extends RulesActionBase implements ContainerFactoryPlug
   }
 
   /**
-   * Writes a message to the log.
+   * Writes an error message to the debug log.
    *
    * @param string $message
-   *   Message string that should be logged.
+   *   Message string that should be logged. Defaults to "action called".
    */
-  protected function doExecute($message) {
+  protected function doExecute($message = NULL) {
     if (empty($message)) {
       $message = 'action called';
     }
-    $this->logger->info($message);
+    $this->logger->error($message);
   }
 
 }

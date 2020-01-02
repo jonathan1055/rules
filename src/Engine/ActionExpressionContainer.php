@@ -2,6 +2,7 @@
 
 namespace Drupal\rules\Engine;
 
+use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\rules\Context\ContextConfig;
 use Drupal\rules\Exception\InvalidExpressionException;
@@ -29,10 +30,13 @@ abstract class ActionExpressionContainer extends ExpressionContainerBase impleme
    *   The plugin implementation definition.
    * @param \Drupal\rules\Engine\ExpressionManagerInterface $expression_manager
    *   The rules expression plugin manager.
+   * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
+   *   The Rules debug logger channel.
    */
-  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ExpressionManagerInterface $expression_manager) {
+  public function __construct(array $configuration, $plugin_id, array $plugin_definition, ExpressionManagerInterface $expression_manager, LoggerChannelInterface $logger) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->expressionManager = $expression_manager;
+    $this->rulesDebugLogger = $logger;
 
     $configuration += ['actions' => []];
     foreach ($configuration['actions'] as $action_config) {

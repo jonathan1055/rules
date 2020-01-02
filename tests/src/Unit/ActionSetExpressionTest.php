@@ -28,7 +28,7 @@ class ActionSetExpressionTest extends RulesUnitTestBase {
     parent::setUp();
 
     // TestActionSetExpression is defined below.
-    $this->actionSet = new TestActionSetExpression([], '', [], $this->expressionManager->reveal());
+    $this->actionSet = new TestActionSetExpression([], '', [], $this->expressionManager->reveal(), $this->rulesDebugLogger->reveal());
   }
 
   /**
@@ -70,7 +70,7 @@ class ActionSetExpressionTest extends RulesUnitTestBase {
     $this->testActionExpression->executeWithState(
       Argument::type(ExecutionStateInterface::class))->shouldBeCalledTimes(2);
 
-    $inner = new ActionSetExpression([], '', [], $this->expressionManager->reveal());
+    $inner = new ActionSetExpression([], '', [], $this->expressionManager->reveal(), $this->rulesDebugLogger->reveal());
     $inner->addExpressionObject($this->testActionExpression->reveal());
 
     $this->actionSet->addExpressionObject($this->testActionExpression->reveal())

@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\rules\Unit;
 
+use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\rules\Engine\ConditionExpressionContainer;
 use Drupal\rules\Engine\ExpressionManagerInterface;
 use Drupal\rules\Engine\ExecutionStateInterface;
@@ -30,6 +31,7 @@ class RulesConditionContainerTest extends RulesUnitTestBase {
         'test_id',
         [],
         $this->prophesize(ExpressionManagerInterface::class)->reveal(),
+        $this->prophesize(LoggerChannelInterface::class)->reveal(),
       ], $class, TRUE, TRUE, TRUE, $methods
     );
   }
@@ -85,6 +87,7 @@ class RulesConditionContainerTest extends RulesUnitTestBase {
       'test_id',
       [],
       $this->prophesize(ExpressionManagerInterface::class)->reveal(),
+      $this->prophesize(LoggerChannelInterface::class)->reveal(),
     ], '', TRUE);
     $container->addExpressionObject($this->trueConditionExpression->reveal());
     $uuid = $this->trueConditionExpression->reveal()->getUuid();
@@ -101,6 +104,7 @@ class RulesConditionContainerTest extends RulesUnitTestBase {
       'test_id',
       [],
       $this->prophesize(ExpressionManagerInterface::class)->reveal(),
+      $this->prophesize(LoggerChannelInterface::class)->reveal(),
     ], '', TRUE);
     $container->addExpressionObject($this->trueConditionExpression->reveal());
 
@@ -109,6 +113,7 @@ class RulesConditionContainerTest extends RulesUnitTestBase {
       'test_id',
       [],
       $this->prophesize(ExpressionManagerInterface::class)->reveal(),
+      $this->prophesize(LoggerChannelInterface::class)->reveal(),
     ], '', TRUE);
     $nested_container->addExpressionObject($this->falseConditionExpression->reveal());
 
@@ -127,6 +132,7 @@ class RulesConditionContainerTest extends RulesUnitTestBase {
       'test_id',
       [],
       $this->prophesize(ExpressionManagerInterface::class)->reveal(),
+      $this->prophesize(LoggerChannelInterface::class)->reveal(),
     ], '', TRUE);
     $container->addExpressionObject($this->trueConditionExpression->reveal());
     $container->addExpressionObject($this->falseConditionExpression->reveal());
@@ -150,6 +156,7 @@ class RulesConditionContainerTest extends RulesUnitTestBase {
       'test_id',
       [],
       $this->prophesize(ExpressionManagerInterface::class)->reveal(),
+      $this->prophesize(LoggerChannelInterface::class)->reveal(),
     ], '', TRUE);
     $container->addExpressionObject($this->trueConditionExpression->reveal());
 
@@ -158,6 +165,7 @@ class RulesConditionContainerTest extends RulesUnitTestBase {
       'test_id',
       [],
       $this->prophesize(ExpressionManagerInterface::class)->reveal(),
+      $this->prophesize(LoggerChannelInterface::class)->reveal(),
     ], '', TRUE);
     $nested_container->addExpressionObject($this->falseConditionExpression->reveal());
 

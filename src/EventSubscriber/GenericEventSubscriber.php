@@ -3,6 +3,7 @@
 namespace Drupal\rules\EventSubscriber;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\rules\Core\RulesConfigurableEventHandlerInterface;
 use Drupal\rules\Core\RulesEventManager;
 use Drupal\rules\Engine\ExecutionState;
@@ -38,6 +39,13 @@ class GenericEventSubscriber implements EventSubscriberInterface {
   protected $componentRepository;
 
   /**
+   * The rules debug logger channel.
+   *
+   * @var \Drupal\Core\Logger\LoggerChannelInterface
+   */
+  protected $rulesDebugLogger;
+
+  /**
    * Constructor.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
@@ -46,11 +54,14 @@ class GenericEventSubscriber implements EventSubscriberInterface {
    *   The Rules event manager.
    * @param \Drupal\rules\Engine\RulesComponentRepositoryInterface $component_repository
    *   The component repository.
+   * @param \Drupal\Core\Logger\LoggerChannelInterface $logger
+   *   The Rules debug logger channel.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, RulesEventManager $event_manager, RulesComponentRepositoryInterface $component_repository) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, RulesEventManager $event_manager, RulesComponentRepositoryInterface $component_repository, LoggerChannelInterface $logger) {
     $this->entityTypeManager = $entity_type_manager;
     $this->eventManager = $event_manager;
     $this->componentRepository = $component_repository;
+    $this->rulesDebugLogger = $logger;
   }
 
   /**
@@ -123,12 +134,19 @@ class GenericEventSubscriber implements EventSubscriberInterface {
       );
     }
 
-    $components = $this->componentRepository
-      ->getMultiple($triggered_events, 'rules_event');
-
+    $components = $this->componentRepository->getMultiple($triggered_events, 'rules_event');
     foreach ($components as $component) {
-      $component->getExpression()
-        ->executeWithState($state);
+      $this->rulesDebugLogger->info('Reacting on event %label.', [
+        '%label' => $event_definition['label'],
+        'element' => NULL,
+        'scope' => TRUE,
+      ]);
+      $component->getExpression()->executeWithState($state);
+      $this->rulesDebugLogger->info('Finished reacting on event %label.', [
+        '%label' => $event_definition['label'],
+        'element' => NULL,
+        'scope' => FALSE,
+      ]);
     }
     $state->autoSave();
   }

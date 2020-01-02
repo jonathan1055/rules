@@ -35,9 +35,17 @@ class AndExpression extends ConditionExpressionContainer {
     // Use the iterator to ensure the conditions are sorted.
     foreach ($this as $condition) {
       if (!$condition->executeWithState($state)) {
+        $this->rulesDebugLogger->info('%label evaluated to %result.', [
+          '%label' => $this->getLabel(),
+          '%result' => 'FALSE',
+        ]);
         return FALSE;
       }
     }
+    $this->rulesDebugLogger->info('%label evaluated to %result.', [
+      '%label' => $this->getLabel(),
+      '%result' => 'TRUE',
+    ]);
     // An empty AND should return FALSE. Otherwise, if all conditions evaluate
     // to TRUE we return TRUE.
     return !empty($this->conditions);

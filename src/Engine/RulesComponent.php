@@ -11,7 +11,6 @@ use Drupal\rules\Exception\LogicException;
  * Handles executable Rules components.
  */
 class RulesComponent {
-
   use DependencyTrait;
 
   /**
@@ -232,7 +231,20 @@ class RulesComponent {
    *   Thrown if the Rules expression triggers errors during execution.
    */
   public function execute() {
+    // @todo Use injection for the service.
+    $rulesDebugLogger = \Drupal::service('logger.channel.rules_debug');
+    $rulesDebugLogger->info('RulesComponent: Rule %label fires.', [
+      '%label' => $this->expression->getRoot()->getLabel(),
+      'element' => $this,
+      'scope' => TRUE,
+    ]);
     $this->expression->executeWithState($this->state);
+    $rulesDebugLogger->info('RulesComponent: Rule %label has fired.', [
+      '%label' => $this->expression->getRoot()->getLabel(),
+      'element' => $this,
+      'scope' => FALSE,
+    ]);
+
     $this->state->autoSave();
     $result = [];
     foreach ($this->providedContext as $name) {
@@ -261,6 +273,7 @@ class RulesComponent {
     foreach ($arguments as $name => $value) {
       $this->setContextValue($name, $value);
     }
+
     return $this->execute();
   }
 

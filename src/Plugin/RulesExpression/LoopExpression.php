@@ -36,6 +36,10 @@ class LoopExpression extends ActionExpressionContainer {
     $list_data = $state->fetchDataByPropertyPath($this->configuration['list']);
     $list_item_name = $this->configuration['list_item'];
 
+    $this->rulesDebugLogger->info('Looping over the list items of %selector.', [
+      '%selector' => $this->configuration['list_item'],
+      'element' => $this,
+    ]);
     foreach ($list_data as $item) {
       $state->setVariableData($list_item_name, $item);
       // Use the iterator to ensure the conditions are sorted.

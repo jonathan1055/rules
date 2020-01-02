@@ -26,7 +26,7 @@ class OrExpressionTest extends RulesUnitTestBase {
   protected function setUp() {
     parent::setUp();
 
-    $this->or = new OrExpression([], '', [], $this->expressionManager->reveal());
+    $this->or = new OrExpression([], '', ['label' => 'Condition set (OR)'], $this->expressionManager->reveal(), $this->rulesDebugLogger->reveal());
   }
 
   /**

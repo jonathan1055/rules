@@ -53,7 +53,7 @@ class RulesDebugLoggerChannel extends LoggerChannel {
   public function __construct(LoggerInterface $logger, ConfigFactoryInterface $config_factory, MessengerInterface $messenger) {
     parent::__construct('rules_debug');
     $this->logger = $logger;
-    $this->config = $config_factory->get('rules.settings');
+    $this->config = $config_factory;
     $this->messenger = $messenger;
   }
 
@@ -61,20 +61,24 @@ class RulesDebugLoggerChannel extends LoggerChannel {
    * {@inheritdoc}
    */
   public function log($level, $message, array $context = []) {
-    $this->logs[] = [
-      'level' => $level,
-      'message' => $message,
-      'context' => $context,
-    ];
-
     // Log message only if rules logging setting is enabled.
-    if ($this->config->get('debug_log.system_debug')) {
-      if ($this->levelTranslation[$this->config->get('system_log.log_level')] >= $this->levelTranslation[$level]) {
+    $config = $this->config->get('rules.settings');
+    if ($config->get('debug_log.system_debug')) {
+      if ($this->levelTranslation[$config->get('system_log.log_level')] >= $this->levelTranslation[$level]) {
         parent::log($level, $message, $context);
       }
     }
-    if ($this->config->get('debug_log.enabled')) {
-      if ($this->levelTranslation[$this->config->get('debug_log.log_level')] >= $this->levelTranslation[$level]) {
+    if ($config->get('debug_log.enabled')) {
+      $rfc_level = $level;
+      if (is_string($level)) {
+        $rfc_level = $this->levelTranslation[$level];
+      }
+      if ($this->levelTranslation[$config->get('debug_log.log_level')] >= $rfc_level) {
+        $this->logs[] = [
+          'level' => $level,
+          'message' => $message,
+          'context' => $context,
+        ];
         $this->messenger->addMessage($message, $level);
       }
     }

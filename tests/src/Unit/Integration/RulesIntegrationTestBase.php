@@ -13,6 +13,7 @@ use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\Discovery\RecursiveExtensionFilterIterator;
 use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Path\AliasManagerInterface;
 use Drupal\Core\Plugin\Context\LazyContextRepository;
 use Drupal\Core\TypedData\TypedDataManager;
@@ -86,6 +87,13 @@ abstract class RulesIntegrationTestBase extends UnitTestCase {
    * @var \Drupal\rules\Context\DataProcessorManager
    */
   protected $rulesDataProcessorManager;
+
+  /**
+   * A mocked Rules logger.channel.rules_debug service.
+   *
+   * @var \Drupal\Core\Logger\LoggerChannelInterface|\Prophecy\Prophecy\ProphecyInterface
+   */
+  protected $logger;
 
   /**
    * All setup'ed namespaces.
@@ -228,11 +236,15 @@ abstract class RulesIntegrationTestBase extends UnitTestCase {
     $this->dataFilterManager = new DataFilterManager($this->namespaces, $this->cacheBackend, $this->moduleHandler->reveal());
     $this->placeholderResolver = new PlaceholderResolver($this->dataFetcher, $this->dataFilterManager);
 
+    // Mock the Rules debug logger service and make it return our mocked logger.
+    $this->logger = $this->prophesize(LoggerChannelInterface::class);
+
     $container->set('entity.manager', $this->entityManager->reveal());
     $container->set('entity_type.manager', $this->entityTypeManager->reveal());
     $container->set('entity_field.manager', $this->entityFieldManager->reveal());
     $container->set('entity_type.bundle.info', $this->entityTypeBundleInfo->reveal());
     $container->set('context.repository', new LazyContextRepository($container, []));
+    $container->set('logger.channel.rules_debug', $this->logger->reveal());
     $container->set('path.alias_manager', $this->aliasManager->reveal());
     $container->set('plugin.manager.rules_action', $this->actionManager);
     $container->set('plugin.manager.condition', $this->conditionManager);

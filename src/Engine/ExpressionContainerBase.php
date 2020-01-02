@@ -18,14 +18,19 @@ abstract class ExpressionContainerBase extends ExpressionBase implements Express
   protected $expressionManager;
 
   /**
+   * The rules debug logger channel.
+   *
+   * @var \Drupal\Core\Logger\LoggerChannelInterface
+   */
+  protected $rulesDebugLogger;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('plugin.manager.rules_expression')
+    return new static($configuration, $plugin_id, $plugin_definition,
+      $container->get('plugin.manager.rules_expression'),
+      $container->get('logger.channel.rules_debug')
     );
   }
 

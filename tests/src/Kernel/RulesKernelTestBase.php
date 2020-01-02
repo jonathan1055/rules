@@ -31,7 +31,7 @@ abstract class RulesKernelTestBase extends KernelTestBase {
   protected $typedDataManager;
 
   /**
-   * Rules debug logger.
+   * Rules debug logger channel.
    *
    * @var \Drupal\rules\Logger\RulesDebugLoggerChannel
    */
@@ -71,9 +71,15 @@ abstract class RulesKernelTestBase extends KernelTestBase {
     parent::setUp();
 
     $this->logger = $this->container->get('logger.channel.rules_debug');
-    // Clear the log from any stale entries that are bleeding over from previous
-    // tests.
-    $this->logger->clearLogs();
+
+    // Turn on debug logging, set error level to collect only errors. This way
+    // we can ignore the normal Rules debug messages that would otherwise get
+    // in the way of our tests.
+    $config = $this->container->get('config.factory')->getEditable('rules.settings');
+    $config
+      ->set('debug_log.enabled', TRUE)
+      ->set('debug_log.log_level', 'error')
+      ->save();
 
     $this->expressionManager = $this->container->get('plugin.manager.rules_expression');
     $this->conditionManager = $this->container->get('plugin.manager.condition');
