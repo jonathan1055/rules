@@ -71,6 +71,9 @@ class RulesSettingsForm extends ConfigFormBase {
     $form['debug_log']['settings']['system_debug'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Also log debug information to the system log'),
+      '#description' => $this->t('Write a copy of the debug information to the system database log. This will be visible for users having the permission %permission.', [
+        '%permission' => Link::createFromRoute('View site reports', 'user.admin_permissions', [], ['fragment' => 'module-system'])->toString(),
+      ]),
       '#default_value' => $config->get('debug_log.system_debug'),
     ];
     $form['debug_log']['settings']['log_level'] = [
