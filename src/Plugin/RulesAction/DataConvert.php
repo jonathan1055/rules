@@ -6,6 +6,8 @@ use Drupal\rules\Core\RulesActionBase;
 use Drupal\rules\Exception\InvalidArgumentException;
 
 /**
+ * Provides an action to convert data from one type to another.
+ *
  * @RulesAction(
  *   id = "rules_data_convert",
  *   label = @Translation("Convert data"),
@@ -59,7 +61,7 @@ class DataConvert extends RulesActionBase {
    * @param string $rounding_behavior
    *   The behaviour for rounding.
    */
-  protected function doExecute($value, $target_type, $rounding_behavior) {
+  protected function doExecute($value, $target_type, $rounding_behavior = NULL) {
     // @todo Add support for objects implementing __toString().
     if (!is_scalar($value)) {
       throw new InvalidArgumentException('Only scalar values are supported.');

@@ -40,7 +40,10 @@ class EntityDeleteDeriver extends DeriverBase implements ContainerDeriverInterfa
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, $base_plugin_id) {
-    return new static($container->get('entity_type.manager'), $container->get('string_translation'));
+    return new static(
+      $container->get('entity_type.manager'),
+      $container->get('string_translation')
+    );
   }
 
   /**

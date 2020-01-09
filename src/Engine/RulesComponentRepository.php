@@ -7,7 +7,7 @@ use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\rules\Exception\InvalidArgumentException;
 
 /**
- * Implements the component repository interface.
+ * Provides an implementation of the component repository service.
  */
 class RulesComponentRepository implements RulesComponentRepositoryInterface {
 

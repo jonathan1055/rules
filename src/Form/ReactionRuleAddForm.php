@@ -36,7 +36,10 @@ class ReactionRuleAddForm extends RulesComponentFormBase {
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
-    return new static($container->get('plugin.manager.rules_expression'), $container->get('plugin.manager.rules_event'));
+    return new static(
+      $container->get('plugin.manager.rules_expression'),
+      $container->get('plugin.manager.rules_event')
+    );
   }
 
   /**

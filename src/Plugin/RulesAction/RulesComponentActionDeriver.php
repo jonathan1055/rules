@@ -32,7 +32,12 @@ class RulesComponentActionDeriver extends DeriverBase implements ContainerDerive
   protected $expressionManager;
 
   /**
-   * Constructor.
+   * Creates a new RulesComponentActionDeriver object.
+   *
+   * @param \Drupal\Core\Entity\EntityStorageInterface $storage
+   *   The entity storage.
+   * @param \Drupal\rules\Engine\ExpressionManagerInterface $expression_manager
+   *   The Rules expression manager.
    */
   public function __construct(EntityStorageInterface $storage, ExpressionManagerInterface $expression_manager) {
     $this->storage = $storage;

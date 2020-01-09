@@ -124,6 +124,7 @@ class GenericEventSubscriber implements EventSubscriberInterface {
       }
       // Else there must be a getter method or public property.
       // @todo Add support for the getter method.
+      // @see https://www.drupal.org/project/rules/issues/2762517
       else {
         $value = $event->$context_name;
       }

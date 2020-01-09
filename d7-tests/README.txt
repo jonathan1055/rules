@@ -1,4 +1,4 @@
-This files in this directory are here in order to keep track of tests that were
+The files in this directory are here in order to keep track of tests that were
 present in Drupal 7 but have not yet been ported to Drupal 8.
 
 The tests are split into five separate files, each containing one class, because

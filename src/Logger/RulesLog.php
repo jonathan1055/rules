@@ -46,7 +46,8 @@ class RulesLog implements LoggerInterface {
   /**
    * {@inheritdoc}
    *
-   * @todo Create a TypedData logger-entry object: https://www.drupal.org/node/2625238
+   * @todo Create a TypedData logger-entry object.
+   * @see https://www.drupal.org/node/2625238
    */
   public function log($level, $message, array $context = []) {
     // Remove any backtraces since they may contain an unserializable variable.

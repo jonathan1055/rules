@@ -34,7 +34,7 @@ class DataListContains extends RulesConditionBase {
   /**
    * Evaluate whether the list has the item.
    *
-   * @param array|ListInterface $list
+   * @param array|\Drupal\Core\TypedData\ListInterface $list
    *   List to be searched.
    * @param mixed $item
    *   Item to be found in list.

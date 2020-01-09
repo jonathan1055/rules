@@ -27,7 +27,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class SystemPageRedirect extends RulesActionBase implements ContainerFactoryPluginInterface {
 
   /**
-   * The logger for the rules channel.
+   * The Rules debug logger.
    *
    * @var \Drupal\Core\Logger\LoggerChannelInterface
    */

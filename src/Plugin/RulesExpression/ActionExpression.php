@@ -74,7 +74,10 @@ class ActionExpression extends ExpressionBase implements ContainerFactoryPluginI
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static($configuration, $plugin_id, $plugin_definition,
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
       $container->get('plugin.manager.rules_action'),
       $container->get('plugin.manager.rules_data_processor'),
       $container->get('logger.channel.rules_debug')

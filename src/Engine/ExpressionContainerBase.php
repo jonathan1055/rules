@@ -28,7 +28,10 @@ abstract class ExpressionContainerBase extends ExpressionBase implements Express
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static($configuration, $plugin_id, $plugin_definition,
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
       $container->get('plugin.manager.rules_expression'),
       $container->get('logger.channel.rules_debug')
     );
