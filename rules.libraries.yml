@@ -12,3 +12,15 @@ rules_ui.styles:
   css:
     theme:
       css/rules_ui.css: {}
+
+rules.debug:
+  js:
+    js/debug.js: {}
+  css:
+    theme:
+      css/debug.css: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+    - core/jquery.ui

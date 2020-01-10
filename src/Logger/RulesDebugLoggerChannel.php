@@ -89,9 +89,15 @@ class RulesDebugLoggerChannel extends LoggerChannel {
     $path = isset($context['path']) ? $context['path'] : NULL;
 
     if (!empty($element)) {
-      $uuid = $element->getUuid();
-      $path = $element->getRoot()->getLabel() ? Url::fromRoute('entity.rules_reaction_rule.edit_form', ['rules_reaction_rule' => $element->getRoot()->getPluginId()])->toString() : NULL;
-      $path = $path . '/edit/' . $uuid;
+      // Need to know if we're in a Reaction Rule or a Rules Component, and need
+      // to be able to get a reference to that specific entity. For now we just
+      // assume Reaction Rule until we know how to do this better.
+      $path = $element->getRoot()->getLabel() ?
+        Url::fromRoute('entity.rules_reaction_rule.edit_form.expression.edit', [
+          'rules_reaction_rule' => $element->getRoot()->getPluginId(),
+          'uuid' => $element->getUuid(),
+        ])->toString() :
+        NULL;
     }
 
     // Pack $element, $scope, and $path into the context array so as to forward

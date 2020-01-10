@@ -14,6 +14,56 @@ use Drupal\rules\Event\EntityEvent;
 use Drupal\rules\Event\UserLoginEvent;
 use Drupal\rules\Event\UserLogoutEvent;
 use Drupal\rules\Event\SystemCronEvent;
+use Psr\Log\LogLevel;
+
+/**
+ * Implements hook_theme().
+ */
+function rules_theme() {
+  return [
+    'rules_debug_log_element' => [
+      'render element' => 'element',
+      'file' => 'rules.theme.inc',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_page_top().
+ */
+function rules_page_top(array &$page_top) {
+  $debug_log = \Drupal::service('logger.rules_debug_log');
+  $markup = $debug_log->render();
+  // If debugging is turned off $markup will be empty.
+  if (!empty($markup)) {
+    if (\Drupal::currentUser()->hasPermission('access rules debug')) {
+      // Send debug output to the screen.
+      \Drupal::service('messenger')->addError($markup);
+    }
+    // Log debugging information to logger.channel.rules only if the rules
+    // system logging setting 'debug_log.system_debug' is enabled.
+    // These logs get sent to the system dblog, end up in the Drupal database,
+    // and are viewable at /admin/reports/dblog.
+    if (\Drupal::configFactory('rules.settings')->get('debug_log.system_debug')) {
+      \Drupal::service('logger.channel.rules')->log(LogLevel::DEBUG, $markup, []);
+    }
+  }
+  // Remove logs already rendered.
+  $debug_log->clearLogs();
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function rules_page_attachments(array &$attachments) {
+  // We need JavaScript and CSS to render the debug log properly
+  // and to provide the expand/collapse functionality.
+  if (\Drupal::currentUser()->hasPermission('access rules debug')) {
+    if (\Drupal::configFactory('rules.settings')->get('debug_log.enabled')) {
+      $attachments['#attached']['library'][] = 'rules/rules.debug';
+    }
+  }
+}
 
 /**
  * Implements hook_help().
