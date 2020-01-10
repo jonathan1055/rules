@@ -1,12 +1,11 @@
 <?php
 
-namespace Drupal\rules\Engine;
+namespace Drupal\rules\Context;
 
 use Drupal\Core\TypedData\TypedDataInterface;
-use Drupal\rules\Context\ContextDefinitionInterface;
 
 /**
- * Defines an interface for the rules state.
+ * Defines an interface for the execution context state.
  */
 interface ExecutionStateInterface {
 
@@ -67,7 +66,7 @@ interface ExecutionStateInterface {
   public function getVariableValue($name);
 
   /**
-   * Checks if a variable exists by name in the Rules state.
+   * Checks if a variable exists by name in the execution state.
    *
    * @param string $name
    *   The variable name.

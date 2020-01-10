@@ -3,6 +3,7 @@
 namespace Drupal\rules\Engine;
 
 use Drupal\Core\Plugin\PluginBase;
+use Drupal\rules\Context\ExecutionState;
 
 /**
  * Base class for rules expressions.

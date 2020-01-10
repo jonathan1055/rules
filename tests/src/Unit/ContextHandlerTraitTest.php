@@ -6,7 +6,7 @@ use Drupal\Core\Plugin\ContextAwarePluginInterface;
 use Drupal\rules\Context\ContextConfig;
 use Drupal\rules\Context\ContextDefinitionInterface;
 use Drupal\rules\Context\ContextHandlerTrait;
-use Drupal\rules\Engine\ExecutionStateInterface;
+use Drupal\rules\Context\ExecutionStateInterface;
 
 /**
  * @coversDefaultClass \Drupal\rules\Context\ContextHandlerTrait

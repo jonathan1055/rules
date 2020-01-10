@@ -3,9 +3,9 @@
 namespace Drupal\Tests\rules\Unit;
 
 use Drupal\Core\Logger\LoggerChannelInterface;
+use Drupal\rules\Context\ExecutionStateInterface;
 use Drupal\rules\Engine\ConditionExpressionContainer;
 use Drupal\rules\Engine\ExpressionManagerInterface;
-use Drupal\rules\Engine\ExecutionStateInterface;
 
 /**
  * @coversDefaultClass \Drupal\rules\Engine\ConditionExpressionContainer

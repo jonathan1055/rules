@@ -5,6 +5,8 @@ namespace Drupal\rules\Engine;
 use Drupal\Core\Entity\DependencyTrait;
 use Drupal\rules\Context\ContextDefinition;
 use Drupal\rules\Context\ContextDefinitionInterface;
+use Drupal\rules\Context\ExecutionMetadataState;
+use Drupal\rules\Context\ExecutionState;
 use Drupal\rules\Exception\LogicException;
 
 /**
@@ -16,7 +18,7 @@ class RulesComponent {
   /**
    * The rules execution state.
    *
-   * @var \Drupal\rules\Engine\ExecutionStateInterface
+   * @var \Drupal\rules\Context\ExecutionStateInterface
    */
   protected $state;
 
@@ -124,7 +126,7 @@ class RulesComponent {
   /**
    * Gets the execution state.
    *
-   * @return \Drupal\rules\Engine\ExecutionStateInterface
+   * @return \Drupal\rules\Context\ExecutionStateInterface
    *   The execution state for this component.
    */
   public function getState() {
@@ -294,7 +296,7 @@ class RulesComponent {
    * Describes the metadata state before execution - only context definitions
    * are set as variables.
    *
-   * @return \Drupal\rules\Engine\ExecutionMetadataStateInterface
+   * @return \Drupal\rules\Context\ExecutionMetadataStateInterface
    *   The execution metadata state populated with context definitions.
    */
   public function getMetadataState() {

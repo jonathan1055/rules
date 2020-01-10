@@ -5,7 +5,7 @@ namespace Drupal\rules\Plugin\RulesDataProcessor;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\rules\Context\DataProcessorInterface;
-use Drupal\rules\Engine\ExecutionStateInterface;
+use Drupal\rules\Context\ExecutionStateInterface;
 use Drupal\typed_data\PlaceholderResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\rules\Unit;
 
+use Drupal\rules\Context\ExecutionStateInterface;
 use Drupal\rules\Engine\ConditionExpressionInterface;
-use Drupal\rules\Engine\ExecutionStateInterface;
 use Drupal\rules\Plugin\RulesExpression\AndExpression;
 use Prophecy\Argument;
 

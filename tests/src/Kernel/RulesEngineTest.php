@@ -5,8 +5,8 @@ namespace Drupal\Tests\rules\Kernel;
 use Drupal\rules\Core\ConditionManager;
 use Drupal\rules\Context\ContextConfig;
 use Drupal\rules\Context\ContextDefinition;
+use Drupal\rules\Context\ExecutionState;
 use Drupal\rules\Engine\RulesComponent;
-use Drupal\rules\Engine\ExecutionState;
 
 /**
  * Test using the Rules API to create and evaluate rules.

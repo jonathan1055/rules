@@ -1,10 +1,9 @@
 <?php
 
-namespace Drupal\rules\Engine;
+namespace Drupal\rules\Context;
 
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\TypedData\DataDefinitionInterface;
-use Drupal\rules\Context\GlobalContextRepositoryTrait;
 use Drupal\rules\Exception\IntegrityException;
 use Drupal\typed_data\DataFetcherTrait;
 use Drupal\typed_data\Exception\TypedDataException;

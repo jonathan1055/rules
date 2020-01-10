@@ -8,9 +8,9 @@ use Drupal\Tests\UnitTestCase;
 use Drupal\rules\Context\DataProcessorInterface;
 use Drupal\rules\Context\ContextConfig;
 use Drupal\rules\Context\DataProcessorManager;
+use Drupal\rules\Context\ExecutionStateInterface;
 use Drupal\rules\Core\ConditionManager;
 use Drupal\rules\Core\RulesConditionInterface;
-use Drupal\rules\Engine\ExecutionStateInterface;
 use Drupal\rules\Plugin\RulesExpression\ConditionExpression;
 use Prophecy\Argument;
 

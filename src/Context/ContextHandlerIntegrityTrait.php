@@ -10,7 +10,6 @@ use Drupal\rules\Context\ContextDefinitionInterface as RulesContextDefinitionInt
 use Drupal\rules\Context\ContextProviderInterface;
 //@codingStandardsIgnoreEnd
 use Drupal\rules\Exception\IntegrityException;
-use Drupal\rules\Engine\ExecutionMetadataStateInterface;
 use Drupal\rules\Engine\IntegrityViolation;
 use Drupal\rules\Engine\IntegrityViolationList;
 
@@ -26,7 +25,7 @@ trait ContextHandlerIntegrityTrait {
    *
    * @param \Drupal\Core\Plugin\ContextAwarePluginInterface $plugin
    *   The plugin with its defined context.
-   * @param \Drupal\rules\Engine\ExecutionMetadataStateInterface $metadata_state
+   * @param \Drupal\rules\Context\ExecutionMetadataStateInterface $metadata_state
    *   The current configuration state with all defined variables that are
    *   available.
    *

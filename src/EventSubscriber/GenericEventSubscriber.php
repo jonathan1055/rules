@@ -4,9 +4,9 @@ namespace Drupal\rules\EventSubscriber;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelInterface;
+use Drupal\rules\Context\ExecutionState;
 use Drupal\rules\Core\RulesConfigurableEventHandlerInterface;
 use Drupal\rules\Core\RulesEventManager;
-use Drupal\rules\Engine\ExecutionState;
 use Drupal\rules\Engine\RulesComponentRepositoryInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

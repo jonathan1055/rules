@@ -2,8 +2,8 @@
 
 namespace Drupal\rules\Plugin\RulesExpression;
 
+use Drupal\rules\Context\ExecutionStateInterface;
 use Drupal\rules\Engine\ActionExpressionContainer;
-use Drupal\rules\Engine\ExecutionStateInterface;
 
 /**
  * Holds a set of actions and executes all of them.

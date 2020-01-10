@@ -5,6 +5,7 @@ namespace Drupal\rules\Engine;
 use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\rules\Context\ContextConfig;
+use Drupal\rules\Context\ExecutionStateInterface;
 use Drupal\rules\Exception\InvalidExpressionException;
 
 /**

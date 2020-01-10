@@ -2,8 +2,8 @@
 
 namespace Drupal\rules\Plugin\RulesExpression;
 
+use Drupal\rules\Context\ExecutionStateInterface;
 use Drupal\rules\Engine\ConditionExpressionContainer;
-use Drupal\rules\Engine\ExecutionStateInterface;
 
 /**
  * Evaluates a group of conditions with a logical AND.

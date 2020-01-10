@@ -3,9 +3,9 @@
 namespace Drupal\rules\Plugin\RulesExpression;
 
 use Drupal\Core\TypedData\ListDataDefinitionInterface;
+use Drupal\rules\Context\ExecutionMetadataStateInterface;
+use Drupal\rules\Context\ExecutionStateInterface;
 use Drupal\rules\Engine\ActionExpressionContainer;
-use Drupal\rules\Engine\ExecutionMetadataStateInterface;
-use Drupal\rules\Engine\ExecutionStateInterface;
 use Drupal\rules\Engine\IntegrityViolationList;
 use Drupal\rules\Exception\IntegrityException;
 

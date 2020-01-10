@@ -4,8 +4,6 @@ namespace Drupal\rules\Context;
 
 use Drupal\Component\Plugin\Exception\ContextException;
 use Drupal\Core\Plugin\ContextAwarePluginInterface as CoreContextAwarePluginInterface;
-use Drupal\rules\Engine\ExecutionMetadataStateInterface;
-use Drupal\rules\Engine\ExecutionStateInterface;
 use Drupal\rules\Exception\EvaluationException;
 use Drupal\rules\Exception\IntegrityException;
 
@@ -38,7 +36,7 @@ trait ContextHandlerTrait {
    *
    * @param \Drupal\Core\Plugin\ContextAwarePluginInterface $plugin
    *   The plugin that is populated with context values.
-   * @param \Drupal\rules\Engine\ExecutionStateInterface $state
+   * @param \Drupal\rules\Context\ExecutionStateInterface $state
    *   The execution state containing available variables.
    *
    * @throws \Drupal\rules\Exception\EvaluationException
@@ -111,7 +109,7 @@ trait ContextHandlerTrait {
    *
    * @param \Drupal\Core\Plugin\ContextAwarePluginInterface $plugin
    *   The plugin that is prepared.
-   * @param \Drupal\rules\Engine\ExecutionMetadataStateInterface $metadata_state
+   * @param \Drupal\rules\Context\ExecutionMetadataStateInterface $metadata_state
    *   The metadata state, prepared for the current expression.
    *
    * @throws \Drupal\Component\Plugin\Exception\ContextException
@@ -146,7 +144,7 @@ trait ContextHandlerTrait {
   /**
    * Gets definitions of all selected data at configuration time.
    *
-   * @param \Drupal\rules\Engine\ExecutionMetadataStateInterface $metadata_state
+   * @param \Drupal\rules\Context\ExecutionMetadataStateInterface $metadata_state
    *   The metadata state.
    *
    * @return \Drupal\Core\TypedData\DataDefinitionInterface[]
@@ -179,7 +177,7 @@ trait ContextHandlerTrait {
    *
    * @param string $context_name
    *   The name of the context.
-   * @param \Drupal\rules\Engine\ExecutionMetadataStateInterface $metadata_state
+   * @param \Drupal\rules\Context\ExecutionMetadataStateInterface $metadata_state
    *   The metadata state containing metadata about available variables.
    *
    * @return \Drupal\Core\TypedData\DataDefinitionInterface|null
@@ -201,7 +199,7 @@ trait ContextHandlerTrait {
    *
    * @param \Drupal\Core\Plugin\ContextAwarePluginInterface $plugin
    *   The context aware plugin of which to add provided context.
-   * @param \Drupal\rules\Engine\ExecutionStateInterface $state
+   * @param \Drupal\rules\Context\ExecutionStateInterface $state
    *   The Rules state where the context variables are added.
    */
   protected function addProvidedContext(CoreContextAwarePluginInterface $plugin, ExecutionStateInterface $state) {
@@ -227,7 +225,7 @@ trait ContextHandlerTrait {
    *
    * @param \Drupal\Core\Plugin\ContextAwarePluginInterface $plugin
    *   The context aware plugin of which to add provided context.
-   * @param \Drupal\rules\Engine\ExecutionMetadataStateInterface $metadata_state
+   * @param \Drupal\rules\Context\ExecutionMetadataStateInterface $metadata_state
    *   The execution metadata state to add variables to.
    */
   protected function addProvidedContextDefinitions(CoreContextAwarePluginInterface $plugin, ExecutionMetadataStateInterface $metadata_state) {
@@ -257,7 +255,7 @@ trait ContextHandlerTrait {
    *
    * @param \Drupal\Core\Plugin\ContextAwarePluginInterface $plugin
    *   The context aware plugin.
-   * @param \Drupal\rules\Engine\ExecutionMetadataStateInterface $metadata_state
+   * @param \Drupal\rules\Context\ExecutionMetadataStateInterface $metadata_state
    *   The execution metadata state.
    */
   protected function assertMetadata(CoreContextAwarePluginInterface $plugin, ExecutionMetadataStateInterface $metadata_state) {
@@ -282,7 +280,7 @@ trait ContextHandlerTrait {
    *
    * @param \Drupal\Core\Plugin\ContextAwarePluginInterface $plugin
    *   The plugin to process the context data on.
-   * @param \Drupal\rules\Engine\ExecutionStateInterface $rules_state
+   * @param \Drupal\rules\Context\ExecutionStateInterface $rules_state
    *   The current Rules execution state with context variables.
    */
   protected function processData(CoreContextAwarePluginInterface $plugin, ExecutionStateInterface $rules_state) {
@@ -310,7 +308,7 @@ trait ContextHandlerTrait {
    *   The current value.
    * @param array $processors
    *   An array mapping processor plugin IDs to their configuration.
-   * @param \Drupal\rules\Engine\ExecutionStateInterface $rules_state
+   * @param \Drupal\rules\Context\ExecutionStateInterface $rules_state
    *   The current Rules execution state with context variables.
    *
    * @return mixed

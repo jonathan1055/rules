@@ -1,12 +1,10 @@
 <?php
 
-namespace Drupal\rules\Engine;
+namespace Drupal\rules\Context;
 
 use Drupal\Core\TypedData\Exception\MissingDataException;
 use Drupal\Core\TypedData\TypedDataInterface;
 use Drupal\Core\TypedData\TypedDataTrait;
-use Drupal\rules\Context\ContextDefinitionInterface;
-use Drupal\rules\Context\GlobalContextRepositoryTrait;
 use Drupal\rules\Exception\EvaluationException;
 use Drupal\rules\Exception\InvalidArgumentException;
 use Drupal\typed_data\DataFetcherTrait;
@@ -28,6 +26,8 @@ class ExecutionState implements ExecutionStateInterface {
    * @var array
    *
    * @todo Implement recursion prevention from D7.
+   * @todo Move this out of Context namespace?
+   * @see https://www.drupal.org/project/rules/issues/2677094
    */
   static protected $blocked = [];
 

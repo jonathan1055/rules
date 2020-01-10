@@ -6,6 +6,8 @@ use Drupal\Component\Plugin\ConfigurableInterface;
 use Drupal\Component\Plugin\DependentPluginInterface;
 use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\Core\Executable\ExecutableInterface;
+use Drupal\rules\Context\ExecutionMetadataStateInterface;
+use Drupal\rules\Context\ExecutionStateInterface;
 
 /**
  * Defines the interface for Rules expressions.
@@ -19,7 +21,7 @@ interface ExpressionInterface extends ExecutableInterface, ConfigurableInterface
    *
    * Note that this does not auto-save any changes.
    *
-   * @param \Drupal\rules\Engine\ExecutionStateInterface $state
+   * @param \Drupal\rules\Context\ExecutionStateInterface $state
    *   The state with all the execution variables in it.
    *
    * @return null|bool
@@ -114,7 +116,7 @@ interface ExpressionInterface extends ExecutableInterface, ConfigurableInterface
    * This allows for efficient integrity checks of expression trees; e.g. see
    * \Drupal\rules\Engine\ActionExpressionContainer::checkIntegrity().
    *
-   * @param \Drupal\rules\Engine\ExecutionMetadataStateInterface $metadata_state
+   * @param \Drupal\rules\Context\ExecutionMetadataStateInterface $metadata_state
    *   The execution metadata state, prepared until right before this
    *   expression.
    * @param bool $apply_assertions
@@ -145,7 +147,7 @@ interface ExpressionInterface extends ExecutableInterface, ConfigurableInterface
    * $until = NULL reflects the execution metadata state at the end of the
    * expression execution.
    *
-   * @param \Drupal\rules\Engine\ExecutionMetadataStateInterface $metadata_state
+   * @param \Drupal\rules\Context\ExecutionMetadataStateInterface $metadata_state
    *   The execution metadata state, prepared until right before this
    *   expression.
    * @param \Drupal\rules\Engine\ExpressionInterface $until

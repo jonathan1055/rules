@@ -3,6 +3,7 @@
 namespace Drupal\rules\Engine;
 
 use Drupal\rules\Context\ContextConfig;
+use Drupal\rules\Context\ExecutionMetadataStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
