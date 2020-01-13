@@ -38,7 +38,10 @@ class ConditionContainerForm extends ExpressionContainerFormBase {
       '#header' => [
         'element' => $this->t('Conditions'),
         'operations' => $this->t('Operations'),
-        'weight' => $this->t('List postion'),
+        'weight' => [
+          'data' => $this->t('List position'),
+          'class' => ['tabledrag-hide'],
+        ],
       ],
       '#tabledrag' => [
         [

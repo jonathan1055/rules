@@ -38,7 +38,10 @@ class ActionContainerForm extends ExpressionContainerFormBase {
       '#header' => [
         'element' => $this->t('Actions'),
         'operations' => $this->t('Operations'),
-        'weight' => $this->t('List postion'),
+        'weight' => [
+          'data' => $this->t('List position'),
+          'class' => ['tabledrag-hide'],
+        ],
       ],
       '#tabledrag' => [
         [
