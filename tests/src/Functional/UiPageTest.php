@@ -37,7 +37,7 @@ class UiPageTest extends RulesBrowserTestBase {
     $assert->statusCodeEquals(200);
 
     // Test that there is an empty reaction rule listing.
-    $assert->pageTextContains('There are no reaction rules yet.');
+    $assert->pageTextContains('There are no enabled reaction rules.');
   }
 
   /**
