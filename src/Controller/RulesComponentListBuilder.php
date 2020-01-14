@@ -113,14 +113,41 @@ class RulesComponentListBuilder extends ConfigEntityListBuilder {
    * {@inheritdoc}
    */
   public function render() {
+    $build['#type'] = 'container';
+    $build['#attributes']['id'] = 'rules-entity-list';
+    $build['#attached']['library'][] = 'core/drupal.ajax';
     $build['#attached']['library'][] = 'rules/rules_ui.listing';
+
     $build['description'] = [
       '#prefix' => '<p>',
       '#markup' => $this->t('Components are stand-alone sets of Rules configuration that can be used by Rules and other modules on your site. Components are for example useful if you want to use the same conditions, actions or rules in multiple places, or call them from your custom module. You may also export each component separately. See the <a href=":documentation">online documentation</a> for more information about how to use components.', [':documentation' => 'https://www.drupal.org/node/1300024']),
       '#suffix' => '</p>',
     ];
+
+    $build['filters'] = [
+      '#type' => 'container',
+      '#attributes' => [
+        'class' => ['table-filter', 'js-show'],
+      ],
+    ];
+
+    $build['filters']['text'] = [
+      '#type' => 'search',
+      '#title' => $this->t('Filter'),
+      '#title_display' => 'invisible',
+      '#size' => 60,
+      '#placeholder' => $this->t('Filter by component name, machine name, description, or tag'),
+      '#attributes' => [
+        'class' => ['rules-filter-text'],
+        'data-table' => '.rules-listing-table',
+        'autocomplete' => 'off',
+        'title' => $this->t('Enter a part of the component name, machine name, description, or tag to filter by.'),
+      ],
+    ];
+
     $build += parent::render();
     $build['table']['#empty'] = $this->t('No rules components have been defined.');
+    $build['table']['#attributes'] = ['class' => ['rules-listing-table']];
 
     return $build;
   }
