@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
  *   id = "rules_ip_is_banned",
  *   label = @Translation("IP address is banned"),
  *   category = @Translation("Ban"),
- *   context = {
+ *   context_definitions = {
  *     "ip" = @ContextDefinition("string",
  *       label = @Translation("IP Address"),
  *       description = @Translation("Determine if an IP address is banned using the Ban Module. If no IP is provided, the current user IP is used."),
