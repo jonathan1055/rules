@@ -6,9 +6,13 @@
   <exclude-pattern>./d7-tests/</exclude-pattern>
   <exclude-pattern>./vendor/</exclude-pattern>
   <exclude-pattern>./config/</exclude-pattern>
+  <exclude-pattern>./*interdif*</exclude-pattern>
 
   <arg name="extensions" value="inc,install,module,php,profile,test,theme,yml"/>
+
+  <!-- Use 's' to print the full sniff name in the report and use colors. -->
   <arg value="s"/>
+  <arg value="-colors"/>
 
   <!-- Include all Drupal and DrupalPractice sniffs by default, then adjust. -->
   <rule ref="Drupal"/>
