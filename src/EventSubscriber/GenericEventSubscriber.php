@@ -110,6 +110,8 @@ class GenericEventSubscriber implements EventSubscriberInterface {
     if (is_subclass_of($handler_class, RulesConfigurableEventHandlerInterface::class)) {
       $qualified_event_suffixes = $handler_class::determineQualifiedEvents($event, $event_name, $event_definition);
       foreach ($qualified_event_suffixes as $qualified_event_suffix) {
+        // This is where we add the bundle-specific event suffix, e.g.
+        // rules_entity_insert:node--page if the content entity was type 'page'.
         $triggered_events[] = "$event_name--$qualified_event_suffix";
       }
     }

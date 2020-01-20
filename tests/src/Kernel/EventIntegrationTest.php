@@ -304,7 +304,7 @@ class EventIntegrationTest extends RulesKernelTestBase {
     $this->logger = $this->container->get('logger.channel.rules_debug');
     $this->logger->addLogger($this->debugLog);
 
-    // Now change the title and trigger the presave event by savoing the node.
+    // Now change the title and trigger the presave event by saving the node.
     $node->setTitle('new title');
     $node->save();
 
@@ -319,6 +319,66 @@ class EventIntegrationTest extends RulesKernelTestBase {
       ['rules_entity_presave:node'],
       ['rules_entity_update:node'],
     ];
+  }
+
+  /**
+   * Tests that entity events are fired for the correct bundle.
+   */
+  public function testBundleQualifiedEvents() {
+    // Create an article node type and a page node type.
+    $entity_type_manager = $this->container->get('entity_type.manager');
+    $entity_type_manager->getStorage('node_type')->create([
+      'type' => 'article',
+      'title' => 'Article',
+    ])->save();
+    $entity_type_manager->getStorage('node_type')->create([
+      'type' => 'page',
+      'title' => 'Page',
+    ])->save();
+
+    // Create a rule to fire when a new article is created.
+    $rule = $this->expressionManager->createRule();
+    $rule->addAction('rules_test_debug_log',
+      ContextConfig::create()
+        ->map('message', 'node.title.value')
+    );
+
+    // Create a rule to fire when a new page is created.
+    $rule = $this->expressionManager->createRule();
+    $rule->addAction('rules_test_debug_log',
+      ContextConfig::create()
+        ->map('message', 'node.title.value')
+    );
+
+    $config_entity = $this->storage->create([
+      'id' => 'test_article_rule',
+      'events' => [['event_name' => 'rules_entity_insert:node--article']],
+      'expression' => $rule->getConfiguration(),
+    ]);
+    $config_entity->save();
+
+    $config_entity = $this->storage->create([
+      'id' => 'test_page_rule',
+      'events' => [['event_name' => 'rules_entity_insert:node--page']],
+      'expression' => $rule->getConfiguration(),
+    ]);
+    $config_entity->save();
+
+    // The logger instance has changed, refresh it.
+    $this->logger = $this->container->get('logger.channel.rules_debug');
+    $this->logger->addLogger($this->debugLog);
+
+    // Create a page - this should dispatch a
+    // "rules_entity_insert:node--page" event.
+    $node = $entity_type_manager->getStorage('node')->create([
+      'title' => 'Test page entity bundle event',
+      'type' => 'page',
+    ]);
+    $node->save();
+
+    // Only the rule "test_page_rule" should fire.
+    $this->assertRulesDebugLogEntryExists('Test page entity bundle event');
+    $this->assertRulesDebugLogEntryNotExists('Test article entity bundle event');
   }
 
 }

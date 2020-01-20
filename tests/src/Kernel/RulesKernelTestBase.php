@@ -126,4 +126,18 @@ abstract class RulesKernelTestBase extends KernelTestBase {
     $this->assertEquals($logs[$log_item_index]['message'], $message);
   }
 
+  /**
+   * Checks if particular message is NOT in the log.
+   *
+   * @param string $message
+   *   Log message.
+   */
+  protected function assertRulesDebugLogEntryNotExists($message) {
+    // Check each log entry.
+    $logs = $this->debugLog->getLogs();
+    foreach ($logs as $log) {
+      $this->assertNotEquals($log['message'], $message);
+    }
+  }
+
 }
