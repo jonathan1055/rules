@@ -18,7 +18,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 class GenericEventSubscriber implements EventSubscriberInterface {
 
   /**
-   * The entity manager used for loading reaction rule config entities.
+   * The entity type manager used for loading reaction rule config entities.
    *
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
@@ -119,7 +119,7 @@ class GenericEventSubscriber implements EventSubscriberInterface {
     // Setup the execution state.
     $state = ExecutionState::create();
     foreach ($event_definition['context_definitions'] as $context_name => $context_definition) {
-      // If this is a GenericEvent get the context for the rule from the event
+      // If this is a GenericEvent, get the context for the rule from the event
       // arguments.
       if ($event instanceof GenericEvent) {
         $value = $event->getArgument($context_name);
