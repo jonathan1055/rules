@@ -63,7 +63,7 @@ abstract class RulesKernelTestBase extends KernelTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'rules',
     'rules_test',
     'system',

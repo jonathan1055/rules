@@ -14,7 +14,7 @@ class RulesDebugLogTest extends RulesBrowserTestBase {
    *
    * @var array
    */
-  public static $modules = ['rules', 'rules_test'];
+  protected static $modules = ['rules', 'rules_test'];
 
   /**
    * We use the minimal profile because we want to test local action links.

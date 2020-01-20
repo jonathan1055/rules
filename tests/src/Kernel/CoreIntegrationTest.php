@@ -22,7 +22,7 @@ class CoreIntegrationTest extends RulesKernelTestBase {
    *
    * @var array
    */
-  public static $modules = ['node', 'field', 'text', 'user'];
+  protected static $modules = ['node', 'field', 'text', 'user'];
 
   /**
    * {@inheritdoc}

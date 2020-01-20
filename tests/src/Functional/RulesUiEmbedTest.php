@@ -14,7 +14,7 @@ class RulesUiEmbedTest extends RulesBrowserTestBase {
    *
    * @var array
    */
-  public static $modules = ['rules_test_ui_embed'];
+  protected static $modules = ['rules_test_ui_embed'];
 
   /**
    * @covers \Drupal\rules_test_ui_embed\Form\SettingsForm

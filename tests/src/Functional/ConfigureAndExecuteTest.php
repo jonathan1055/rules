@@ -14,7 +14,7 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
    *
    * @var array
    */
-  public static $modules = ['node', 'rules'];
+  protected static $modules = ['node', 'rules'];
 
   /**
    * We use the minimal profile because we want to test local action links.

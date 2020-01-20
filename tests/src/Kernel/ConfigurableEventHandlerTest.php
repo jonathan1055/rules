@@ -18,7 +18,7 @@ class ConfigurableEventHandlerTest extends RulesKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = ['rules', 'system', 'node', 'field', 'user'];
+  protected static $modules = ['rules', 'system', 'node', 'field', 'user'];
 
   /**
    * The entity storage for Rules config entities.

@@ -14,7 +14,7 @@ class TempStorageTest extends RulesBrowserTestBase {
    *
    * @var array
    */
-  public static $modules = ['rules'];
+  protected static $modules = ['rules'];
 
   /**
    * We use the minimal profile because we want to test local action links.

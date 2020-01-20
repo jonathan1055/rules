@@ -25,7 +25,7 @@ class EventIntegrationTest extends RulesKernelTestBase {
    *
    * @var array
    */
-  public static $modules = ['field', 'node', 'text', 'user'];
+  protected static $modules = ['field', 'node', 'text', 'user'];
 
   /**
    * {@inheritdoc}
