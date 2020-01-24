@@ -19,11 +19,9 @@ class EventBundleTest extends WebDriverTestBase {
   protected static $modules = ['rules', 'taxonomy'];
 
   /**
-   * We use the minimal profile because we want to test local action links.
-   *
-   * @var string
+   * {@inheritdoc}
    */
-  protected $profile = 'minimal';
+  protected $defaultTheme = 'stark';
 
   /**
    * {@inheritdoc}
