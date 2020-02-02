@@ -66,10 +66,7 @@ abstract class ConditionExpressionContainer extends ExpressionContainerBase impl
    */
   public function addCondition($condition_id, ContextConfig $config = NULL) {
     return $this->addExpressionObject(
-      $this->expressionManager
-        ->createCondition($condition_id)
-        ->setConfiguration($config ? $config->toArray() : [])
-    );
+      $this->expressionManager->createCondition($condition_id, $config));
   }
 
   /**
