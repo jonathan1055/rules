@@ -261,4 +261,37 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     $assert->elementExists('xpath', '//input[@id="edit-context-definitions-type-setting" and not(contains(@class, "rules-autocomplete"))]');
   }
 
+  /**
+   * Tests that a default empty configuration is added when none is suppiled.
+   *
+   * This checks the methods addCondition and addAction, which are alternatives
+   * for createCondition and createAction as used in the test above.
+   */
+  public function testEmptyConfig() {
+    $this->drupalLogin($this->account);
+
+    $expression_manager = $this->container->get('plugin.manager.rules_expression');
+    $storage = $this->container->get('entity_type.manager')->getStorage('rules_reaction_rule');
+
+    // Create a rule and add a condition via ConditionExpressionContainer
+    // without specifying a second parameter for the configuation.
+    $rule = $expression_manager->createRule();
+    $rule->addCondition('rules_list_contains');
+    // Add an action via ActionExpressionContainer without a config parameter.
+    $rule->addAction('rules_list_item_add');
+    $config_entity = $storage->create([
+      'id' => 'test_rule',
+      'expression' => $rule->getConfiguration(),
+    ]);
+    $config_entity->save();
+
+    /** @var \Drupal\Tests\WebAssert $assert */
+    $assert = $this->assertSession();
+
+    // Check that the rule edit page can be displayed.
+    $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule');
+    $assert->statusCodeEquals(200);
+    $assert->pageTextContains('Edit reaction rule');
+  }
+
 }
