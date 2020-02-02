@@ -64,7 +64,7 @@ class ExpressionManager extends DefaultPluginManager implements ExpressionManage
    * {@inheritdoc}
    */
   public function createAction($id, ContextConfig $configuration = NULL) {
-    $config_array = is_null($configuration) ? [] : $configuration->toArray();
+    $config_array = is_null($configuration) ? ContextConfig::create()->toArray() : $configuration->toArray();
     return $this->createInstance('rules_action', [
       'action_id' => $id,
     ] + $config_array);
@@ -74,7 +74,7 @@ class ExpressionManager extends DefaultPluginManager implements ExpressionManage
    * {@inheritdoc}
    */
   public function createCondition($id, ContextConfig $configuration = NULL) {
-    $config_array = is_null($configuration) ? [] : $configuration->toArray();
+    $config_array = is_null($configuration) ? ContextConfig::create()->toArray() : $configuration->toArray();
     return $this->createInstance('rules_condition', [
       'condition_id' => $id,
     ] + $config_array);

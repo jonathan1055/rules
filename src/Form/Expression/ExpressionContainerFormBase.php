@@ -26,12 +26,7 @@ abstract class ExpressionContainerFormBase implements ExpressionFormInterface {
     $parameters = [];
     // 'context_mapping' is for context parameters set in data selector mode.
     // 'context_values' is for context parameters set in direct input mode.
-    $context = [];
-    if (isset($configuration['context_values']) && isset($configuration['context_mapping'])) {
-      // @todo Remove this if() check on context_values and context_mapping when
-      // https://www.drupal.org/project/rules/issues/3103808 is fixed.
-      $context = $configuration['context_mapping'] + $configuration['context_values'];
-    }
+    $context = $configuration['context_mapping'] + $configuration['context_values'];
     foreach ($context as $key => $value) {
       if ($value === FALSE) {
         $value = 'FALSE';
