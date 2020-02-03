@@ -262,34 +262,55 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
   }
 
   /**
-   * Tests that a default empty configuration is added when none is suppiled.
-   *
-   * This checks the methods addCondition and addAction, which are alternatives
-   * for createCondition and createAction as used in the test above.
+   * Tests that an empty context configuration is added by default.
    */
   public function testEmptyConfig() {
     $this->drupalLogin($this->account);
 
-    $expression_manager = $this->container->get('plugin.manager.rules_expression');
-    $storage = $this->container->get('entity_type.manager')->getStorage('rules_reaction_rule');
-
-    // Create a rule and add a condition via ConditionExpressionContainer
-    // without specifying a second parameter for the configuation.
-    $rule = $expression_manager->createRule();
-    $rule->addCondition('rules_list_contains');
-    // Add an action via ActionExpressionContainer without a config parameter.
-    $rule->addAction('rules_list_item_add');
-    $config_entity = $storage->create([
-      'id' => 'test_rule',
-      'expression' => $rule->getConfiguration(),
-    ]);
-    $config_entity->save();
-
     /** @var \Drupal\Tests\WebAssert $assert */
     $assert = $this->assertSession();
 
+    $expression_manager = $this->container->get('plugin.manager.rules_expression');
+    $storage = $this->container->get('entity_type.manager')->getStorage('rules_reaction_rule');
+
+    // Create a rule.
+    $rule1 = $expression_manager->createRule();
+
+    // Set a condition using ExpressionManager createCondition() without
+    // specifying a second parameter for the configuration.
+    $condition = $expression_manager->createCondition('rules_user_is_blocked');
+    $rule1->addExpressionObject($condition);
+
+    // Add an action using ExpressionManager createAction() without a second
+    // configuration parameter.
+    $action = $expression_manager->createAction('rules_user_unblock');
+    $rule1->addExpressionObject($action);
+
+    $config_entity = $storage->create([
+      'id' => 'test_rule1',
+      'expression' => $rule1->getConfiguration(),
+    ]);
+    $config_entity->save();
+
     // Check that the rule edit page can be displayed.
-    $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule');
+    $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule1');
+    $assert->statusCodeEquals(200);
+    $assert->pageTextContains('Edit reaction rule');
+
+    // Repeat the above using the alternative ConditionExpressionContainer
+    // addCondition() and addAction() functions, again without specifying a
+    // second parameter for the configuration.
+    $rule2 = $expression_manager->createRule();
+    $rule2->addCondition('rules_list_contains');
+    $rule2->addAction('rules_list_item_add');
+    $config_entity = $storage->create([
+      'id' => 'test_rule2',
+      'expression' => $rule2->getConfiguration(),
+    ]);
+    $config_entity->save();
+
+    // Check that the rule edit page can be displayed.
+    $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule2');
     $assert->statusCodeEquals(200);
     $assert->pageTextContains('Edit reaction rule');
   }
