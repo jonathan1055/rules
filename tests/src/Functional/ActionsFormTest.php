@@ -14,7 +14,7 @@ class ActionsFormTest extends RulesBrowserTestBase {
    *
    * @var array
    */
-  protected static $modules = ['node', 'rules', 'typed_data'];
+  protected static $modules = ['node', 'rules', 'rules_ban', 'typed_data'];
 
   /**
    * We use the minimal profile because we want to test local action links.
@@ -127,6 +127,8 @@ class ActionsFormTest extends RulesBrowserTestBase {
       ['rules_user_role_remove', []],
       ['rules_user_unblock', []],
       ['rules_variable_add', []],
+      ['rules_ban_ip', []],
+      ['rules_unban_ip', []],
     ];
   }
 

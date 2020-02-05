@@ -14,7 +14,7 @@ class ConditionsFormTest extends RulesBrowserTestBase {
    *
    * @var array
    */
-  protected static $modules = ['node', 'rules', 'typed_data'];
+  protected static $modules = ['node', 'rules', 'rules_ban', 'typed_data'];
 
   /**
    * We use the minimal profile because we want to test local action links.
@@ -115,6 +115,7 @@ class ConditionsFormTest extends RulesBrowserTestBase {
       ['rules_entity_field_access', []],
       ['rules_user_has_role', []],
       ['rules_user_is_blocked', []],
+      ['rules_ip_is_banned', []],
     ];
   }
 
