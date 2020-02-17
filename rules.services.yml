@@ -68,3 +68,19 @@ services:
     arguments: ['@plugin.manager.rules_ui']
     tags:
       - { name: event_subscriber }
+
+  rules.current_path_context:
+    class: Drupal\rules\ContextProvider\CurrentPathContext
+    arguments: ['@path.current']
+    tags:
+      - { name: context_provider }
+  rules.current_date_context:
+    class: Drupal\rules\ContextProvider\CurrentDateContext
+    arguments: ['@datetime.time']
+    tags:
+      - { name: context_provider }
+  rules.site_context:
+    class: Drupal\rules\ContextProvider\SiteContext
+    arguments: ['@config.factory']
+    tags:
+      - { name: context_provider }
