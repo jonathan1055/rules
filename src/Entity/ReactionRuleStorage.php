@@ -115,16 +115,19 @@ class ReactionRuleStorage extends ConfigEntityStorage {
     // not.
     $events_before = $this->getRegisteredEvents();
     $return = parent::save($entity);
+    $events_after = $this->getRegisteredEvents();
 
     // Update the state of registered events.
-    $this->stateService->set('rules.registered_events', $this->getRegisteredEvents());
+    $this->stateService->set('rules.registered_events', $events_after);
 
-    // After the reaction rule is saved, we need to rebuild the container,
+    // After the reaction rule is saved, we may need to rebuild the container,
     // otherwise the reaction rule will not fire. However, we can do an
-    // optimization: if every event was already registered before, we do not
-    // have to rebuild the container.
+    // optimization: Only rebuild the container if there is a new event which
+    // was not already registered before. Similarly if the rule is being
+    // disabled and there are no other active rules with this event, then also
+    // rebuild the container.
     foreach ($entity->getEventNames() as $event_name) {
-      if (empty($events_before[$event_name])) {
+      if (empty($events_before[$event_name]) || empty($events_after[$event_name])) {
         $this->drupalKernel->rebuildContainer();
         break;
       }

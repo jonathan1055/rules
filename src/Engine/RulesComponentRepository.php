@@ -101,15 +101,17 @@ class RulesComponentRepository implements RulesComponentRepositoryInterface {
       }
       if ($cids_missing) {
         $resolved_results = $this->resolvers[$provider]->getMultiple(array_keys($cids_missing));
-        $cache_items = [];
-        foreach ($resolved_results as $id => $component) {
-          $cid = $cids[$id];
-          $this->components[$cid] = $component;
-          $results[$cid] = $component;
-          $cache_items[$cid]['data'] = $component;
+        if ($resolved_results) {
+          $cache_items = [];
+          foreach ($resolved_results as $id => $component) {
+            $cid = $cids[$id];
+            $this->components[$cid] = $component;
+            $results[$cid] = $component;
+            $cache_items[$cid]['data'] = $component;
+          }
+          // Cache entries to speed up future lookups.
+          $this->cacheBackend->setMultiple($cache_items);
         }
-        // Cache entries to speed up future lookups.
-        $this->cacheBackend->setMultiple($cache_items);
       }
     }
     return $results;

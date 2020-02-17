@@ -97,6 +97,14 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     $this->pressButton('Save');
     $assert->pageTextContains('Title matched "Test title"!');
 
+    // Add a second node with the same title and check the rule triggers again.
+    // This tests that the cache update (or non-update) works OK.
+    // @see https://www.drupal.org/project/rules/issues/3108494
+    $this->drupalGet('node/add/article');
+    $this->fillField('Title', 'Test title');
+    $this->pressButton('Save');
+    $assert->pageTextContains('Title matched "Test title"!');
+
     // Edit the rule and negate the condition.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule');
     $this->clickLink('Edit', 0);
