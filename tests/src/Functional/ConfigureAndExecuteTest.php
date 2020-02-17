@@ -105,6 +105,24 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     $this->pressButton('Save');
     $assert->pageTextContains('Title matched "Test title"!');
 
+    // Disable rule and make sure it doesn't get triggered.
+    $this->drupalGet('admin/config/workflow/rules');
+    $this->clickLink('Disable');
+
+    $this->drupalGet('node/add/article');
+    $this->fillField('Title', 'Test title');
+    $this->pressButton('Save');
+    $assert->pageTextNotContains('Title matched "Test title"!');
+
+    // Re-enable the rule and make sure it gets triggered again.
+    $this->drupalGet('admin/config/workflow/rules');
+    $this->clickLink('Enable');
+
+    $this->drupalGet('node/add/article');
+    $this->fillField('Title', 'Test title');
+    $this->pressButton('Save');
+    $assert->pageTextContains('Title matched "Test title"!');
+
     // Edit the rule and negate the condition.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule');
     $this->clickLink('Edit', 0);

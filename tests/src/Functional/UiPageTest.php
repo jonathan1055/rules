@@ -77,6 +77,26 @@ class UiPageTest extends RulesBrowserTestBase {
   }
 
   /**
+   * Tests that enabling and disabling a rule works.
+   */
+  public function testRuleStatusOperations() {
+    // Setup an active rule.
+    $this->testCreateReactionRule();
+    $this->drupalGet('admin/config/workflow/rules');
+
+    /** @var \Drupal\Tests\WebAssert $assert */
+    $assert = $this->assertSession();
+
+    // Test disabling.
+    $this->clickLink('Disable');
+    $assert->pageTextContains('The reaction rule Test rule has been disabled.');
+
+    // Test enabling.
+    $this->clickLink('Enable');
+    $assert->pageTextContains('The reaction rule Test rule has been enabled.');
+  }
+
+  /**
    * Tests that cancelling an expression from a rule works.
    */
   public function testCancelExpressionInRule() {
