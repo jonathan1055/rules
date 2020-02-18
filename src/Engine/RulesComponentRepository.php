@@ -108,6 +108,8 @@ class RulesComponentRepository implements RulesComponentRepositoryInterface {
             $this->components[$cid] = $component;
             $results[$cid] = $component;
             $cache_items[$cid]['data'] = $component;
+            // Set tags so that we can use invalidateTags later when needed.
+            $cache_items[$cid]['tags'] = [$id];
           }
           // Cache entries to speed up future lookups.
           $this->cacheBackend->setMultiple($cache_items);

@@ -2,6 +2,7 @@
 
 namespace Drupal\rules\Entity;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\MemoryCache\MemoryCacheInterface;
 use Drupal\Core\Config\Entity\ConfigEntityStorage;
 use Drupal\Core\DrupalKernelInterface;
@@ -133,6 +134,11 @@ class ReactionRuleStorage extends ConfigEntityStorage {
       }
     }
 
+    // When a reaction rule is saved (either added, updated or enabled/disabled)
+    // the cache for its event(s) needs to be invalidated. These tags are set in
+    // RulesComponentRepository::getMultiple()
+    Cache::invalidateTags($entity->getEventNames());
+
     return $return;
   }
 
@@ -140,6 +146,11 @@ class ReactionRuleStorage extends ConfigEntityStorage {
    * {@inheritdoc}
    */
   public function delete(array $entities) {
+    // When a rule is deleted the cache for its event(s) must be invalidated.
+    foreach ($entities as $entity) {
+      Cache::invalidateTags($entity->getEventNames());
+    }
+
     // After deleting a set of reaction rules, sometimes we may need to rebuild
     // the container, to clean it up, so that the generic subscriber is not
     // registered in the container for the rule events which we do not use

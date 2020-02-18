@@ -2,6 +2,8 @@
 
 namespace Drupal\Tests\rules\Functional;
 
+use Drupal\rules\Context\ContextConfig;
+
 /**
  * Tests that a rule can be configured and triggered when a node is edited.
  *
@@ -46,6 +48,7 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
 
     $this->account = $this->drupalCreateUser([
       'create article content',
+      'edit any article content',
       'administer rules',
       'administer site configuration',
     ]);
@@ -131,16 +134,140 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     // One more save to permanently store the rule.
     $this->pressButton('Save');
 
-    // Need to clear cache so that the edited version will be used.
-    // @todo Can this be removed when
-    // https://www.drupal.org/project/rules/issues/2769511 is fixed?
-    drupal_flush_all_caches();
-
     // Create node with same title and check that the message is not shown.
     $this->drupalGet('node/add/article');
     $this->fillField('Title', 'Test title');
     $this->pressButton('Save');
     $assert->pageTextNotContains('Title matched "Test title"!');
+  }
+
+  /**
+   * Tests creating and altering two rules reacting on the same event.
+   */
+  public function testTwoRulesSameEvent() {
+    $expressionManager = $this->container->get('plugin.manager.rules_expression');
+    $storage = $this->container->get('entity_type.manager')->getStorage('rules_reaction_rule');
+
+    /** @var \Drupal\Tests\WebAssert $assert */
+    $assert = $this->assertSession();
+
+    $this->drupalLogin($this->account);
+
+    // Create a rule that will show a system message when updating a node whose
+    // title contains "Two Rules Same Event".
+    $rule1 = $expressionManager->createRule();
+    // Add the condition to the rule.
+    $rule1->addCondition('rules_data_comparison',
+        ContextConfig::create()
+          ->map('data', 'node.title.value')
+          ->setValue('operation', 'contains')
+          ->setValue('value', 'Two Rules Same Event')
+    );
+    // Add the action to the rule.
+    $message1 = 'RULE ONE is triggered';
+    $rule1->addAction('rules_system_message',
+        ContextConfig::create()
+          ->setValue('message', $message1)
+          ->setValue('type', 'status')
+    );
+    // Add the event and save the rule configuration.
+    $config_entity = $storage->create([
+      'id' => 'rule1',
+      'label' => 'Rule One',
+      'events' => [['event_name' => 'rules_entity_presave:node']],
+      'expression' => $rule1->getConfiguration(),
+    ]);
+    $config_entity->save();
+
+    // Add a node and check that rule 1 is triggered.
+    $this->drupalPostForm('node/add/article', ['title[0][value]' => 'Two Rules Same Event'], 'Save');
+    $node = $this->drupalGetNodeByTitle('Two Rules Same Event');
+    $assert->pageTextContains($message1);
+
+    // Repeat to create a second similar rule.
+    $rule2 = $expressionManager->createRule();
+    // Add the condition to the rule.
+    $rule2->addCondition('rules_data_comparison',
+        ContextConfig::create()
+          ->map('data', 'node.title.value')
+          ->setValue('operation', 'contains')
+          ->setValue('value', 'Two Rules Same Event')
+    );
+    // Add the action to the rule.
+    $message2 = 'RULE TWO is triggered';
+    $rule2->addAction('rules_system_message',
+        ContextConfig::create()
+          ->setValue('message', $message2)
+          ->setValue('type', 'status')
+    );
+    // Add the event and save the rule configuration.
+    $config_entity = $storage->create([
+      'id' => 'rule2',
+      'label' => 'Rule Two',
+      'events' => [['event_name' => 'rules_entity_presave:node']],
+      'expression' => $rule2->getConfiguration(),
+    ]);
+    $config_entity->save();
+
+    // Edit the node and check that both rules are triggered.
+    $this->drupalPostForm('node/' . $node->id() . '/edit/', [], 'Save');
+    $assert->pageTextContains($message1);
+    $assert->pageTextContains($message2);
+
+    // Disable rule 2.
+    $this->drupalGet('admin/config/workflow/rules');
+    $this->clickLinkByHref('disable/rule2');
+
+    // Edit the node and check that only rule 1 is triggered.
+    $this->drupalPostForm('node/' . $node->id() . '/edit/', [], 'Save');
+    $assert->pageTextContains($message1);
+    $assert->pageTextNotContains($message2);
+
+    // Re-enable rule 2.
+    $this->drupalGet('admin/config/workflow/rules');
+    $this->clickLinkByHref('enable/rule2');
+
+    // Check that both rules are triggered.
+    $this->drupalPostForm('node/' . $node->id() . '/edit/', [], 'Save');
+    $assert->pageTextContains($message1);
+    $assert->pageTextContains($message2);
+
+    // Edit rule 1 and change the message text in the action.
+    $message1updated = 'RULE ONE has a new message.';
+    $this->drupalGet('admin/config/workflow/rules/reactions/edit/rule1');
+    $this->clickLink('Edit', 1);
+    $this->fillField('context_definitions[message][setting]', $message1updated);
+    // Save the action then save the rule.
+    $this->pressButton('Save');
+    $this->pressButton('Save');
+
+    // Check that rule 1 now shows the updated text message.
+    $this->drupalPostForm('node/' . $node->id() . '/edit/', [], 'Save');
+    $assert->pageTextNotContains($message1);
+    $assert->pageTextContains($message1updated);
+    $assert->pageTextContains($message2);
+
+    // Delete rule 1.
+    $this->drupalGet('admin/config/workflow/rules');
+    $this->clickLinkByHref('delete/rule1');
+    $this->pressButton('Delete');
+
+    // Check that only Rule 2's message is shown.
+    $this->drupalPostForm('node/' . $node->id() . '/edit/', [], 'Save');
+    $assert->pageTextNotContains($message1);
+    $assert->pageTextNotContains($message1updated);
+    $assert->pageTextContains($message2);
+
+    // Disable rule 2.
+    $this->drupalGet('admin/config/workflow/rules');
+    $this->clickLinkByHref('disable/rule2');
+
+    // Check that neither rule's message is shown.
+    $this->drupalPostForm('node/' . $node->id() . '/edit/', [], 'Save');
+    $assert->pageTextNotContains($message1);
+    $assert->pageTextNotContains($message1updated);
+    $assert->pageTextNotContains($message2);
+
   }
 
   /**
