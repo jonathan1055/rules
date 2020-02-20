@@ -12,7 +12,7 @@ env:
     # Make the script re-usable for other modules.
     - MODULE=rules
     # Allow this many deprecation warnings before failing the build.
-    - SYMFONY_DEPRECATIONS_HELPER=2690
+    - SYMFONY_DEPRECATIONS_HELPER=2725
   jobs:
     - DRUPAL_CORE=8.7.x
     - DRUPAL_CORE=8.8.x
@@ -79,9 +79,9 @@ before_script:
       travis_retry composer run-script drupal-phpunit-upgrade;
     fi
 
-  # Core 8.7 has more deprecation warnings because it tests 46 more assertions.
+  # Core 8.7 has more deprecation warnings because it executes more assertions.
   - if [ $DRUPAL_CORE == "8.7.x" ]; then
-      SYMFONY_DEPRECATIONS_HELPER=3162;
+      SYMFONY_DEPRECATIONS_HELPER=3231;
     fi
   - echo $SYMFONY_DEPRECATIONS_HELPER
 
