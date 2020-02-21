@@ -44,7 +44,7 @@ function rules_page_top(array &$page_top) {
     // system logging setting 'debug_log.system_debug' is enabled.
     // These logs get sent to the system dblog, end up in the Drupal database,
     // and are viewable at /admin/reports/dblog.
-    if (\Drupal::configFactory('rules.settings')->get('debug_log.system_debug')) {
+    if (\Drupal::config('rules.settings')->get('debug_log.system_debug')) {
       \Drupal::service('logger.channel.rules')->log(LogLevel::DEBUG, $markup, []);
     }
   }
@@ -59,7 +59,7 @@ function rules_page_attachments(array &$attachments) {
   // We need JavaScript and CSS to render the debug log properly
   // and to provide the expand/collapse functionality.
   if (\Drupal::currentUser()->hasPermission('access rules debug')) {
-    if (\Drupal::configFactory('rules.settings')->get('debug_log.enabled')) {
+    if (\Drupal::config('rules.settings')->get('debug_log.enabled')) {
       $attachments['#attached']['library'][] = 'rules/rules.debug';
     }
   }
