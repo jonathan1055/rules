@@ -12,7 +12,7 @@ env:
     # Make the script re-usable for other modules.
     - MODULE=rules
     # Allow this many deprecation warnings before failing the build.
-    - SYMFONY_DEPRECATIONS_HELPER=2725
+    - SYMFONY_DEPRECATIONS_HELPER=3909
   jobs:
     - DRUPAL_CORE=8.7.x
     - DRUPAL_CORE=8.8.x
@@ -81,7 +81,7 @@ before_script:
 
   # Core 8.7 has more deprecation warnings because it executes more assertions.
   - if [ $DRUPAL_CORE == "8.7.x" ]; then
-      SYMFONY_DEPRECATIONS_HELPER=3231;
+      SYMFONY_DEPRECATIONS_HELPER=4731;
     fi
   - echo $SYMFONY_DEPRECATIONS_HELPER
 
