@@ -11,7 +11,7 @@ use Drupal\rules\Core\RulesConditionBase;
  * @Condition(
  *   id = "rules_node_is_sticky",
  *   label = @Translation("Node is sticky"),
- *   category = @Translation("Node"),
+ *   category = @Translation("Content"),
  *   context_definitions = {
  *     "node" = @ContextDefinition("entity:node",
  *       label = @Translation("Node"),
