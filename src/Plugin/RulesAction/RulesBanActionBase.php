@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\rules_ban\Plugin\RulesAction;
+namespace Drupal\rules\Plugin\RulesAction;
 
 use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Provides a base class for rules_ban module actions.
+ * Provides a base class for rules module IP ban actions.
  */
 abstract class RulesBanActionBase extends RulesActionBase implements ContainerFactoryPluginInterface {
 

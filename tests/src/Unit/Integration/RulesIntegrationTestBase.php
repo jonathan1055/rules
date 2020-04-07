@@ -178,7 +178,11 @@ abstract class RulesIntegrationTestBase extends UnitTestCase {
     $enabled_modules = $this->enabledModules;
     $this->moduleHandler->moduleExists(Argument::type('string'))
       ->will(function ($arguments) use ($enabled_modules) {
-        return [$arguments[0], $enabled_modules[$arguments[0]]];
+        if (isset($enabled_modules[$arguments[0]])) {
+          return [$arguments[0], $enabled_modules[$arguments[0]]];
+        }
+        // Handle case where a plugin provider module is not enabled.
+        return [$arguments[0], FALSE];
       });
 
     // We don't care about alter() calls on the module handler.

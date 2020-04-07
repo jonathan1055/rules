@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\rules_ban\Unit\Integration\Condition;
+namespace Drupal\Tests\rules\Unit\Integration\Condition;
 
 use Drupal\Core\Plugin\Context\Context;
 use Drupal\ban\BanIpManagerInterface;
@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * @coversDefaultClass \Drupal\rules_ban\Plugin\Condition\IpIsBanned
+ * @coversDefaultClass \Drupal\rules\Plugin\Condition\IpIsBanned
  * @group RulesCondition
  */
 class IpIsBannedTest extends RulesIntegrationTestBase {
@@ -43,11 +43,7 @@ class IpIsBannedTest extends RulesIntegrationTestBase {
    */
   protected function setUp() {
     parent::setUp();
-
-    // Must enable our module to make its plugins discoverable.
-    $this->enableModule('rules_ban');
-
-    // We also need the ban module.
+    // Must enable the ban module.
     $this->enableModule('ban');
     $this->banManager = $this->prophesize(BanIpManagerInterface::class);
     $this->container->set('ban.ip_manager', $this->banManager->reveal());

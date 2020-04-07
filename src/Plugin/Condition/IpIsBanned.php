@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\rules_ban\Plugin\Condition;
+namespace Drupal\rules\Plugin\Condition;
 
 use Drupal\ban\BanIpManagerInterface;
 use Drupal\rules\Core\RulesConditionBase;
@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
  *   id = "rules_ip_is_banned",
  *   label = @Translation("IP address is banned"),
  *   category = @Translation("Ban"),
+ *   provider = "ban",
  *   context_definitions = {
  *     "ip" = @ContextDefinition("string",
  *       label = @Translation("IP Address"),

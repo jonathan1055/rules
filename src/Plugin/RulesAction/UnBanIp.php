@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\rules_ban\Plugin\RulesAction;
+namespace Drupal\rules\Plugin\RulesAction;
 
 /**
  * Provides the 'Remove the ban on an IP address' action.
@@ -9,6 +9,7 @@ namespace Drupal\rules_ban\Plugin\RulesAction;
  *   id = "rules_unban_ip",
  *   label = @Translation("Remove the ban on an IP address"),
  *   category = @Translation("Ban"),
+ *   provider = "ban",
  *   context_definitions = {
  *     "ip" = @ContextDefinition("string",
  *       label = @Translation("IP Address"),
