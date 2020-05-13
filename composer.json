@@ -2,7 +2,7 @@
     "name": "drupal/rules",
     "description": "React on events and conditionally evaluate actions.",
     "type": "drupal-module",
-    "license": "GPL-2.0+",
+    "license": "GPL-2.0-or-later",
     "homepage": "https://www.drupal.org/project/rules",
     "support": {
         "issues": "https://www.drupal.org/project/issues/rules",
