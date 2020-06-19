@@ -131,26 +131,18 @@ trait ContextHandlerIntegrityTrait {
   protected function checkDataTypeCompatible(CoreContextDefinitionInterface $context_definition, DataDefinitionInterface $provided, $context_name, IntegrityViolationList $violation_list) {
     $expected_type = $context_definition->getDataDefinition()->getDataType();
     $provided_type = $provided->getDataType();
-    $this->messenger()->addWarning('>> ' . $context_definition->getLabel() . ': $expected_type=' . $expected_type . ', $provided_type=' . $provided_type, TRUE);
-    // Special case 'any' and 'entity' expected types for now.
-    if ($expected_type == 'any' || ($expected_type == 'entity' && strpos($provided_type, 'entity:') !== FALSE)) {
-      $this->messenger()->addWarning('any or entity, OK return', TRUE);
+    if ($expected_type == $provided_type) {
       return;
     }
 
-    if ($expected_type == $provided_type) {
-      $this->messenger()->addWarning('$expected_type == $provided_type, OK return', TRUE);
+    // Make a special case for 'any' and 'entity' expected types for now.
+    if ($expected_type == 'any' || ($expected_type == 'entity' && strpos($provided_type, 'entity:') !== FALSE)) {
       return;
     }
 
     $provided_class = $provided->getClass();
     $expected_class = $context_definition->getDataDefinition()->getClass();
-    $this->messenger()->addWarning('$expected_class=' . $expected_class . ', $provided_class=' . $provided_class, TRUE);
-    $this->messenger()->addWarning('expected is subclass of provided: ' . (is_subclass_of($expected_class, $provided_class) ? 'Yes' : 'No'), TRUE);
-    $this->messenger()->addWarning('provided is subclass of expected: ' . (is_subclass_of($provided_class, $expected_class) ? 'Yes' : 'No'), TRUE);
-
     if (is_subclass_of($expected_class, $provided_class)) {
-      $this->messenger()->addWarning('expected (' . $expected_type . ') is subclass of provided (' . $provided_type . ') so OK', TRUE);
       return;
     }
 
