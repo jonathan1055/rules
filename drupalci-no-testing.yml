@@ -1,0 +1,20 @@
+# See docs at https://www.drupal.org/drupalorg/docs/drupal-ci/customizing-drupalci-testing-for-projects
+build:
+  assessment:
+    validate_codebase:
+      host_command:
+        commands:
+      container_command:
+        commands:
+      phplint:
+      container_composer:
+      csslint:
+      eslint:
+      phpcs:
+        sniff-all-files: true
+    testing:
+      # container_command:
+      #   commands:
+      # run_tests.standard:
+      #   types: 'Simpletest,PHPUnit-Unit,PHPUnit-Kernel,PHPUnit-Functional'
+      #   suppress-deprecations: false

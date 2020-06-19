@@ -75,6 +75,13 @@ class ConditionsFormTest extends RulesBrowserTestBase {
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/' . $expr_id . '/edit/' . $condition->getUuid());
     $assert->statusCodeEquals(200);
     $assert->pageTextContains('Edit ' . $condition->getLabel());
+
+    // Assert that the field uses the correct widget, identified by class.
+    if (isset($settings['widgets'])) {
+      foreach ($settings['widgets'] as $field => $widget_id) {
+        $assert->elementExists('xpath', "//fieldset[@id='edit-context-definitions-$field' and contains(@class, 'widget-$widget_id')]");
+      }
+    }
   }
 
   /**

@@ -27,7 +27,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *       label = @Translation("Subject"),
  *       description = @Translation("The email's subject.")
  *     ),
- *     "message" = @ContextDefinition("string",
+ *     "message" = @ContextDefinition("text",
  *       label = @Translation("Message"),
  *       description = @Translation("The email's message body.")
  *     ),

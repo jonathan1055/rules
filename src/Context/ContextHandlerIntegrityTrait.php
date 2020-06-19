@@ -129,26 +129,40 @@ trait ContextHandlerIntegrityTrait {
    *   The list of violations where new ones will be added.
    */
   protected function checkDataTypeCompatible(CoreContextDefinitionInterface $context_definition, DataDefinitionInterface $provided, $context_name, IntegrityViolationList $violation_list) {
-    // Compare data types. For now, fail if they are not equal.
-    // @todo Add support for matching based upon type-inheritance.
-    $target_type = $context_definition->getDataDefinition()->getDataType();
-
-    // Special case any and entity target types for now.
-    if ($target_type == 'any' || ($target_type == 'entity' && strpos($provided->getDataType(), 'entity:') !== FALSE)) {
+    $expected_type = $context_definition->getDataDefinition()->getDataType();
+    $provided_type = $provided->getDataType();
+    $this->messenger()->addWarning('>> ' . $context_definition->getLabel() . ': $expected_type=' . $expected_type . ', $provided_type=' . $provided_type, TRUE);
+    // Special case 'any' and 'entity' expected types for now.
+    if ($expected_type == 'any' || ($expected_type == 'entity' && strpos($provided_type, 'entity:') !== FALSE)) {
+      $this->messenger()->addWarning('any or entity, OK return', TRUE);
       return;
     }
-    if ($target_type != $provided->getDataType()) {
-      $expected_type_problem = $context_definition->getDataDefinition()->getDataType();
-      $violation = new IntegrityViolation();
-      $violation->setMessage($this->t('Expected a @expected_type data type for context %context_name but got a @provided_type data type instead.', [
-        '@expected_type' => $expected_type_problem,
-        '%context_name' => $context_definition->getLabel(),
-        '@provided_type' => $provided->getDataType(),
-      ]));
-      $violation->setContextName($context_name);
-      $violation->setUuid($this->getUuid());
-      $violation_list->add($violation);
+
+    if ($expected_type == $provided_type) {
+      $this->messenger()->addWarning('$expected_type == $provided_type, OK return', TRUE);
+      return;
     }
+
+    $provided_class = $provided->getClass();
+    $expected_class = $context_definition->getDataDefinition()->getClass();
+    $this->messenger()->addWarning('$expected_class=' . $expected_class . ', $provided_class=' . $provided_class, TRUE);
+    $this->messenger()->addWarning('expected is subclass of provided: ' . (is_subclass_of($expected_class, $provided_class) ? 'Yes' : 'No'), TRUE);
+    $this->messenger()->addWarning('provided is subclass of expected: ' . (is_subclass_of($provided_class, $expected_class) ? 'Yes' : 'No'), TRUE);
+
+    if (is_subclass_of($expected_class, $provided_class)) {
+      $this->messenger()->addWarning('expected (' . $expected_type . ') is subclass of provided (' . $provided_type . ') so OK', TRUE);
+      return;
+    }
+
+    $violation = new IntegrityViolation();
+    $violation->setMessage($this->t('Expected a %allowed_type data type for context %context_name but got a %provided_type data type instead.', [
+      '%allowed_type' => $expected_type,
+      '%context_name' => $context_definition->getLabel(),
+      '%provided_type' => $provided->getDataType(),
+    ]));
+    $violation->setContextName($context_name);
+    $violation->setUuid($this->getUuid());
+    $violation_list->add($violation);
   }
 
 }
