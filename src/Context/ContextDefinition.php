@@ -2,8 +2,6 @@
 
 namespace Drupal\rules\Context;
 
-// Use Drupal\Core\Extension\ModuleHandlerInterface;
-// Currently have \Drupal::moduleHandler() instead.
 use Drupal\Core\Plugin\Context\ContextDefinition as ContextDefinitionCore;
 use Drupal\Component\Plugin\Exception\ContextException;
 
@@ -44,13 +42,6 @@ class ContextDefinition extends ContextDefinitionCore implements ContextDefiniti
    * @see \Drupal\rules\Context\ContextDefinitionInterface::getAssignmentRestriction()
    */
   protected $assignmentRestriction = NULL;
-
-  /**
-   * The module handler service.
-   *
-   * @var \Drupal\Core\Extension\ModuleHandlerInterface
-   */
-  protected $moduleHandler;
 
   /**
    * An array of data type => widget id pairs.
@@ -183,6 +174,7 @@ class ContextDefinition extends ContextDefinitionCore implements ContextDefiniti
    *
    * @todo this function should be moved into the typed_data module. But whilst
    * still developing the integration of widgets in Rules it can stay here.
+   * Inject $this->moduleHandler instead of calling \Drupal::moduleHandler() ?
    *
    * @param string $dataType
    *   The datatype to check.
