@@ -213,4 +213,44 @@ class UiPageTest extends RulesBrowserTestBase {
     $assert->statusCodeEquals(200);
   }
 
+  /**
+   * Tests configuring a data selector for a field that expects a list of data.
+   */
+  public function testMultipleContextActionWithDataSelection() {
+    $account = $this->drupalCreateUser(['administer rules']);
+    $this->drupalLogin($account);
+
+    /** @var \Drupal\Tests\WebAssert $assert */
+    $assert = $this->assertSession();
+
+    $this->drupalGet('admin/config/workflow/rules');
+    $this->clickLink('Add reaction rule');
+
+    $this->fillField('Label', 'Test rule - Multiple context via selection');
+    $this->fillField('Machine-readable name', 'test_rule_3');
+    $this->fillField('React on event', 'rules_entity_insert:node');
+
+    $this->pressButton('Save');
+
+    $this->clickLink('Add action');
+    $this->fillField('Action', 'rules_send_email');
+    $this->pressButton('Continue');
+
+    // The Send Mail action 'To' context variable has 'multiple=TRUE'. A value
+    // should also be allowed via data selection.
+    $this->pressButton('Switch to data selection');
+
+    $this->fillField('context_definitions[to][setting]', 'node.uid.entity.mail.value');
+    $this->fillField('context_definitions[subject][setting]', 'subject');
+    $this->fillField('context_definitions[message][setting]', 'message');
+    $this->pressButton('Save');
+
+    $assert->addressEquals('admin/config/workflow/rules/reactions/edit/test_rule_3');
+    $assert->pageTextContains('You have unsaved changes.');
+
+    // Try to edit the action.
+    $this->clickLink('Edit');
+    $this->assertEquals(1, preg_match('#/admin/config/workflow/rules/reactions/edit/test_rule_3/edit/.*#', $this->getSession()->getCurrentUrl()));
+  }
+
 }
