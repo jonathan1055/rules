@@ -52,6 +52,14 @@ trait ContextFormTrait {
       $default_value = $context_definition->getDefaultValue();
     }
 
+    // Temporary fix: Cast default value to an array if context definition has
+    // 'multiple = TRUE' so that the action can be edited without a fatal error.
+    // @todo Remove when integrity check prevents the wrong type being saved.
+    // @see https://www.drupal.org/project/rules/issues/2723259
+    if ($context_definition->isMultiple() && is_scalar($default_value)) {
+      $default_value = [$default_value];
+    }
+
     // Derive the widget id using the context definition data type. Take only
     // the first word before : so that entity:user gives entity.
     $dataType = explode(':', $context_definition->getDataType())[0];
@@ -115,7 +123,7 @@ trait ContextFormTrait {
       $form['context_definitions'][$context_name][$input_name]['#title'] = $title;
     }
 
-    // Extract the element we have just added.
+    // Extract the (last) element we have just added.
     $element = &$form['context_definitions'][$context_name][$input_name];
 
     if ($mode == ContextDefinitionInterface::ASSIGNMENT_RESTRICTION_SELECTOR) {
