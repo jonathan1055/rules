@@ -46,7 +46,7 @@ class IntegrityCheckTest extends RulesEntityIntegrationTestBase {
     $violation = $violation_list[0];
     // The Exception message part of the output should be HTML-escaped.
     $this->assertEquals(
-      "Data selector <em class=\"placeholder\">unknown_variable</em> for context <em class=\"placeholder\">Entity</em> is invalid. Unable to get variable &#039;unknown_variable&#039;; it is not defined.",
+      "Data selector <em class=\"placeholder\">unknown_variable</em> for context <em class=\"placeholder\">Entity</em> is invalid. IntegrityException: Unable to get variable &#039;unknown_variable&#039;; it is not defined.",
       (string) $violation->getMessage()
     );
     $this->assertEquals($action->getUuid(), $violation->getUuid());
@@ -76,7 +76,7 @@ class IntegrityCheckTest extends RulesEntityIntegrationTestBase {
     $violation = $uuid_violations[0];
     // The Exception message part of the output should be HTML-escaped.
     $this->assertEquals(
-      "Data selector <em class=\"placeholder\">unknown_variable_2</em> for context <em class=\"placeholder\">Entity</em> is invalid. Unable to get variable &#039;unknown_variable_2&#039;; it is not defined.",
+      "Data selector <em class=\"placeholder\">unknown_variable_2</em> for context <em class=\"placeholder\">Entity</em> is invalid. IntegrityException: Unable to get variable &#039;unknown_variable_2&#039;; it is not defined.",
       (string) $violation->getMessage()
     );
     $this->assertEquals($second_action->getUuid(), $violation->getUuid());

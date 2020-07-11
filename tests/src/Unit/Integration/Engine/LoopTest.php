@@ -199,7 +199,7 @@ class LoopTest extends RulesEntityIntegrationTestBase {
     $this->assertEquals(1, iterator_count($violations));
     // The Exception message part of the output should be HTML-escaped.
     $this->assertEquals(
-      "List variable <em class=\"placeholder\">unknown_list</em> does not exist. Unable to get variable &#039;unknown_list&#039;; it is not defined.",
+      "List variable <em class=\"placeholder\">unknown_list</em> does not exist. IntegrityException: Unable to get variable &#039;unknown_list&#039;; it is not defined.",
       (string) $violations[0]->getMessage()
     );
   }
@@ -244,7 +244,7 @@ class LoopTest extends RulesEntityIntegrationTestBase {
     $this->assertEquals(1, iterator_count($violations));
     // The Exception message part of the output should be HTML-escaped.
     $this->assertEquals(
-      "Data selector <em class=\"placeholder\">unknown_variable</em> for context <em class=\"placeholder\">Text to concatenate</em> is invalid. Unable to get variable &#039;unknown_variable&#039;; it is not defined.",
+      "Data selector <em class=\"placeholder\">unknown_variable</em> for context <em class=\"placeholder\">Text to concatenate</em> is invalid. IntegrityException: Unable to get variable &#039;unknown_variable&#039;; it is not defined.",
       (string) $violations[0]->getMessage()
     );
   }
@@ -291,7 +291,7 @@ class LoopTest extends RulesEntityIntegrationTestBase {
     $this->assertEquals(1, iterator_count($violations));
     // The Exception message part of the output should be HTML-escaped.
     $this->assertEquals(
-      "Data selector <em class=\"placeholder\">list_item</em> for context <em class=\"placeholder\">Text to concatenate</em> is invalid. Unable to get variable &#039;list_item&#039;; it is not defined.",
+      "Data selector <em class=\"placeholder\">list_item</em> for context <em class=\"placeholder\">Text to concatenate</em> is invalid. IntegrityException: Unable to get variable &#039;list_item&#039;; it is not defined.",
       (string) $violations[0]->getMessage()
     );
   }
