@@ -60,7 +60,7 @@ class ExecutionMetadataState implements ExecutionMetadataStateInterface {
    */
   public function getDataDefinition($name) {
     if (!array_key_exists($name, $this->dataDefinitions)) {
-      throw new IntegrityException("Unable to get variable '$name'; it is not defined.");
+      throw new IntegrityException("IntegrityException: Unable to get variable '$name'; it is not defined.");
     }
     return $this->dataDefinitions[$name];
   }

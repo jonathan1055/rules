@@ -52,7 +52,7 @@ class ActionsFormTest extends RulesBrowserTestBase {
    *
    * @dataProvider dataActionsFormWidgets()
    */
-  public function testActionsFormWidgets($id, $settings) {
+  public function testActionsFormWidgets($id, $widgets = [], $values = [], $selectors = []) {
     $expressionManager = $this->container->get('plugin.manager.rules_expression');
     $storage = $this->container->get('entity_type.manager')->getStorage('rules_reaction_rule');
 
@@ -69,72 +69,115 @@ class ActionsFormTest extends RulesBrowserTestBase {
     $config_entity = $storage->create([
       'id' => $expr_id,
       'expression' => $rule->getConfiguration(),
+      // Specify a node event to make the node... selector values available.
+      'events' => [['event_name' => 'rules_entity_update:node']],
     ]);
     $config_entity->save();
     // Edit the action and check that the page is generated without error.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/' . $expr_id . '/edit/' . $action->getUuid());
     $assert->statusCodeEquals(200);
     $assert->pageTextContains('Edit ' . $action->getLabel());
+
+    // If any field values have been specified then fill in the form and save.
+    if (!empty($values)) {
+
+      // Switch to data selector if required by the test settings.
+      if (!empty($selectors)) {
+        foreach ($selectors as $name) {
+          $this->pressButton('edit-context-definitions-' . $name . '-switch-button');
+        }
+      }
+
+      // Fill each given field with the value provided.
+      foreach ($values as $name => $value) {
+        $this->fillField('edit-context-definitions-' . $name . '-setting', $value);
+      }
+
+      // Check that the action can be saved OK.
+      $this->pressButton('Save');
+      $assert->pageTextNotContains('Error message');
+      $assert->addressEquals('admin/config/workflow/rules/reactions/edit/' . $expr_id);
+      $assert->pageTextContains('You have unsaved changes.');
+
+      // Save the rule.
+      $this->pressButton('Save');
+      $assert->pageTextContains("Reaction rule $expr_id has been updated");
+    }
+
   }
 
   /**
    * Provides data for testActionsFormWidgets().
    *
    * @return array
-   *   The test data.
+   *   The test data, all optional except the test id. The elements are:
+   *     test id
+   *     array of field names to widget ids
+   *     array of field names to values
+   *     array of field names which should have the selector button pressed
    */
   public function dataActionsFormWidgets() {
     return [
-      ['rules_data_calculate_value', [
-        'widgets' => [
+      ['rules_data_calculate_value',
+        // Widgets.
+        [
           'input-1' => 'text-input',
           'operator' => 'text-input',
           'input-2' => 'text-input',
         ],
-      ],
-      ],
-      ['rules_data_convert', []],
-      ['rules_list_item_add', []],
-      ['rules_list_item_remove', []],
-      ['rules_data_set', []],
-      ['rules_entity_create:node', []],
-      ['rules_entity_create:user', []],
-      ['rules_entity_delete', []],
-      ['rules_entity_fetch_by_field', []],
-      ['rules_entity_fetch_by_id', []],
-      ['rules_entity_path_alias_create:entity:node', []],
-      ['rules_entity_save', []],
-      ['rules_node_make_sticky', []],
-      ['rules_node_make_unsticky', []],
-      ['rules_node_publish', []],
-      ['rules_node_unpublish', []],
-      ['rules_node_promote', []],
-      ['rules_node_unpromote', []],
-      ['rules_path_alias_create', []],
-      ['rules_path_alias_delete_by_alias', []],
-      ['rules_path_alias_delete_by_path', []],
-      ['rules_send_account_email', []],
-      ['rules_email_to_users_of_role', [
-        'widgets' => [
-          'message' => 'textarea',
+        // Values.
+        [
+          'input-1' => '5',
+          'operator' => '+',
+          'input-2' => '22',
         ],
+        // Selectors.
       ],
+      ['rules_data_convert'],
+      ['rules_list_item_add'],
+      ['rules_list_item_remove'],
+      ['rules_data_set'],
+      ['rules_entity_create:node'],
+      ['rules_entity_create:user'],
+      ['rules_entity_delete'],
+      ['rules_entity_fetch_by_field'],
+      ['rules_entity_fetch_by_id'],
+      ['rules_entity_path_alias_create:entity:node'],
+      ['rules_entity_save'],
+      ['rules_node_make_sticky',
+        [],
+        ['node' => 'node'],
       ],
-      ['rules_system_message', []],
-      ['rules_page_redirect', []],
-      ['rules_send_email', [
-        'widgets' => [
-          'message' => 'textarea',
+      ['rules_node_make_unsticky'],
+      ['rules_node_publish'],
+      ['rules_node_unpublish'],
+      ['rules_node_promote'],
+      ['rules_node_unpromote'],
+      ['rules_path_alias_create'],
+      ['rules_path_alias_delete_by_alias'],
+      ['rules_path_alias_delete_by_path'],
+      ['rules_send_account_email'],
+      ['rules_email_to_users_of_role',
+        ['message' => 'textarea'],
+      ],
+      ['rules_system_message'],
+      ['rules_page_redirect'],
+      ['rules_send_email',
+        ['message' => 'textarea'],
+        [
+          'to' => 'node.uid.entity.mail.value',
+          'subject' => 'Some testing subject',
+          'message' => 'The main message',
         ],
+        ['to'],
       ],
-      ],
-      ['rules_user_block', []],
-      ['rules_user_role_add', []],
-      ['rules_user_role_remove', []],
-      ['rules_user_unblock', []],
-      ['rules_variable_add', []],
-      ['rules_ban_ip', []],
-      ['rules_unban_ip', []],
+      ['rules_user_block'],
+      ['rules_user_role_add'],
+      ['rules_user_role_remove'],
+      ['rules_user_unblock'],
+      ['rules_variable_add'],
+      ['rules_ban_ip'],
+      ['rules_unban_ip'],
     ];
   }
 
