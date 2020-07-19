@@ -13,10 +13,10 @@ use Drupal\Tests\rules\Unit\Integration\RulesEntityIntegrationTestBase;
 use Prophecy\Argument;
 
 /**
- * @coversDefaultClass \Drupal\rules\Plugin\RulesAction\SystemMailToUsersOfRole
+ * @coversDefaultClass \Drupal\rules\Plugin\RulesAction\SystemEmailToUsersOfRole
  * @group RulesAction
  */
-class SystemMailToUsersOfRoleTest extends RulesEntityIntegrationTestBase {
+class SystemEmailToUsersOfRoleTest extends RulesEntityIntegrationTestBase {
 
   /**
    * @var \Drupal\Core\Logger\LoggerChannelInterface|\Prophecy\Prophecy\ProphecyInterface
