@@ -78,13 +78,13 @@ class SendAccountEmail extends RulesActionBase implements ContainerFactoryPlugin
 
     // Log the success or failure.
     if (!$message['result']) {
-      $this->logger->notice('%type e-mail sent to %recipient.', [
+      $this->logger->notice('%type email sent to %recipient.', [
         '%type' => $email_type,
         '%recipient' => $user->mail,
       ]);
     }
     else {
-      $this->logger->error('Failed to send %type e-mail to %recipient.', [
+      $this->logger->error('Failed to send %type email to %recipient.', [
         '%type' => $email_type,
         '%recipient' => $user->mail,
       ]);

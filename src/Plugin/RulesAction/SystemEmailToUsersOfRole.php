@@ -29,7 +29,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     ),
  *     "message" = @ContextDefinition("string",
  *       label = @Translation("Message"),
- *       description = @Translation("The email's message body.")
+ *       description = @Translation("The email's message body. Drupal will by default remove all HTML tags. If you want to use HTML you must override this behavior by installing a contributed module such as Mime Mail.")
  *     ),
  *     "reply" = @ContextDefinition("email",
  *       label = @Translation("Reply to"),
@@ -48,7 +48,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @todo Add access callback information from Drupal 7.
  */
-class SystemMailToUsersOfRole extends RulesActionBase implements ContainerFactoryPluginInterface {
+class SystemEmailToUsersOfRole extends RulesActionBase implements ContainerFactoryPluginInterface {
 
   /**
    * @var \Drupal\Core\Logger\LoggerChannelInterface
@@ -66,7 +66,7 @@ class SystemMailToUsersOfRole extends RulesActionBase implements ContainerFactor
   protected $userStorage;
 
   /**
-   * Constructs a SendMailToUsersOfRole object.
+   * Constructs a SystemEmailToUsersOfRole object.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.

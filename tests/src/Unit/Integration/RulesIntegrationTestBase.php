@@ -8,7 +8,6 @@ use Drupal\Core\DependencyInjection\ClassResolverInterface;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
-use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\Discovery\RecursiveExtensionFilterIterator;
@@ -37,11 +36,6 @@ use Prophecy\Argument;
  * to delete an entity would mock the call to the entity API.
  */
 abstract class RulesIntegrationTestBase extends UnitTestCase {
-
-  /**
-   * @var \Drupal\Core\Entity\EntityManagerInterface|\Prophecy\Prophecy\ProphecyInterface
-   */
-  protected $entityManager;
 
   /**
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface|\Prophecy\Prophecy\ProphecyInterface
@@ -216,10 +210,6 @@ abstract class RulesIntegrationTestBase extends UnitTestCase {
 
     $this->aliasManager = $this->prophesize(AliasManagerInterface::class);
 
-    // Keep the deprecated entity manager around because it is still used in a
-    // few places.
-    $this->entityManager = $this->prophesize(EntityManagerInterface::class);
-
     $this->entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);
     $this->entityTypeManager->getDefinitions()->willReturn([]);
 
@@ -243,7 +233,6 @@ abstract class RulesIntegrationTestBase extends UnitTestCase {
     // Mock the Rules debug logger service and make it return our mocked logger.
     $this->logger = $this->prophesize(LoggerChannelInterface::class);
 
-    $container->set('entity.manager', $this->entityManager->reveal());
     $container->set('entity_type.manager', $this->entityTypeManager->reveal());
     $container->set('entity_field.manager', $this->entityFieldManager->reveal());
     $container->set('entity_type.bundle.info', $this->entityTypeBundleInfo->reveal());

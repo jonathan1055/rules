@@ -93,8 +93,6 @@ abstract class RulesEntityIntegrationTestBase extends RulesIntegrationTestBase {
 
       $this->entityTypeManager->getDefinition($type)
         ->willReturn($entity_type);
-      $this->entityManager->getDefinition($type)
-        ->willReturn($entity_type);
     }
 
     // We need a user_role mock as well.
@@ -107,8 +105,6 @@ abstract class RulesEntityIntegrationTestBase extends RulesIntegrationTestBase {
 
     $this->entityTypeManager->getDefinitions()
       ->willReturn($type_array);
-    $this->entityManager->getDefinitions()
-      ->willReturn($type_array);
 
     $this->entityAccess = $this->prophesize(EntityAccessControlHandlerInterface::class);
 
@@ -119,14 +115,10 @@ abstract class RulesEntityIntegrationTestBase extends RulesIntegrationTestBase {
     // require additional mocking. It doesn't appear that any of our tests rely
     // on this for any other entity type that we are mocking.
     $this->entityFieldManager->getBaseFieldDefinitions(Argument::any())->willReturn([]);
-    $this->entityManager->getBaseFieldDefinitions(Argument::any())->willReturn([]);
 
     // Return some dummy bundle information for now, so that the entity manager
     // does not call out to the config entity system to get bundle information.
     $this->entityTypeBundleInfo->getBundleInfo(Argument::any())
-      ->willReturn(['test' => ['label' => 'Test']]);
-
-    $this->entityManager->getBundleInfo(Argument::any())
       ->willReturn(['test' => ['label' => 'Test']]);
 
     $this->moduleHandler->getImplementations('entity_type_build')
