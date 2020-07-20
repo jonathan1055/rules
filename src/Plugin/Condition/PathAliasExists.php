@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "rules_path_alias_exists",
  *   label = @Translation("Path alias exists"),
  *   category = @Translation("Path"),
+ *   provider = "path_alias",
  *   context_definitions = {
  *     "alias" = @ContextDefinition("string",
  *       label = @Translation("Path alias"),

@@ -10,11 +10,15 @@ namespace Drupal\Tests\rules\Functional;
 class ActionsFormTest extends RulesBrowserTestBase {
 
   /**
-   * Modules to enable.
-   *
-   * @var array
+   * {@inheritdoc}
    */
-  protected static $modules = ['node', 'ban', 'rules', 'typed_data'];
+  protected static $modules = [
+    'node',
+    'ban',
+    'path_alias',
+    'rules',
+    'typed_data',
+  ];
 
   /**
    * We use the minimal profile because we want to test local action links.
