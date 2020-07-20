@@ -25,6 +25,7 @@ class ContextDefinition extends ContextDefinitionCore implements ContextDefiniti
     'constraints' => 'constraints',
     'allow_null' => 'allowNull',
     'assignment_restriction' => 'assignmentRestriction',
+    'list_options_callback' => 'listOptionsCallback',
   ];
 
   /**
@@ -42,6 +43,13 @@ class ContextDefinition extends ContextDefinitionCore implements ContextDefiniti
    * @see \Drupal\rules\Context\ContextDefinitionInterface::getAssignmentRestriction()
    */
   protected $assignmentRestriction = NULL;
+
+  /**
+   * Name of callback function to generate options for select list.
+   *
+   * @var string|null
+   */
+  protected $listOptionsCallback = NULL;
 
   /**
    * {@inheritdoc}
@@ -114,6 +122,21 @@ class ContextDefinition extends ContextDefinitionCore implements ContextDefiniti
    */
   public function setAssignmentRestriction($restriction) {
     $this->assignmentRestriction = $restriction;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getListOptionsCallback() {
+    return $this->listOptionsCallback;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setListOptionsCallback($callback) {
+    $this->listOptionsCallback = $callback;
     return $this;
   }
 

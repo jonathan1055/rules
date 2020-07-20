@@ -53,15 +53,18 @@ trait ContextFormTrait {
     else {
       $default_value = $context_definition->getDefaultValue();
     }
+    // Set initial values for the input field.
     $form['context_definitions'][$context_name]['setting'] = [
       '#type' => 'textfield',
       '#title' => $title,
       '#required' => $context_definition->isRequired(),
       '#default_value' => $default_value,
+      '#multiple' => $context_definition->isMultiple(),
     ];
 
     $element = &$form['context_definitions'][$context_name]['setting'];
 
+    // Modify the element if doing data selection.
     if ($mode == ContextDefinitionInterface::ASSIGNMENT_RESTRICTION_SELECTOR) {
       $element['#description'] = $this->t("The data selector helps you drill down into the available data. <em>To make entity fields appear in the data selector, you may have to use the condition 'entity has field' (or 'content is of type').</em> More useful tips about data selection is available in <a href=':url'>the online documentation</a>.", [
         ':url' => 'https://www.drupal.org/node/1300042',
@@ -72,15 +75,24 @@ trait ContextFormTrait {
       $element['#attributes']['data-autocomplete-path'] = $url->toString();
       $element['#attached']['library'][] = 'rules/rules.autocomplete';
     }
+    // Modify the element if it is a selection list.
+    elseif (!empty($configuration['list_options'])) {
+      $element['#type'] = 'select';
+      $element['#options'] = $configuration['list_options'];
+      $element['#description'] = $element['#multiple'] ? $this->t('Select any number of values.') : $this->t('Select a value from the list.');
+    }
+    // Modify the element to allow multiple text entries using textarea.
     elseif ($context_definition->isMultiple()) {
       $element['#type'] = 'textarea';
-      // @todo Get a description for possible values that can be filled in.
       $element['#description'] = $this->t('Enter one value per line for this multi-valued context.');
-
       // Glue the list of values together as one item per line in the text area.
       if (is_array($default_value)) {
         $element['#default_value'] = implode("\n", $default_value);
       }
+    }
+    // The element is a simple single entry text field.
+    else {
+      $element['#description'] = $this->t('Enter the value directly.');
     }
 
     // If the context is not restricted to one mode or the other then provide a
@@ -148,15 +160,21 @@ trait ContextFormTrait {
           $context_config->map($context_name, $value['setting']);
         }
         else {
-          // Each line of the textarea is one value for 'multiple' contexts.
           if ($context_definitions[$context_name]->isMultiple()) {
-            // Textareas should always have \r\n line breaks, but for more
-            // robust parsing we should also accommodate just \n or just \r.
-            //
-            // Additionally, we want to remove leading and trailing whitespace
-            // from each line, and discard any empty lines.
-            $values = preg_split('/\s*\R\s*/', $value['setting'], NULL, PREG_SPLIT_NO_EMPTY);
-            $context_config->setValue($context_name, $values);
+            if (!empty($context_definitions[$context_name]->getListOptionsCallback())) {
+              // This is a select list with multiple values allowed.
+              $context_config->setValue($context_name, array_keys($value['setting']));
+            }
+            else {
+              // Each line of the textarea is one value for 'multiple' contexts.
+              // Textareas should always have \r\n line breaks, but for more
+              // robust parsing we should also accommodate just \n or just \r.
+              //
+              // Additionally, we want to remove leading and trailing whitespace
+              // from each line, and discard any empty lines.
+              $values = preg_split('/\s*\R\s*/', $value['setting'], NULL, PREG_SPLIT_NO_EMPTY);
+              $context_config->setValue($context_name, $values);
+            }
           }
           else {
             $context_config->setValue($context_name, $value['setting']);

@@ -23,16 +23,17 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     ),
  *     "type" = @ContextDefinition("string",
  *       label = @Translation("Message type"),
- *       description = @Translation("The message type: status, warning, or error."),
  *       default_value = "status",
- *       required = FALSE
+ *       required = FALSE,
+ *       list_options_callback = "messageTypeListOptions"
  *     ),
  *     "repeat" = @ContextDefinition("boolean",
  *       label = @Translation("Repeat message"),
  *       description = @Translation("If disabled and the message has been already shown, then the message won't be repeated."),
  *       assignment_restriction = "input",
  *       default_value = TRUE,
- *       required = FALSE
+ *       required = FALSE,
+ *       list_options_callback = "repeatListOptions"
  *     ),
  *   }
  * )
@@ -93,6 +94,34 @@ class SystemMessage extends RulesActionBase implements ContainerFactoryPluginInt
     $message = Xss::filterAdmin($message);
     $repeat = (bool) $repeat;
     $this->messenger->addMessage(Markup::create($message), $type, $repeat);
+  }
+
+  /**
+   * Returns an array of statuses that we can set for the drupal_set_message().
+   *
+   * @return array
+   *   An array of status options keyed on the status name.
+   */
+  public function messageTypeListOptions() {
+    return [
+      'info' => $this->t('Info'),
+      'status' => $this->t('Status'),
+      'warning' => $this->t('Warning'),
+      'error' => $this->t('Error'),
+    ];
+  }
+
+  /**
+   * Returns a YES/NO option set for selecting whether to repeat the message.
+   *
+   * @return array
+   *   A YES/NO options array.
+   */
+  public function repeatListOptions() {
+    return [
+      0 => $this->t('No'),
+      1 => $this->t('Yes'),
+    ];
   }
 
 }

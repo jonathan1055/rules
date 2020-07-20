@@ -70,4 +70,24 @@ interface ContextDefinitionInterface extends ContextDefinitionInterfaceCore {
    */
   public function toArray();
 
+  /**
+   * Retrieves the select options callback.
+   *
+   * @return string|null
+   *   The name of the callback function to be used to generate options for a
+   *   select list in the UI.
+   */
+  public function getListOptionsCallback();
+
+  /**
+   * Sets the select options callback.
+   *
+   * @param string $name
+   *   The name of the callback function to be used to generate options for a
+   *   select list in the UI.
+   *
+   * @return $this
+   */
+  public function setListOptionsCallback($name);
+
 }

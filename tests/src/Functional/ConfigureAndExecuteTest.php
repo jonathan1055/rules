@@ -16,7 +16,12 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
    *
    * @var array
    */
-  protected static $modules = ['node', 'rules'];
+  protected static $modules = [
+    'ban',
+    'comment',
+    'node',
+    'rules',
+  ];
 
   /**
    * We use the minimal profile because we want to test local action links.
@@ -52,27 +57,47 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
       'administer rules',
       'administer site configuration',
     ]);
+    $this->drupalLogin($this->account);
+  }
+
+  /**
+   * Helper function to create a reaction rule.
+   *
+   * @param string $label
+   *   The label for the new rule.
+   * @param string $machine_name
+   *   The internal machine-readable name.
+   * @param string $event
+   *   The name of the event to react on.
+   * @param string $description
+   *   Optional description for the reaction rule.
+   *
+   * @return ReactionRule
+   *   The rule object created.
+   */
+  protected function createRule($label, $machine_name, $event, $description = '') {
+    $this->drupalGet('admin/config/workflow/rules');
+    $this->clickLink('Add reaction rule');
+    $this->fillField('Label', $label);
+    $this->fillField('Machine-readable name', $machine_name);
+    $this->fillField('React on event', $event);
+    $this->fillField('Description', $description);
+    $this->pressButton('Save');
+    $this->assertSession()->pageTextContains('Reaction rule ' . $label . ' has been created');
+    $config_factory = $this->container->get('config.factory');
+    $rule = $config_factory->get('rules.reaction.' . $machine_name);
+    return $rule;
   }
 
   /**
    * Tests creation of a rule and then triggering its execution.
    */
   public function testConfigureAndExecute() {
-    $this->drupalLogin($this->account);
-
-    $this->drupalGet('admin/config/workflow/rules');
-
     // Set up a rule that will show a system message if the title of a node
     // matches "Test title".
-    $this->clickLink('Add reaction rule');
-
-    $this->fillField('Label', 'Test rule');
-    $this->fillField('Machine-readable name', 'test_rule');
-    $this->fillField('React on event', 'rules_entity_presave:node');
-    $this->pressButton('Save');
+    $this->createRule('Test rule', 'test_rule', 'rules_entity_presave:node');
 
     $this->clickLink('Add condition');
-
     $this->fillField('Condition', 'rules_data_comparison');
     $this->pressButton('Continue');
 
@@ -142,6 +167,318 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
   }
 
   /**
+   * Test to add each condition provided by Rules.
+   *
+   * @param string $id
+   *   The id of the condition.
+   * @param string $desc
+   *   The text description of the condition.
+   * @param array $required
+   *   Array of fields to fill. The key is form field name and the value is the
+   *   text to fill into the field. This should hold just the fields which are
+   *   required and do not have any default value. Use an empty array if there
+   *   are no fields or all fields have a default.
+   * @param array $defaults
+   *   Array of defaults which should be stored without having to select the
+   *   value in the form.
+   *
+   * @dataProvider dataAddConditions()
+   */
+  public function testAddConditions($id, $desc, array $required = [], array $defaults = []) {
+    $label = 'Check condition ' . $id;
+    $this->createRule($label, 'test_rule', 'rules_entity_presave:node', "$desc\nid=$id");
+    $this->clickLink('Add condition');
+    $this->fillField('Condition', $id);
+    $this->pressButton('Continue');
+
+    /** @var \Drupal\Tests\WebAssert $assert */
+    $assert = $this->assertSession();
+
+    // Save the form. If $required is not empty then we should get error(s) so
+    // verify this, then fill in the specified fields and try to save again.
+    $this->pressButton('Save');
+    if (!empty($required)) {
+      // Check that an error message is shown.
+      $assert->pageTextContains('Error message');
+      // Fill in the required fields.
+      foreach ($required as $field => $value) {
+        $this->fillField($field, $value);
+      }
+      $this->pressButton('Save');
+    }
+    // Assert that the rule has saved correctly with no error message.
+    $assert->pageTextNotContains('Error message');
+    $assert->pageTextContains('Edit reaction rule "' . $label . '"');
+    $assert->pageTextContains($desc);
+    $this->pressButton('Save');
+    $assert->pageTextNotContains('Error message');
+    $assert->pageTextContains('Reaction rule ' . $label . ' has been updated');
+    // @todo Check that all values ($required and $defaults) have been stored.
+  }
+
+  /**
+   * Provides data for testAddConditions().
+   *
+   * The format of the array is:
+   *   key => [
+   *     rules condition id,
+   *     text description,
+   *     array of required values,
+   *     array of default values,
+   *    ]
+   * For consistency the key is the rules id without the rules_ prefix and with
+   * spaces instead of _ and only the first word capitalized.
+   *
+   * @return array
+   *   The test data.
+   */
+  public function dataAddConditions() {
+    // Instead of directly returning the full set of test data, create variable
+    // $data to hold it. This allows for manipulation before the final return.
+    $data = [
+      // Data.
+      'Data comparison' => [
+        'rules_data_comparison',
+        'Data Comparison',
+        ['context_definitions[data][setting]' => 'node.status.value', 'context_definitions[value][setting]' => TRUE],
+        ['operation' => '=='],
+      ],
+      'Data is empty' => [
+        'rules_data_is_empty',
+        'Data value is empty',
+        ['context_definitions[data][setting]' => 'node.uid.entity.name.value'],
+      ],
+      'List contains' => [
+        'rules_list_contains',
+        'List contains item',
+        ['context_definitions[list][setting]' => 'node.uid', 'context_definitions[item][setting]' => 'something'],
+      ],
+      'List count is' => [
+        'rules_list_count_is',
+        'List Count Comparison',
+        ['context_definitions[list][setting]' => 'node.uid.entity.roles', 'context_definitions[value][setting]' => 2],
+        ['operator' => '=='],
+      ],
+      // Entity.
+      'Entity has field' => [
+        'rules_entity_has_field',
+        'Entity has field',
+        ['context_definitions[entity][setting]' => 'node', 'context_definitions[field][setting]' => 'mail'],
+      ],
+      'Entity is new' => [
+        'rules_entity_is_new',
+        'Entity is new',
+        ['context_definitions[entity][setting]' => 'node'],
+      ],
+      'Entity is of bundle' => [
+        'rules_entity_is_of_bundle',
+        'Entity is of bundle', [
+          'context_definitions[entity][setting]' => 'node',
+          'context_definitions[type][setting]' => 'node',
+          'context_definitions[bundle][setting]' => 'article',
+        ],
+      ],
+      'Entity is of type' => [
+        'rules_entity_is_of_type',
+        'Entity is of TYPE',
+        ['context_definitions[entity][setting]' => 'node', 'context_definitions[type][setting]' => 'user'],
+      ],
+      // Node.
+      'Node is promoted' => [
+        'rules_node_is_promoted',
+        'Node is promoted',
+        ['context_definitions[node][setting]' => 'node'],
+      ],
+      'Node is published' => [
+        'rules_node_is_published',
+        'Node is published',
+        ['context_definitions[node][setting]' => 'node'],
+      ],
+      'Node is sticky' => [
+        'rules_node_is_sticky',
+        'Node is sticky',
+        ['context_definitions[node][setting]' => 'node'],
+      ],
+      'Node is of type' => [
+        'rules_node_is_of_type',
+        'Node is of type',
+        ['context_definitions[node][setting]' => 'node', 'context_definitions[types][setting][]' => 'article'],
+      ],
+      // Path.
+      'Path alias exists' => [
+        'rules_path_alias_exists',
+        'Path alias exists',
+        ['context_definitions[alias][setting]' => 'something'],
+        ['context_definitions[language][setting]' => 'something'],
+      ],
+      'Path has alias' => [
+        'rules_path_has_alias',
+        'Path has alias',
+        ['context_definitions[path][setting]' => 'something'],
+        ['context_definitions[language][setting]' => 'something'],
+      ],
+      // User.
+      'Entity field access' => [
+        'rules_entity_field_access',
+        'User has entity field access', [
+          'context_definitions[user][setting]' => '@user.current_user_context:current_user',
+          'context_definitions[entity][setting]' => 'node',
+          'context_definitions[field][setting]' => 'changed',
+        ],
+        ['context_definitions[operation][setting]' => 'view'],
+      ],
+      'User has role' => [
+        'rules_user_has_role',
+        'User has role',
+        ['context_definitions[user][setting]' => 'someone', 'context_definitions[roles][setting][]' => 'authenticated'],
+        ['operation' => 'AND'],
+      ],
+      'User is blocked' => [
+        'rules_user_is_blocked',
+        'User is blocked',
+        ['context_definitions[user][setting]' => 'someone'],
+      ],
+    ];
+    // Can use unset to remove an item. Use return [$data['The key to test']] to
+    // selectively test just one item, or return $data to test everything.
+    return $data;
+  }
+
+  /**
+   * Test to add each action provided by Rules.
+   *
+   * @param string $id
+   *   The id of the action.
+   * @param string $desc
+   *   The text description of the action.
+   * @param array $required
+   *   Array of fields to fill. The key is form field name and the value is the
+   *   text to fill into the field. This should hold just the fields which are
+   *   required and do not have any default value. Use an empty array if there
+   *   are no fields or all fields have a default.
+   * @param array $defaults
+   *   Array of defaults which should be stored without having to select the
+   *   value in the form.
+   *
+   * @dataProvider dataAddActions()
+   */
+  public function testAddActions($id, $desc, array $required = [], array $defaults = []) {
+    $label = 'Check action ' . $id;
+    $this->createRule($label, 'test_rule', 'rules_entity_presave:node', "$desc\nid=$id");
+    $this->clickLink('Add action');
+    $this->fillField('Action', $id);
+    $this->pressButton('Continue');
+
+    /** @var \Drupal\Tests\WebAssert $assert */
+    $assert = $this->assertSession();
+
+    // Save the form. If $required is not empty then we should get error(s) so
+    // verify this, then fill in the specified fileds and try to save again.
+    $this->pressButton('Save');
+    if (!empty($required)) {
+      // Check that an error message is shown.
+      $assert->pageTextContains('Error message');
+      // Fill in the required fields.
+      foreach ($required as $field => $value) {
+        // If the field is a role and the value is blank then get the role name.
+        if ($field == 'context_definitions[roles][setting][]' && $value == '') {
+          $value = $this->account->getRoles()[1];
+        }
+        $this->fillField($field, $value);
+      }
+      $this->pressButton('Save');
+    }
+    // Assert that the rule has saved correctly with no error message.
+    $assert->pageTextNotContains('Error message');
+    $assert->pageTextContains('Edit reaction rule "' . $label . '"');
+    $assert->pageTextContains($desc);
+    $this->pressButton('Save');
+    $assert->pageTextNotContains('Error message');
+    $assert->pageTextContains('Reaction rule ' . $label . ' has been updated');
+    // @todo Check that all values ($required and $defaults) have been stored.
+  }
+
+  /**
+   * Provides data for testAddActions().
+   *
+   * The format of the array is:
+   *   key => [
+   *     rules action id,
+   *     text description,
+   *     array of required values,
+   *     array of default values,
+   *    ]
+   * For consistency the key is the rules id without the rules_ prefix and with
+   * spaces instead of _ and only the first word capitalized.
+   *
+   * @return array
+   *   The test data.
+   */
+  public function dataAddActions() {
+    // Instead of directly returning the full set of test data, create variable
+    // $data to hold it. This allows for manipulation before the final return.
+    $data = [
+      // Ban.
+      'Ban ip' => [
+        'rules_ban_ip',
+        'Ban an IP address',
+        [],
+        ['context_definitions[ip][setting]' => ''],
+      ],
+      // Comment.
+      'Entity create comment' => [
+        'rules_entity_create:comment',
+        'Entity Create Comment',
+        [
+          'context_definitions[comment_type][setting]' => 'comment',
+          'context_definitions[entity_id][setting]' => '5',
+          'context_definitions[entity_type][setting]' => 'node',
+        ],
+      ],
+      // Content.
+      'Entity create node' => [
+        'rules_entity_create:node',
+        'Create a new content',
+        ['context_definitions[type][setting]' => 'article', 'context_definitions[title][setting]' => 'Cakes'],
+      ],
+      // System.
+      'System message' => [
+        'rules_system_message',
+        'Show a message on the site',
+        ['context_definitions[message][setting]' => 'Here is the news', 'context_definitions[type][setting]' => 'status'],
+        ['context_definitions[repeat][setting]' => 'no'],
+      ],
+      // User.
+      'User add role' => [
+        'rules_user_role_add',
+        'Add user role',
+        ['context_definitions[user][setting]' => 'someone', 'context_definitions[roles][setting][]' => ''],
+      ],
+      'User block' => [
+        'rules_user_block',
+        'Block a user',
+        ['context_definitions[user][setting]' => 'someone'],
+      ],
+      'User remove role' => [
+        'rules_user_role_remove',
+        'Remove user role',
+        ['context_definitions[user][setting]' => 'someone', 'context_definitions[roles][setting][]' => ''],
+      ],
+
+    ];
+
+    // rules_entity_create:comment fails with PluginNotFoundException:
+    // 'The "entity:comment:comment" plugin does not exist'. Hence remove this
+    // test case temporarily. It works OK via interactive UI but not in tests.
+    // @todo Fix this.
+    unset($data['Entity create comment']);
+
+    // Can use unset to remove an item. Use return [$data['The key to test']] to
+    // selectively test just one item, or return $data to test everything.
+    return $data;
+  }
+
+  /**
    * Tests creating and altering two rules reacting on the same event.
    */
   public function testTwoRulesSameEvent() {
@@ -150,8 +487,6 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
 
     /** @var \Drupal\Tests\WebAssert $assert */
     $assert = $this->assertSession();
-
-    $this->drupalLogin($this->account);
 
     // Create a rule that will show a system message when updating a node whose
     // title contains "Two Rules Same Event".
@@ -274,26 +609,20 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
    * Tests user input in context form for 'multiple' valued context variables.
    */
   public function testMultipleInputContext() {
-    $this->drupalLogin($this->account);
-
+    // Set up a rule. The event is not relevant, we just want a rule to use.
+    // $rule = $this->createRule('Test Multiple Input', 'test_rule', 'rules_entity_insert:node');
     $this->drupalGet('admin/config/workflow/rules');
-
-    // Set up a rule that will check the node type of a newly-created node.
-    // The node type is the 'multiple' valued textarea we will test.
     $this->clickLink('Add reaction rule');
-
-    $this->fillField('Label', 'Test rule');
+    $this->fillField('Label', 'Test Multiple Input via UI');
     $this->fillField('Machine-readable name', 'test_rule');
     $this->fillField('React on event', 'rules_entity_insert:node');
     $this->pressButton('Save');
 
-    $this->clickLink('Add condition');
-
-    // Use node_is_of_type because the types field has 'multiple = TRUE'.
-    $this->fillField('Condition', 'rules_node_is_of_type');
+    // Add action rules_send_email because the 'to' field has 'multiple = TRUE'
+    // rendered as a textarea that we can use for this test.
+    $this->clickLink('Add action');
+    $this->fillField('Action', 'rules_send_email');
     $this->pressButton('Continue');
-
-    $this->fillField('context_definitions[node][setting]', 'node');
 
     $suboptimal_user_input = [
       "  \r\nwhitespace at beginning of input\r\n",
@@ -314,7 +643,12 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
       "terminator nr\n\r",
       "whitespace at end of input\r\n        \r\n",
     ];
-    $this->fillField('context_definitions[types][setting]', implode($suboptimal_user_input));
+    $this->fillField('context_definitions[to][setting]', implode($suboptimal_user_input));
+
+    // Set the other required field. These play no part in the test.
+    $this->fillField('context_definitions[subject][setting]', 'Hello');
+    $this->fillField('context_definitions[message][setting]', 'Hello');
+
     $this->pressButton('Save');
 
     // One more save to permanently store the rule.
@@ -342,17 +676,21 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
       "terminator nr",
       "whitespace at end of input",
     ];
+    // Need to get the $rule again, as the existing $rule does not have the
+    // changes added above and $rule->get('expression.actions...) is empty.
+    // @todo Is there a way to refersh $rule and not have to get it again?
     $config_factory = $this->container->get('config.factory');
+    $config_factory->clearStaticCache();
     $rule = $config_factory->get('rules.reaction.test_rule');
-    $this->assertEquals($expected_config_value, $rule->get('expression.conditions.conditions.0.context_values.types'));
+
+    $to = $rule->get('expression.actions.actions.0.context_values.to');
+    $this->assertEquals($expected_config_value, $to);
   }
 
   /**
    * Tests the implementation of assignment restriction in context form.
    */
   public function testAssignmentRestriction() {
-    $this->drupalLogin($this->account);
-
     $expression_manager = $this->container->get('plugin.manager.rules_expression');
     $storage = $this->container->get('entity_type.manager')->getStorage('rules_reaction_rule');
 
