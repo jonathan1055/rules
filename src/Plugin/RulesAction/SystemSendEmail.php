@@ -28,7 +28,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     ),
  *     "message" = @ContextDefinition("text",
  *       label = @Translation("Message"),
- *       description = @Translation("The email's message body. This must be plain text, but may contain tokens.")
+ *       description = @Translation("The email's message body. Drupal will by default remove all HTML tags. If you want to use HTML you must override this behavior by installing a contributed module such as Mime Mail.")
  *     ),
  *     "reply" = @ContextDefinition("email",
  *       label = @Translation("Reply to"),
