@@ -37,29 +37,29 @@ class DataConvertTest extends RulesIntegrationTestBase {
 
     // Test the conversion to integer.
     $converted = $this->executeAction($value, 'integer');
-    $this->assertInternalType('integer', $converted->getValue());
+    $this->assertIsInt($converted->getValue());
     $this->assertEquals('integer', $converted->getDataDefinition()->getDataType());
 
     // Test the conversion to integer and floor down.
     $converted = $this->executeAction($value, 'integer', 'down');
-    $this->assertInternalType('integer', $converted->getValue());
+    $this->assertIsInt($converted->getValue());
     $this->assertEquals(1, $converted->getValue());
     $this->assertEquals('integer', $converted->getDataDefinition()->getDataType());
 
     // Test the conversion to integer and ceil up.
     $converted = $this->executeAction($value, 'integer', 'up');
-    $this->assertInternalType('integer', $converted->getValue());
+    $this->assertIsInt($converted->getValue());
     $this->assertEquals('integer', $converted->getDataDefinition()->getDataType());
     $this->assertEquals(2, $converted->getValue());
 
     // Test the conversion to integer and round.
     $converted = $this->executeAction($value, 'integer', 'round');
-    $this->assertInternalType('integer', $converted->getValue());
+    $this->assertIsInt($converted->getValue());
     $this->assertEquals('integer', $converted->getDataDefinition()->getDataType());
     $this->assertEquals(2, $converted->getValue());
 
     $converted = $this->executeAction('+123', 'integer');
-    $this->assertInternalType('integer', $converted->getValue());
+    $this->assertIsInt($converted->getValue());
     $this->assertEquals('integer', $converted->getDataDefinition()->getDataType());
     $this->assertEquals(123, $converted->getValue());
   }
@@ -73,12 +73,12 @@ class DataConvertTest extends RulesIntegrationTestBase {
     $value = '1.5';
 
     $converted = $this->executeAction($value, 'float');
-    $this->assertInternalType('float', $converted->getValue());
+    $this->assertIsFloat($converted->getValue());
     $this->assertEquals('float', $converted->getDataDefinition()->getDataType());
     $this->assertEquals(1.5, $converted->getValue());
 
     $converted = $this->executeAction('+1.5', 'float');
-    $this->assertInternalType('float', $converted->getValue());
+    $this->assertIsFloat($converted->getValue());
     $this->assertEquals('float', $converted->getDataDefinition()->getDataType());
     $this->assertEquals(1.5, $converted->getValue());
   }
@@ -93,7 +93,7 @@ class DataConvertTest extends RulesIntegrationTestBase {
     $value = 1.5;
 
     $converted = $this->executeAction($value, 'string');
-    $this->assertInternalType('string', $converted->getValue());
+    $this->assertIsString($converted->getValue());
     $this->assertEquals('string', $converted->getDataDefinition()->getDataType());
     $this->assertEquals('1.5', $converted->getValue());
   }
@@ -122,7 +122,7 @@ class DataConvertTest extends RulesIntegrationTestBase {
     $this->expectExceptionMessage('A rounding behavior only makes sense with an integer target type.');
 
     $converted = $this->executeAction('some', 'decimal', 'down');
-    $this->assertInternalType('float', $converted->getValue());
+    $this->assertIsFloat($converted->getValue());
     $this->assertEquals('float', $converted->getDataDefinition()->getDataType());
   }
 
