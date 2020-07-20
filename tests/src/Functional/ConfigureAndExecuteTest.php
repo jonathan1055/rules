@@ -610,7 +610,12 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
    */
   public function testMultipleInputContext() {
     // Set up a rule. The event is not relevant, we just want a rule to use.
-    // $rule = $this->createRule('Test Multiple Input', 'test_rule', 'rules_entity_insert:node');
+    // The helper function
+    //   $rule = $this->createRule('Test Multiple Input', 'test_rule',
+    //           'rules_entity_insert:node')
+    // works locally but fails $this->assertEquals($expected_config_value, $to)
+    // on drupal.org with 'null does not match expected type "array".', hence
+    // revert to the long-hand way of creating the rule.
     $this->drupalGet('admin/config/workflow/rules');
     $this->clickLink('Add reaction rule');
     $this->fillField('Label', 'Test Multiple Input via UI');

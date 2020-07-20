@@ -2,7 +2,7 @@
 
 namespace Drupal\rules\Plugin\Condition;
 
-use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\node\NodeInterface;
 use Drupal\rules\Core\RulesConditionBase;
@@ -33,11 +33,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class NodeIsOfType extends RulesConditionBase implements ContainerFactoryPluginInterface {
 
   /**
-   * The entity.manager service.
+   * The entity_type.manager service.
    *
-   * @var \Drupal\Core\Entity\EntityManagerInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $entityManager;
+  protected $entityTypeManager;
 
   /**
    * Constructs a NodeIsOfType object.
@@ -48,12 +48,12 @@ class NodeIsOfType extends RulesConditionBase implements ContainerFactoryPluginI
    *   The plugin ID for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
-   *   The entity.manager service.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity_type.manager service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityManagerInterface $entity_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->entityManager = $entity_manager;
+    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
@@ -64,7 +64,7 @@ class NodeIsOfType extends RulesConditionBase implements ContainerFactoryPluginI
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('entity.manager')
+      $container->get('entity_type.manager')
     );
   }
 
@@ -92,7 +92,7 @@ class NodeIsOfType extends RulesConditionBase implements ContainerFactoryPluginI
   public function nodeTypesListOptions() {
     $options = [];
 
-    $node_types = $this->entityManager->getStorage('node_type')->loadMultiple();
+    $node_types = $this->entityTypeManager->getStorage('node_type')->loadMultiple();
 
     foreach ($node_types as $node_type) {
       $options[$node_type->id()] = $node_type->label();
