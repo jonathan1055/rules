@@ -3,7 +3,7 @@
 namespace Drupal\rules\Plugin\Condition;
 
 use Drupal\Core\Language\LanguageInterface;
-use Drupal\Core\Path\AliasManagerInterface;
+use Drupal\path_alias\AliasManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\rules\Core\RulesConditionBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -37,7 +37,7 @@ class PathAliasExists extends RulesConditionBase implements ContainerFactoryPlug
   /**
    * The alias manager service.
    *
-   * @var \Drupal\Core\Path\AliasManagerInterface
+   * @var \Drupal\path_alias\AliasManagerInterface
    */
   protected $aliasManager;
 
@@ -50,7 +50,7 @@ class PathAliasExists extends RulesConditionBase implements ContainerFactoryPlug
    *   The plugin ID for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\Core\Path\AliasManagerInterface $alias_manager
+   * @param \Drupal\path_alias\AliasManagerInterface $alias_manager
    *   The alias manager service.
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition, AliasManagerInterface $alias_manager) {
@@ -66,7 +66,7 @@ class PathAliasExists extends RulesConditionBase implements ContainerFactoryPlug
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('path.alias_manager')
+      $container->get('path_alias.manager')
     );
   }
 
