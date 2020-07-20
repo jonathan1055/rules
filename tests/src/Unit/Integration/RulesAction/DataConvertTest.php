@@ -3,6 +3,7 @@
 namespace Drupal\Tests\rules\Unit\Integration\RulesAction;
 
 use Drupal\Tests\rules\Unit\Integration\RulesIntegrationTestBase;
+use Drupal\rules\Exception\InvalidArgumentException;
 
 /**
  * @coversDefaultClass \Drupal\rules\Plugin\RulesAction\DataConvert
@@ -104,7 +105,8 @@ class DataConvertTest extends RulesIntegrationTestBase {
    */
   public function testInvalidValueException() {
     // Set the expected exception class and message.
-    $this->setExpectedException('\Drupal\rules\Exception\InvalidArgumentException', 'Only scalar values are supported.');
+    $this->expectException(InvalidArgumentException::class);
+    $this->expectExceptionMessage('Only scalar values are supported.');
 
     $this->executeAction(['some-array'], 'integer');
   }
@@ -116,7 +118,8 @@ class DataConvertTest extends RulesIntegrationTestBase {
    */
   public function testInvalidRoundingBehavior() {
     // Set the expected exception class and message.
-    $this->setExpectedException('\Drupal\rules\Exception\InvalidArgumentException', 'A rounding behavior only makes sense with an integer target type.');
+    $this->expectException(InvalidArgumentException::class);
+    $this->expectExceptionMessage('A rounding behavior only makes sense with an integer target type.');
 
     $converted = $this->executeAction('some', 'decimal', 'down');
     $this->assertInternalType('float', $converted->getValue());
@@ -130,7 +133,8 @@ class DataConvertTest extends RulesIntegrationTestBase {
    */
   public function testInvalidRoundingBehaviorException() {
     // Set the expected exception class and message.
-    $this->setExpectedException('\Drupal\rules\Exception\InvalidArgumentException', 'Unknown rounding behavior: invalid rounding');
+    $this->expectException(InvalidArgumentException::class);
+    $this->expectExceptionMessage('Unknown rounding behavior: invalid rounding');
 
     $value = 5.5;
     $rounding_behavior = 'invalid rounding';
@@ -144,7 +148,8 @@ class DataConvertTest extends RulesIntegrationTestBase {
    */
   public function testInvalidTargetTypeException() {
     // Set the expected exception class and message.
-    $this->setExpectedException('\Drupal\rules\Exception\InvalidArgumentException', 'Unknown target type: invalid type');
+    $this->expectException(InvalidArgumentException::class);
+    $this->expectExceptionMessage('Unknown target type: invalid type');
     $value = 5.5;
     $target_type = 'invalid type';
     $this->executeAction($value, $target_type);
