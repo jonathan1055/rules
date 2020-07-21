@@ -90,7 +90,7 @@ class ConditionsFormTest extends RulesBrowserTestBase {
     $assert->statusCodeEquals(200);
     $assert->pageTextContains('Edit ' . $condition->getLabel());
 
-    // Assert that the field uses the correct widget, identified by class.
+    // Assert that the fields use the correct widgets, identified by class.
     if (!empty($widgets)) {
       foreach ($widgets as $name => $widget_id) {
         $assert->elementExists('xpath', "//fieldset[@id='edit-context-definitions-$name' and contains(@class, 'widget-$widget_id')]");
@@ -111,7 +111,7 @@ class ConditionsFormTest extends RulesBrowserTestBase {
 
       // Fill each given field with the value provided.
       foreach ($values as $name => $value) {
-        $this->fillField('edit-context-definitions-' . $name . '-setting', $value);
+        $this->fillField('edit-context-definitions-' . $name . '-value', $value);
       }
 
       // Check that the condition can be saved.
