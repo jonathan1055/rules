@@ -10,11 +10,15 @@ namespace Drupal\Tests\rules\Functional;
 class ConditionsFormTest extends RulesBrowserTestBase {
 
   /**
-   * Modules to enable.
-   *
-   * @var array
+   * {@inheritdoc}
    */
-  protected static $modules = ['node', 'ban', 'rules', 'typed_data'];
+  protected static $modules = [
+    'node',
+    'ban',
+    'path_alias',
+    'rules',
+    'typed_data',
+  ];
 
   /**
    * We use the minimal profile because we want to test local action links.
@@ -36,6 +40,14 @@ class ConditionsFormTest extends RulesBrowserTestBase {
   protected function setUp() {
     parent::setUp();
 
+    // Create an article content type that we will use for testing.
+    $type = $this->container->get('entity_type.manager')->getStorage('node_type')
+      ->create([
+        'type' => 'article',
+        'name' => 'Article',
+      ]);
+    $type->save();
+
     $this->account = $this->drupalCreateUser([
       'administer rules',
       'administer site configuration',
@@ -50,9 +62,9 @@ class ConditionsFormTest extends RulesBrowserTestBase {
    * can be accessed. This ensures that the datatypes used in the definitions
    * do exist. This test does not execute the conditions or actions.
    *
-   * @dataProvider dataConditionsFormWidgets()
+   * @dataProvider dataConditionsFormWidgets
    */
-  public function testConditionsFormWidgets($id, $settings) {
+  public function testConditionsFormWidgets($id, $values = [], $widgets = [], $selectors = []) {
     $expressionManager = $this->container->get('plugin.manager.rules_expression');
     $storage = $this->container->get('entity_type.manager')->getStorage('rules_reaction_rule');
 
@@ -69,53 +81,151 @@ class ConditionsFormTest extends RulesBrowserTestBase {
     $config_entity = $storage->create([
       'id' => $expr_id,
       'expression' => $rule->getConfiguration(),
+      // Specify a node event so that the node... selector values are available.
+      'events' => [['event_name' => 'rules_entity_update:node']],
     ]);
     $config_entity->save();
     // Edit the condition and check that the page is generated without error.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/' . $expr_id . '/edit/' . $condition->getUuid());
     $assert->statusCodeEquals(200);
     $assert->pageTextContains('Edit ' . $condition->getLabel());
+
+    // If any field values have been specified then fill in the form and save.
+    if (!empty($values)) {
+
+      // Switch to data selector where requred.
+      if (!empty($selectors)) {
+        foreach ($selectors as $name) {
+          $this->pressButton('edit-context-definitions-' . $name . '-switch-button');
+          // Check that the switch worked.
+          $assert->elementExists('xpath', '//input[@id="edit-context-definitions-' . $name . '-switch-button" and contains(@value, "Switch to the direct input mode")]');
+        }
+      }
+
+      // Fill each given field with the value provided.
+      foreach ($values as $name => $value) {
+        $this->fillField('edit-context-definitions-' . $name . '-setting', $value);
+      }
+
+      // Check that the condition can be saved.
+      $this->pressButton('Save');
+      $assert->pageTextNotContains('Error message');
+      $assert->pageTextContains('You have unsaved changes.');
+      $assert->addressEquals('admin/config/workflow/rules/reactions/edit/' . $expr_id);
+
+      // Check that re-edit and re-save works OK.
+      $this->clickLink('Edit');
+      $this->pressButton('Save');
+      $assert->pageTextNotContains('Error message');
+      $assert->addressEquals('admin/config/workflow/rules/reactions/edit/' . $expr_id);
+
+      // Save the rule.
+      $this->pressButton('Save');
+      $assert->pageTextContains("Reaction rule $expr_id has been updated");
+    }
   }
 
   /**
    * Provides data for testConditionsFormWidgets().
    *
    * @return array
-   *   The test data.
+   *   The test data. This is an ordered array with elements that must appear in
+   *   the following order:
+   *   - Machine name of the condition being tested. This can be repeated.
+   *   - (optional) Values to enter on the Context form. This is an associative
+   *     array with keys equal to the field names and values equal to the field
+   *     values.
+   *   - (optional) Widget types we expect to see on the Context form. This is
+   *     an associative array with keys equal to the field names as above, and
+   *     values equal to expected widget type.
+   *   - (optional) Names of fields for which the selector/direct input button
+   *     needs pressing to 'data selection' before the field value is entered.
    */
   public function dataConditionsFormWidgets() {
     return [
-      ['rules_data_comparison', [
-        'widgets' => [
+      ['rules_data_comparison',
+        // Values.
+        [
+          'data' => 'node.title.value',
+          'operation' => '=this=is-not-validated=yet=',
+          'value' => 'node_unchanged.title.value',
+        ],
+        // Widgets.
+        [
           'data' => 'text-input',
           'operation' => 'text-input',
           'value' => 'text-input',
         ],
+        // Selectors.
+        ['value'],
       ],
+      ['rules_data_is_empty',
+        ['data' => 'node.title.value'],
       ],
-      ['rules_data_is_empty', []],
-      ['rules_list_contains', [
-        'widgets' => [
-          'list' => 'textarea',
+      ['rules_list_contains',
+        ['list' => 'node.uid.entity.roles', 'item' => 'abc'],
+        ['list' => 'textarea'],
+      ],
+      ['rules_list_count_is',
+        ['list' => 'node.uid.entity.roles', 'value' => 1],
+      ],
+      ['rules_entity_has_field',
+        ['entity' => 'node', 'field' => 'abc'],
+      ],
+      ['rules_entity_is_new',
+        ['entity' => 'node'],
+      ],
+      ['rules_entity_is_of_bundle',
+        ['entity' => 'node', 'type' => 'node', 'bundle' => 'article'],
+      ],
+      ['rules_entity_is_of_type',
+        ['entity' => 'node', 'type' => 'article'],
+      ],
+      ['rules_node_is_of_type',
+        ['node' => 'node', 'types' => 'article'],
+      ],
+      ['rules_node_is_promoted',
+        ['node' => 'node'],
+      ],
+      ['rules_node_is_published',
+        ['node' => 'node'],
+      ],
+      ['rules_node_is_sticky',
+        ['node' => 'node'],
+      ],
+      ['rules_path_alias_exists',
+        ['alias' => '/abc'],
+      ],
+      ['rules_path_has_alias',
+        ['path' => '/node/1'],
+      ],
+      ['rules_text_comparison',
+        ['text' => 'node.title.value', 'match' => 'abc'],
+      ],
+      ['rules_text_comparison',
+        ['text' => 'node.title.value', 'match' => 'node.uid.entity.name.value'],
+        [],
+        ['match'],
+      ],
+      ['rules_entity_field_access',
+        [
+          'entity' => 'node',
+          'field' => 'abc',
+          'user' => '@user.current_user_context:current_user',
         ],
       ],
+      ['rules_user_has_role',
+        [
+          'user' => '@user.current_user_context:current_user',
+          'roles' => 'Developer',
+        ],
       ],
-      ['rules_list_count_is', []],
-      ['rules_entity_has_field', []],
-      ['rules_entity_is_new', []],
-      ['rules_entity_is_of_bundle', []],
-      ['rules_entity_is_of_type', []],
-      ['rules_node_is_of_type', []],
-      ['rules_node_is_promoted', []],
-      ['rules_node_is_published', []],
-      ['rules_node_is_sticky', []],
-      ['rules_path_alias_exists', []],
-      ['rules_path_has_alias', []],
-      ['rules_text_comparison', []],
-      ['rules_entity_field_access', []],
-      ['rules_user_has_role', []],
-      ['rules_user_is_blocked', []],
-      ['rules_ip_is_banned', []],
+      ['rules_user_is_blocked',
+        ['user' => '@user.current_user_context:current_user'],
+      ],
+      ['rules_ip_is_banned',
+        ['ip' => '192.0.2.1'],
+      ],
     ];
   }
 

@@ -33,6 +33,8 @@ class EntityPathAliasCreateTest extends RulesEntityIntegrationTestBase {
    */
   protected function setUp() {
     parent::setUp();
+    // Must enable the path_alias module.
+    $this->enableModule('path_alias');
 
     // Prepare mocked AliasStorageInterface.
     $this->aliasStorage = $this->prophesize(AliasStorageInterface::class);

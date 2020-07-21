@@ -30,6 +30,8 @@ class PathAliasDeleteByPathTest extends RulesIntegrationTestBase {
    */
   protected function setUp() {
     parent::setUp();
+    // Must enable the path_alias module.
+    $this->enableModule('path_alias');
 
     $this->aliasStorage = $this->prophesize(AliasStorageInterface::class);
     $this->container->set('path.alias_storage', $this->aliasStorage->reveal());
