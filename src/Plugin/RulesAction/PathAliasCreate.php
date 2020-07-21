@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   id = "rules_path_alias_create",
  *   label = @Translation("Create any path alias"),
  *   category = @Translation("Path"),
+ *   provider = "path_alias",
  *   context_definitions = {
  *     "source" = @ContextDefinition("string",
  *       label = @Translation("Existing system path"),
