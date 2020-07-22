@@ -53,6 +53,9 @@ class ActionsFormTest extends RulesBrowserTestBase {
       'administer site configuration',
     ]);
     $this->drupalLogin($this->account);
+
+    // Create a named role for use in conditions and actions.
+    $this->createRole(['administer nodes'], 'test-editor', 'Test Editor');
   }
 
   /**
@@ -269,10 +272,10 @@ class ActionsFormTest extends RulesBrowserTestBase {
         ['user'],
       ],
       ['rules_user_role_add',
-        ['user' => '@user', 'roles' => 'Editor'],
+        ['user' => '@user', 'roles' => 'test-editor'],
       ],
       ['rules_user_role_remove',
-        ['user' => '@user', 'roles' => 'Editor'],
+        ['user' => '@user', 'roles' => 'test-editor'],
       ],
       ['rules_user_unblock',
         ['user' => '@user'],

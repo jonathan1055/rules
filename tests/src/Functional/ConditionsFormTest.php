@@ -53,6 +53,9 @@ class ConditionsFormTest extends RulesBrowserTestBase {
       'administer site configuration',
     ]);
     $this->drupalLogin($this->account);
+
+    // Create a named role for use in conditions and actions.
+    $this->createRole(['administer nodes'], 'test-editor', 'Test Editor');
   }
 
   /**
@@ -170,7 +173,7 @@ class ConditionsFormTest extends RulesBrowserTestBase {
         ['list' => 'node.uid.entity.roles', 'value' => 1],
       ],
       ['rules_entity_has_field',
-        ['entity' => 'node', 'field' => 'abc'],
+        ['entity' => 'node', 'field' => 'login'],
       ],
       ['rules_entity_is_new',
         ['entity' => 'node'],
@@ -179,7 +182,7 @@ class ConditionsFormTest extends RulesBrowserTestBase {
         ['entity' => 'node', 'type' => 'node', 'bundle' => 'article'],
       ],
       ['rules_entity_is_of_type',
-        ['entity' => 'node', 'type' => 'article'],
+        ['entity' => 'node', 'type' => 'path_alias'],
       ],
       ['rules_node_is_of_type',
         ['node' => 'node', 'types' => 'article'],
@@ -210,14 +213,14 @@ class ConditionsFormTest extends RulesBrowserTestBase {
       ['rules_entity_field_access',
         [
           'entity' => 'node',
-          'field' => 'abc',
+          'field' => 'timezone',
           'user' => '@user.current_user_context:current_user',
         ],
       ],
       ['rules_user_has_role',
         [
           'user' => '@user.current_user_context:current_user',
-          'roles' => 'Developer',
+          'roles' => 'test-editor',
         ],
       ],
       ['rules_user_is_blocked',
