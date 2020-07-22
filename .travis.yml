@@ -2,33 +2,25 @@ language: php
 
 os: linux
 
-php:
-  - 5.6
-  - 7.0
-  - 7.3
+dist: xenial
 
 env:
   global:
     # Make the script re-usable for other modules.
     - MODULE=rules
     # Allow this many deprecation warnings before failing the build.
-    - SYMFONY_DEPRECATIONS_HELPER=3909
-  jobs:
-    - DRUPAL_CORE=8.7.x
-    - DRUPAL_CORE=8.8.x
-    - DRUPAL_CORE=8.9.x
+    - SYMFONY_DEPRECATIONS_HELPER=4061
 
 jobs:
   fast_finish: true
-  # PHP7.3 is not supported on Core 8.7 and earlier.
-  # PHP5 is not supported on Core 8.8 and later.
-  exclude:
-    - php: 7.3
-      env: DRUPAL_CORE=8.7.x
-    - php: 5.6
+  include:
+    - php: 7.0
       env: DRUPAL_CORE=8.8.x
-    - php: 5.6
+    - php: 7.3
+      env: DRUPAL_CORE=8.8.x
+    - php: 7.3
       env: DRUPAL_CORE=8.9.x
+      # SYMFONY_DEPRECATIONS_HELPER=4054 # alter here for different core values
 
 services:
   - mysql
@@ -73,17 +65,6 @@ before_script:
   # Set the phpcs installed_paths to pick up the Drupal standards.
   - $DRUPAL_ROOT/vendor/bin/phpcs --config-set installed_paths $DRUPAL_ROOT/vendor/drupal/coder/coder_sniffer
 
-  # If running Core 8.6 or 8.7 the following script will upgrade to phpunit 6
-  # which is required in PHP7. The script has now been deleted from Core 8.8.
-  - if [[ $DRUPAL_CORE == "8.6.x" || $DRUPAL_CORE == "8.7.x" ]]; then
-      travis_retry composer run-script drupal-phpunit-upgrade;
-    fi
-
-  # Core 8.7 has more deprecation warnings because it executes more assertions.
-  - if [ $DRUPAL_CORE == "8.7.x" ]; then
-      SYMFONY_DEPRECATIONS_HELPER=4731;
-    fi
-  - echo $SYMFONY_DEPRECATIONS_HELPER
 
   # Start a web server on port 8888, run in the background.
   - php -S localhost:8888 &
@@ -93,6 +74,7 @@ before_script:
 
 script:
   # Run the PHPUnit tests which also include the kernel tests.
+  - echo $SYMFONY_DEPRECATIONS_HELPER
   - ./vendor/bin/phpunit -c ./core/phpunit.xml.dist ./modules/$MODULE/tests/
 
   # Check for coding standards. First change directory to our module.
