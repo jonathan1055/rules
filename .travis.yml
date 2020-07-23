@@ -1,6 +1,6 @@
-language: php
-
 os: linux
+
+language: php
 
 dist: xenial
 
@@ -9,7 +9,7 @@ env:
     # Make the script re-usable for other modules.
     - MODULE=rules
     # Allow this many deprecation warnings before failing the build.
-    - SYMFONY_DEPRECATIONS_HELPER=4061
+    - SYMFONY_DEPRECATIONS_HELPER=4229
 
 jobs:
   fast_finish: true
@@ -20,7 +20,6 @@ jobs:
       env: DRUPAL_CORE=8.8.x
     - php: 7.3
       env: DRUPAL_CORE=8.9.x
-      # SYMFONY_DEPRECATIONS_HELPER=4054 # alter here for different core values
 
 services:
   - mysql
@@ -65,6 +64,8 @@ before_script:
   # Set the phpcs installed_paths to pick up the Drupal standards.
   - $DRUPAL_ROOT/vendor/bin/phpcs --config-set installed_paths $DRUPAL_ROOT/vendor/drupal/coder/coder_sniffer
 
+  # Show the allowed number of deprecation warnings.
+  - echo $SYMFONY_DEPRECATIONS_HELPER
 
   # Start a web server on port 8888, run in the background.
   - php -S localhost:8888 &
@@ -74,7 +75,6 @@ before_script:
 
 script:
   # Run the PHPUnit tests which also include the kernel tests.
-  - echo $SYMFONY_DEPRECATIONS_HELPER
   - ./vendor/bin/phpunit -c ./core/phpunit.xml.dist ./modules/$MODULE/tests/
 
   # Check for coding standards. First change directory to our module.
