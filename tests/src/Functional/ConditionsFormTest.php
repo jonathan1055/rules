@@ -93,7 +93,7 @@ class ConditionsFormTest extends RulesBrowserTestBase {
     // If any field values have been specified then fill in the form and save.
     if (!empty($values)) {
 
-      // Switch to data selector where requred.
+      // Switch to data selector where required.
       if (!empty($selectors)) {
         foreach ($selectors as $name) {
           $this->pressButton('edit-context-definitions-' . $name . '-switch-button');
