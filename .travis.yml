@@ -9,7 +9,7 @@ env:
     # Make the script re-usable for other modules.
     - MODULE=rules
     # Allow this many deprecation warnings before failing the build.
-    - SYMFONY_DEPRECATIONS_HELPER=4229
+    - SYMFONY_DEPRECATIONS_HELPER=4252
 
 jobs:
   fast_finish: true
