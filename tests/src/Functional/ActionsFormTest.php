@@ -274,7 +274,11 @@ class ActionsFormTest extends RulesBrowserTestBase {
       ],
       'Email to all users of role' => [
         'rules_email_to_users_of_role',
-        ['roles' => 'editor', 'subject' => 'Hello', 'message' => 'Some text'],
+        [
+          'roles' => 'test-editor',
+          'subject' => 'Hello',
+          'message' => "Some text\nLine two",
+        ],
         ['message' => 'textarea'],
       ],
       'System message' => [
@@ -308,15 +312,27 @@ class ActionsFormTest extends RulesBrowserTestBase {
       ],
       'User role add' => [
         'rules_user_role_add',
-        ['user' => '@user', 'roles' => 'test-editor'],
+        [
+          'user' => '@user.current_user_context:current_user',
+          'roles' => 'test-editor',
+        ],
+        [],
+        ['user'],
       ],
       'User role remove' => [
         'rules_user_role_remove',
-        ['user' => '@user', 'roles' => 'test-editor'],
+        [
+          'user' => '@user.current_user_context:current_user',
+          'roles' => 'test-editor',
+        ],
+        [],
+        ['user'],
       ],
       'Unblock user' => [
         'rules_user_unblock',
-        ['user' => '@user'],
+        ['user' => '@user.current_user_context:current_user'],
+        [],
+        ['user'],
       ],
       'Variable add' => [
         'rules_variable_add',

@@ -243,16 +243,20 @@ class ConditionsFormTest extends RulesBrowserTestBase {
           'user' => '@user.current_user_context:current_user',
         ],
       ],
-      'Uer has role' => [
+      'User has role' => [
         'rules_user_has_role',
         [
           'user' => '@user.current_user_context:current_user',
           'roles' => 'test-editor',
         ],
+        [],
+        ['user'],
       ],
       'User is blocked' => [
         'rules_user_is_blocked',
         ['user' => '@user.current_user_context:current_user'],
+        [],
+        ['user'],
       ],
       'Ip is banned' => [
         'rules_ip_is_banned',
