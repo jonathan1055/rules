@@ -13,7 +13,6 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\Discovery\RecursiveExtensionFilterIterator;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Logger\LoggerChannelInterface;
-use Drupal\path_alias\AliasManagerInterface;
 use Drupal\Core\Plugin\Context\LazyContextRepository;
 use Drupal\Core\TypedData\TypedDataManager;
 use Drupal\rules\Core\ConditionManager;
@@ -61,11 +60,6 @@ abstract class RulesIntegrationTestBase extends UnitTestCase {
    * @var \Drupal\rules\Core\RulesActionManagerInterface
    */
   protected $actionManager;
-
-  /**
-   * @var \Drupal\path_alias\AliasManager|\Prophecy\Prophecy\ProphecyInterface
-   */
-  protected $aliasManager;
 
   /**
    * @var \Drupal\rules\Core\ConditionManager
@@ -208,8 +202,6 @@ abstract class RulesIntegrationTestBase extends UnitTestCase {
     );
     $this->rulesDataProcessorManager = new DataProcessorManager($this->namespaces, $this->moduleHandler->reveal());
 
-    $this->aliasManager = $this->prophesize(AliasManagerInterface::class);
-
     $this->entityTypeManager = $this->prophesize(EntityTypeManagerInterface::class);
     $this->entityTypeManager->getDefinitions()->willReturn([]);
 
@@ -238,7 +230,6 @@ abstract class RulesIntegrationTestBase extends UnitTestCase {
     $container->set('entity_type.bundle.info', $this->entityTypeBundleInfo->reveal());
     $container->set('context.repository', new LazyContextRepository($container, []));
     $container->set('logger.channel.rules_debug', $this->logger->reveal());
-    $container->set('path_alias.manager', $this->aliasManager->reveal());
     $container->set('plugin.manager.rules_action', $this->actionManager);
     $container->set('plugin.manager.condition', $this->conditionManager);
     $container->set('plugin.manager.rules_expression', $this->rulesExpressionManager);

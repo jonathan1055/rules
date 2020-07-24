@@ -84,6 +84,7 @@ class PathHasAlias extends RulesConditionBase implements ContainerFactoryPluginI
   protected function doEvaluate($path, LanguageInterface $language = NULL) {
     $langcode = is_null($language) ? NULL : $language->getId();
     $alias = $this->aliasManager->getAliasByPath($path, $langcode);
+    // getAliasByPath() returns the path if there is no alias.
     return $alias != $path;
   }
 

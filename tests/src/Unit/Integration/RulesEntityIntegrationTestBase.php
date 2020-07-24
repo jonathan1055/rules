@@ -83,6 +83,13 @@ abstract class RulesEntityIntegrationTestBase extends RulesIntegrationTestBase {
           'bundle' => 'dummy',
         ],
       ],
+      'path_alias' => [
+        'id' => 'path_alias',
+        'label' => 'URL alias',
+        'entity_keys' => [
+          'bundle' => 'path_alias',
+        ],
+      ],
     ];
 
     $type_array = [];
