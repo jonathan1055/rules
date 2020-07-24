@@ -112,6 +112,7 @@ class ActionsFormTest extends RulesBrowserTestBase {
 
       // Check that the action can be saved.
       $this->pressButton('Save');
+      $assert->pageTextNotContains('InvalidArgumentException: Cannot set a list with a non-array value');
       $assert->pageTextNotContains('Error message');
       $assert->pageTextContains('You have unsaved changes.');
       $assert->addressEquals('admin/config/workflow/rules/reactions/edit/' . $expr_id);
@@ -133,9 +134,10 @@ class ActionsFormTest extends RulesBrowserTestBase {
    * Provides data for testActionsFormWidgets().
    *
    * @return array
-   *   The test data. This is an ordered array with elements that must appear in
-   *   the following order:
-   *   - Machine name of action being tested. This can be repeated.
+   *   The test data array. The top level keys are free text but should be short
+   *   and relate to the test case. The values are ordered arrays of test case
+   *   data with elements that must appear in the following order:
+   *   - Machine name of the condition being tested.
    *   - (optional) Values to enter on the Context form. This is an associative
    *     array with keys equal to the field names and values equal to the field
    *     values.
@@ -146,8 +148,12 @@ class ActionsFormTest extends RulesBrowserTestBase {
    *     needs pressing to 'data selection' before the field value is entered.
    */
   public function dataActionsFormWidgets() {
-    return [
-      ['rules_data_calculate_value',
+    // Instead of directly returning the full set of test data, create variable
+    // $data to hold it. This allows for manipulation before the final return.
+    $data = [
+      'Data calculate value' => [
+        // Machine name.
+        'rules_data_calculate_value',
         // Values.
         [
           'input-1' => '3',
@@ -161,19 +167,30 @@ class ActionsFormTest extends RulesBrowserTestBase {
           'input-2' => 'text-input',
         ],
       ],
-      ['rules_data_convert',
+      'Data convert' => [
+        'rules_data_convert',
         ['value' => 'node.uid', 'target-type' => 'string'],
       ],
-      ['rules_list_item_add',
-        ['list' => 'node.uid', 'item' => '1'],
+      'List item add' => [
+        'rules_list_item_add',
+        [
+          'list' => 'node.uid.entity.roles',
+          'item' => '1',
+          'unique' => TRUE,
+          'pos' => 'start',
+        ],
       ],
-      ['rules_list_item_remove',
-        ['list' => 'node.uid', 'item' => '1'],
+      'List item remove' => [
+        'rules_list_item_remove',
+        ['list' => 'node.uid.entity.roles', 'item' => '1'],
       ],
-      ['rules_data_set',
+      'Data set - direct' => [
+        'rules_data_set',
         ['data' => 'node.title', 'value' => 'abc'],
       ],
-      ['rules_data_set',
+      'Data set - selector' => [
+        // Machine name.
+        'rules_data_set',
         // Values.
         ['data' => 'node.title', 'value' => '@user.current_user_context:current_user.name.value'],
         // Widgets.
@@ -181,70 +198,91 @@ class ActionsFormTest extends RulesBrowserTestBase {
         // Selectors.
         ['value'],
       ],
-      ['rules_entity_create:node',
+      'Entity create node' => [
+        'rules_entity_create:node',
         ['type' => 'article', 'title' => 'abc'],
       ],
-      ['rules_entity_create:user',
+      'Entity create user' => [
+        'rules_entity_create:user',
         ['name' => 'fred'],
       ],
-      ['rules_entity_delete',
+      'Entity delete' => [
+        'rules_entity_delete',
         ['entity' => 'node'],
       ],
-      ['rules_entity_fetch_by_field',
+      'Entity fetch by field - selector' => [
+        'rules_entity_fetch_by_field',
         ['type' => 'node', 'field-name' => 'abc', 'field-value' => 'node.uid'],
         [],
         ['field-value'],
       ],
-      ['rules_entity_fetch_by_id',
+      'Entity fetch by field - direct' => [
+        'rules_entity_fetch_by_id',
         ['type' => 'node', 'entity-id' => 123],
       ],
-      ['rules_entity_path_alias_create:entity:node',
+      'Entity path alias create' => [
+        'rules_entity_path_alias_create:entity:node',
         ['entity' => 'node', 'alias' => 'abc'],
       ],
-      ['rules_entity_save',
+      'Entity save' => [
+        'rules_entity_save',
         ['entity' => 'node', 'immediate' => TRUE],
       ],
-      ['rules_node_make_sticky',
+      'Node make sticky' => [
+        'rules_node_make_sticky',
         ['node' => 'node'],
       ],
-      ['rules_node_make_unsticky',
+      'Node make unsticky' => [
+        'rules_node_make_unsticky',
         ['node' => 'node'],
       ],
-      ['rules_node_publish',
+      'Node publish' => [
+        'rules_node_publish',
         ['node' => 'node'],
       ],
-      ['rules_node_unpublish',
+      'Node unpublish' => [
+        'rules_node_unpublish',
         ['node' => 'node'],
       ],
-      ['rules_node_promote',
+      'Node promote' => [
+        'rules_node_promote',
         ['node' => 'node'],
       ],
-      ['rules_node_unpromote',
+      'Node unpromote' => [
+        'rules_node_unpromote',
         ['node' => 'node'],
       ],
-      ['rules_path_alias_create',
+      'Path alias create' => [
+        'rules_path_alias_create',
         ['source' => '/node/1', 'alias' => 'abc'],
       ],
-      ['rules_path_alias_delete_by_alias',
+      'Path alias delete by alias' => [
+        'rules_path_alias_delete_by_alias',
         ['alias' => 'abc'],
       ],
-      ['rules_path_alias_delete_by_path',
+      'Path alias delete by path' => [
+        'rules_path_alias_delete_by_path',
         ['path' => '/node/1'],
       ],
-      ['rules_page_redirect',
+      'Page redirect' => [
+        'rules_page_redirect',
         ['url' => '/node/1'],
       ],
-      ['rules_send_account_email',
+      'Send account email' => [
+        'rules_send_account_email',
         ['user' => 'node.uid', 'email-type' => 'abc'],
       ],
-      ['rules_email_to_users_of_role',
+      'Email to all users of role' => [
+        'rules_email_to_users_of_role',
         ['roles' => 'editor', 'subject' => 'Hello', 'message' => 'Some text'],
         ['message' => 'textarea'],
       ],
-      ['rules_system_message',
+      'System message' => [
+        'rules_system_message',
         ['message' => 'Some text'],
       ],
-      ['rules_send_email',
+      'Send email - direct input' => [
+        'rules_send_email',
         [
           'to' => 'test@example.com',
           'subject' => 'Some testing subject',
@@ -252,11 +290,8 @@ class ActionsFormTest extends RulesBrowserTestBase {
         ],
         ['message' => 'textarea'],
       ],
-      // This test will work when data selectors are converted to arrays.
-      // @see https://www.drupal.org/project/rules/issues/2723259
-      // @todo un-comment when the above is fixed.
-      /*
-      ['rules_send_email',
+      'Send email - data selector for address' => [
+        'rules_send_email',
         [
           'to' => 'node.uid.entity.mail.value',
           'subject' => 'Some testing subject',
@@ -265,34 +300,59 @@ class ActionsFormTest extends RulesBrowserTestBase {
         ['message' => 'textarea'],
         ['to'],
       ],
-       */
-      ['rules_user_block',
+      'User block' => [
+        'rules_user_block',
         ['user' => '@user.current_user_context:current_user'],
         [],
         ['user'],
       ],
+<<<<<<< HEAD
       ['rules_user_role_add',
         ['user' => '@user', 'roles' => 'test-editor'],
       ],
       ['rules_user_role_remove',
         ['user' => '@user', 'roles' => 'test-editor'],
+=======
+      'User role add' => [
+        'rules_user_role_add',
+        ['user' => '@user', 'roles' => 'test-editor'],
       ],
-      ['rules_user_unblock',
+      'User role remove' => [
+        'rules_user_role_remove',
+        ['user' => '@user', 'roles' => 'test-editor'],
+>>>>>>> 8.x-3.x
+      ],
+      'Unblock user' => [
+        'rules_user_unblock',
         ['user' => '@user'],
       ],
-      ['rules_variable_add',
+      'Variable add' => [
+        'rules_variable_add',
         ['type' => 'integer', 'value' => 'node.nid'],
       ],
-      ['rules_ban_ip',
+      'Ban IP - empty' => [
+        'rules_ban_ip',
         ['ip' => ''],
       ],
-      ['rules_ban_ip',
+      'Ban IP - value' => [
+        'rules_ban_ip',
         ['ip' => '192.0.2.1'],
       ],
-      ['rules_unban_ip',
+      'Unban IP' => [
+        'rules_unban_ip',
         ['ip' => '192.0.2.1'],
       ],
     ];
+    // Selecting the 'to' email address using data selector will not work until
+    // single data selector values with multiple = True are converted to arrays.
+    // @see https://www.drupal.org/project/rules/issues/2723259
+    // @todo Delete this unset() when the above issue is fixed.
+    unset($data['Send email - data selector for address']);
+
+    // Use unset $data['The key to remove']; to remove a temporarily unwanted
+    // item, use return [$data['The key to test']]; to selectively test just one
+    // item, or have return $data; to test everything.
+    return $data;
   }
 
 }
