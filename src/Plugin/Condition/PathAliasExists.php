@@ -3,8 +3,8 @@
 namespace Drupal\rules\Plugin\Condition;
 
 use Drupal\Core\Language\LanguageInterface;
-use Drupal\path_alias\AliasManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\path_alias\AliasManagerInterface;
 use Drupal\rules\Core\RulesConditionBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -85,6 +85,7 @@ class PathAliasExists extends RulesConditionBase implements ContainerFactoryPlug
   protected function doEvaluate($alias, LanguageInterface $language = NULL) {
     $langcode = is_null($language) ? NULL : $language->getId();
     $path = $this->aliasManager->getPathByAlias($alias, $langcode);
+    // getPathByAlias() returns the alias if there is no path.
     return $path != $alias;
   }
 
