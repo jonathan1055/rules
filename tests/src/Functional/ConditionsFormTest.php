@@ -197,14 +197,9 @@ class ConditionsFormTest extends RulesBrowserTestBase {
         'rules_entity_is_of_bundle',
         ['entity' => 'node', 'type' => 'node', 'bundle' => 'article'],
       ],
-<<<<<<< HEAD
-      ['rules_entity_is_of_type',
-        ['entity' => 'node', 'type' => 'path_alias'],
-=======
       'Entity is type' => [
         'rules_entity_is_of_type',
         ['entity' => 'node', 'type' => 'path_alias'],
->>>>>>> 8.x-3.x
       ],
       'Node is type' => [
         'rules_node_is_of_type',
