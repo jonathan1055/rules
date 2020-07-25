@@ -111,8 +111,6 @@ class ConditionForm implements ExpressionFormInterface {
         '#tree' => TRUE,
       ];
       foreach ($context_definitions as $context_name => $context_definition) {
-        $list_callback = $context_definition->getListOptionsCallback();
-        $configuration['list_options'] = empty($list_callback) ? NULL : $condition->$list_callback();
         $form = $this->buildContextForm($form, $form_state, $context_name, $context_definition, $configuration);
       }
     }
