@@ -57,7 +57,16 @@ class ConditionForm implements ExpressionFormInterface {
       $options = [];
       foreach ($condition_definitions as $group => $definitions) {
         foreach ($definitions as $id => $definition) {
-          $options[$group][$id] = $definition['label'];
+          if ($group != $this->t('Other')) {
+            // Because core Conditions do not currently define some context
+            // values required by Rules, we need to make sure they can't be
+            // selected through the Rules UI. The Rules ConditionManager puts
+            // these core Conditions into the 'Other' group so that we can
+            // identify them and leave them off of the Condition selection
+            // form element below.
+            // @see https://www.drupal.org/project/rules/issues/2927132
+            $options[$group][$id] = $definition['label'];
+          }
         }
       }
 
@@ -102,6 +111,8 @@ class ConditionForm implements ExpressionFormInterface {
         '#tree' => TRUE,
       ];
       foreach ($context_definitions as $context_name => $context_definition) {
+        $list_callback = $context_definition->getListOptionsCallback();
+        $configuration['list_options'] = empty($list_callback) ? NULL : $condition->$list_callback();
         $form = $this->buildContextForm($form, $form_state, $context_name, $context_definition, $configuration);
       }
     }
