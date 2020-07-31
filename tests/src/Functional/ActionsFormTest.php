@@ -272,7 +272,7 @@ class ActionsFormTest extends RulesBrowserTestBase {
         'rules_send_account_email',
         ['user' => 'node.uid', 'email-type' => 'abc'],
       ],
-      'Email to all users of role' => [
+      'Email to users of role' => [
         'rules_email_to_users_of_role',
         [
           'roles' => 'test-editor',
