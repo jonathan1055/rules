@@ -80,7 +80,7 @@ class ConditionsFormTest extends RulesBrowserTestBase {
     $condition = $expressionManager->createCondition($id);
     $rule->addExpressionObject($condition);
     // Save the configuration.
-    $expr_id = 'test_condition_' . $id;
+    $expr_id = 'condition_' . str_replace(':', '_', $id);
     $config_entity = $storage->create([
       'id' => $expr_id,
       'expression' => $rule->getConfiguration(),
@@ -173,12 +173,12 @@ class ConditionsFormTest extends RulesBrowserTestBase {
       'Data comparison' => [
         // Machine name.
         'rules_data_comparison',
-        // Required.
+        // Required values.
         [
           'data' => 'node.title.value',
           'value' => 'node_unchanged.title.value',
         ],
-        // Defaulted.
+        // Defaulted values.
         ['operation' => '=this=is-not-validated=yet='],
         // Widgets.
         [
