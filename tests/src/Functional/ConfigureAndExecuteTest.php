@@ -293,18 +293,17 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
    */
   public function testMultipleInputContext() {
     // Set up a rule. The event is not relevant, we just want a rule to use.
-    // The helper function $rule = $this->createRule('Test Multiple Input',
+    // Calling $rule = $this->createRule('Test Multiple Input via UI',
     // 'test_rule', 'rules_entity_insert:node') works locally but fails
     // $this->assertEquals($expected_config_value, $to) on drupal.org with
     // 'null does not match expected type "array".', hence revert to the
     // long-hand way of creating the rule.
-    $rule = $this->createRule('Test Multiple Input via UI', 'test_rule', 'rules_entity_insert:node');
-    // $this->drupalGet('admin/config/workflow/rules');
-    // $this->clickLink('Add reaction rule');
-    // $this->fillField('Label', 'Test Multiple Input via UI');
-    // $this->fillField('Machine-readable name', 'test_rule');
-    // $this->fillField('React on event', 'rules_entity_insert:node');
-    // $this->pressButton('Save');
+    $this->drupalGet('admin/config/workflow/rules');
+    $this->clickLink('Add reaction rule');
+    $this->fillField('Label', 'Test Multiple Input via UI');
+    $this->fillField('Machine-readable name', 'test_rule');
+    $this->fillField('React on event', 'rules_entity_insert:node');
+    $this->pressButton('Save');
 
     // Add action rules_send_email because the 'to' field has 'multiple = TRUE'
     // rendered as a textarea that we can use for this test.
