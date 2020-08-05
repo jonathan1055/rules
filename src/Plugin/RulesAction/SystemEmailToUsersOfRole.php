@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     "roles" = @ContextDefinition("entity:user_role",
  *       label = @Translation("Roles"),
  *       description = @Translation("The roles to which to send the email."),
- *       list_options_callback = "userRolesListOptions",
+ *       options_provider = "\Drupal\rules\Plugin\OptionsProvider\RolesOptions",
  *       multiple = TRUE
  *     ),
  *     "subject" = @ContextDefinition("string",
@@ -156,16 +156,6 @@ class SystemEmailToUsersOfRole extends RulesActionBase implements ContainerFacto
       '%count' => count($accounts),
       '%roles' => implode(', ', $rids),
     ]);
-  }
-
-  /**
-   * Returns an array of user role options.
-   *
-   * @return array
-   *   An array of user roles keyed on role name.
-   */
-  public function userRolesListOptions() {
-    return user_role_names(TRUE);
   }
 
 }

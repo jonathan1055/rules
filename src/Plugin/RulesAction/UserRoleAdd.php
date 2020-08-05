@@ -22,7 +22,7 @@ use Drupal\user\UserInterface;
  *       label = @Translation("Roles"),
  *       description = @Translation("One or more role ids to add."),
  *       multiple = TRUE,
- *       list_options_callback = "userRolesListOptions"
+ *       options_provider = "\Drupal\rules\Plugin\OptionsProvider\RolesOptions"
  *     ),
  *   }
  * )
@@ -76,16 +76,6 @@ class UserRoleAdd extends RulesActionBase {
       return ['user'];
     }
     return [];
-  }
-
-  /**
-   * Returns an array of user role options.
-   *
-   * @return array
-   *   An array of user roles keyed on role name.
-   */
-  public function userRolesListOptions() {
-    return user_role_names(TRUE);
   }
 
 }

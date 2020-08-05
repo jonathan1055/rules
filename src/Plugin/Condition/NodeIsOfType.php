@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *       label = @Translation("Content types"),
  *       description = @Translation("Select all the allowed node types."),
  *       multiple = TRUE,
- *       list_options_callback = "nodeTypesListOptions"
+ *       options_provider = "\Drupal\rules\Plugin\OptionsProvider\NodeTypeOptions",
  *     ),
  *   }
  * )
@@ -81,28 +81,6 @@ class NodeIsOfType extends RulesConditionBase implements ContainerFactoryPluginI
    */
   protected function doEvaluate(NodeInterface $node, array $types) {
     return in_array($node->getType(), $types);
-  }
-
-  /**
-   * Returns an array of node types that exist in the system.
-   *
-   * @return array
-   *   An array of node types keyed on the node type machine name.
-   */
-  public function nodeTypesListOptions() {
-    $options = [];
-
-    $node_types = $this->entityTypeManager->getStorage('node_type')->loadMultiple();
-
-    foreach ($node_types as $node_type) {
-      $options[$node_type->id()] = $node_type->label();
-      // If the id differs from the label add the id in brackets for clarity.
-      if (strtolower(str_replace('_', ' ', $node_type->id())) != strtolower($node_type->label())) {
-        $options[$node_type->id()] .= ' (' . $node_type->id() . ')';
-      }
-    }
-
-    return $options;
   }
 
 }

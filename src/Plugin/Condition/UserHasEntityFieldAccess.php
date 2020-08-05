@@ -33,7 +33,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *       label = @Translation("Field"),
  *       description = @Translation("The name of the field to check for."),
  *       assignment_restriction = "input",
- *       list_options_callback = "fieldListOptions"
+ *       options_provider = "\Drupal\rules\Plugin\OptionsProvider\FieldListOptions"
  *     ),
  *     "operation" = @ContextDefinition("string",
  *       label = @Translation("Access operation"),
@@ -41,7 +41,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *       assignment_restriction = "input",
  *       default_value = "view",
  *       required = FALSE,
- *       list_options_callback = "accessListOptions"
+ *       options_provider = "\Drupal\rules\Plugin\OptionsProvider\ViewEditOptions"
  *     ),
  *   }
  * )
@@ -126,40 +126,6 @@ class UserHasEntityFieldAccess extends RulesConditionBase implements ContainerFa
     $definition = $entity->getFieldDefinition($field);
     $items = $entity->get($field);
     return $access->fieldAccess($operation, $definition, $user, $items);
-  }
-
-  /**
-   * Returns all the available fields in the system.
-   *
-   * @return array
-   *   An array of field names keyed on the field name.
-   */
-  public function fieldListOptions() {
-    $options = [];
-
-    // Load all the fields in the system.
-    $fields = $this->entityFieldManager->getFieldMap();
-
-    // Add each field to our options array.
-    foreach ($fields as $entity_fields) {
-      foreach ($entity_fields as $field_name => $field) {
-        $options[$field_name] = $field_name;
-      }
-    }
-    // Sort the field names for ease of locating and selecting.
-    asort($options);
-
-    return $options;
-  }
-
-  /**
-   * Returns the types of field access to check for.
-   *
-   * @return array
-   *   An array of access types.
-   */
-  public function accessListOptions() {
-    return ['view' => $this->t('View'), 'edit' => $this->t('Edit')];
   }
 
 }

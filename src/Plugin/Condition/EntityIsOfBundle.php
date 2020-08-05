@@ -2,7 +2,6 @@
 
 namespace Drupal\rules\Plugin\Condition;
 
-use Drupal\Core\Entity\ContentEntityTypeInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -27,13 +26,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *       label = @Translation("Type"),
  *       description = @Translation("The type of the evaluated entity."),
  *       assignment_restriction = "input",
- *       list_options_callback = "entityTypesListOptions"
+ *       options_provider = "\Drupal\rules\Plugin\OptionsProvider\EntityTypeOptions"
  *     ),
  *     "bundle" = @ContextDefinition("string",
  *       label = @Translation("Bundle"),
  *       description = @Translation("The bundle of the evaluated entity."),
  *       assignment_restriction = "input",
- *       list_options_callback = "bundleListOptions"
+ *       options_provider = "\Drupal\rules\Plugin\OptionsProvider\EntityBundleOptions"
  *     ),
  *   }
  * )
@@ -123,60 +122,6 @@ class EntityIsOfBundle extends RulesConditionBase implements ContainerFactoryPlu
       $changed_definitions['entity']->setBundles($bundles);
     }
     return $changed_definitions;
-  }
-
-  /**
-   * Returns an array of entity types that exist in the system.
-   *
-   * @return array
-   *   An array of entity types keyed on the entity type machine name.
-   */
-  public function entityTypesListOptions() {
-    $options = [];
-
-    $entity_types = $this->entityTypeManager->getDefinitions();
-
-    foreach ($entity_types as $entity_type) {
-      if (!$entity_type instanceof ContentEntityTypeInterface) {
-        continue;
-      }
-
-      $options[$entity_type->id()] = $entity_type->getLabel();
-      // If the id differs from the label add the id in brackets for clarity.
-      if (strtolower(str_replace('_', ' ', $entity_type->id())) != strtolower($entity_type->getLabel())) {
-        $options[$entity_type->id()] .= ' (' . $entity_type->id() . ')';
-      }
-    }
-
-    ksort($options);
-    return $options;
-  }
-
-  /**
-   * Returns an array of entity bundles options.
-   *
-   * @return array
-   *   An array of bundles keyed on the bundle machine name.
-   */
-  public function bundleListOptions() {
-    $options = [];
-
-    $entity_types = $this->entityTypeManager->getDefinitions();
-    foreach ($entity_types as $entity_type) {
-      if (!$entity_type instanceof ContentEntityTypeInterface) {
-        continue;
-      }
-
-      $bundles = $this->entityBundleInfo->getBundleInfo($entity_type->id());
-      // Transform the $bundles array into a form suitable for select options.
-      array_walk($bundles, function (&$value, $key) {
-        $value = (string) $value['label'];
-      });
-      $options[(string) $entity_type->getLabel()] = $bundles;
-    }
-
-    ksort($options);
-    return $options;
   }
 
 }

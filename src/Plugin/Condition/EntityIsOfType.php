@@ -2,7 +2,6 @@
 
 namespace Drupal\rules\Plugin\Condition;
 
-use Drupal\Core\Entity\ContentEntityTypeInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -26,7 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *       label = @Translation("Type"),
  *       description = @Translation("The entity type specified by the condition."),
  *       assignment_restriction = "input",
- *       list_options_callback = "entityTypesListOptions"
+ *       options_provider = "\Drupal\rules\Plugin\OptionsProvider\EntityTypeOptions",
  *     ),
  *   }
  * )
@@ -87,32 +86,6 @@ class EntityIsOfType extends RulesConditionBase implements ContainerFactoryPlugi
 
     // Check to see whether the entity's type matches the specified value.
     return $entity_type == $type;
-  }
-
-  /**
-   * Returns an array of entity types that exist in the system.
-   *
-   * @return array
-   *   An array of entity types keyed on the entity type machine name.
-   */
-  public function entityTypesListOptions() {
-    $options = [];
-
-    $entity_types = $this->entityTypeManager->getDefinitions();
-
-    foreach ($entity_types as $entity_type) {
-      if (!$entity_type instanceof ContentEntityTypeInterface) {
-        continue;
-      }
-
-      $options[$entity_type->id()] = $entity_type->getLabel();
-      // If the id differs from the label add the id in brackets for clarity.
-      if (strtolower(str_replace('_', ' ', $entity_type->id())) != strtolower($entity_type->getLabel())) {
-        $options[$entity_type->id()] .= ' (' . $entity_type->id() . ')';
-      }
-    }
-
-    return $options;
   }
 
 }

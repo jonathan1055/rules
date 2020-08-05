@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *       label = @Translation("Field"),
  *       description = @Translation("The name of the field to check for."),
  *       assignment_restriction = "input",
- *       list_options_callback = "fieldListOptions"
+ *       options_provider = "\Drupal\rules\Plugin\OptionsProvider\FieldListOptions"
  *     ),
  *   }
  * )
@@ -83,30 +83,6 @@ class EntityHasField extends RulesConditionBase implements ContainerFactoryPlugi
    */
   protected function doEvaluate(FieldableEntityInterface $entity, $field) {
     return $entity->hasField($field);
-  }
-
-  /**
-   * Returns all the available fields in the system.
-   *
-   * @return array
-   *   An array of field names keyed on the field name.
-   */
-  public function fieldListOptions() {
-    $options = [];
-
-    // Load all the fields in the system.
-    $fields = $this->entityFieldManager->getFieldMap();
-
-    // Add each field to our options array.
-    foreach ($fields as $entity_fields) {
-      foreach ($entity_fields as $field_name => $field) {
-        $options[$field_name] = $field_name;
-      }
-    }
-    // Sort the field names for ease of locating and selecting.
-    asort($options);
-
-    return $options;
   }
 
 }

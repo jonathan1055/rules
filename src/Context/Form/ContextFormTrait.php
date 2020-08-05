@@ -161,7 +161,7 @@ trait ContextFormTrait {
         }
         else {
           if ($context_definitions[$context_name]->isMultiple()) {
-            if (!empty($context_definitions[$context_name]->getListOptionsCallback())) {
+            if (!empty($context_definitions[$context_name]->getOptionsProvider())) {
               // This is a select list with multiple values allowed.
               $context_config->setValue($context_name, array_keys($value['setting']));
             }

@@ -151,8 +151,8 @@ abstract class RulesEntityIntegrationTestBase extends RulesIntegrationTestBase {
     $data_definition->setLabel(Argument::any())->willReturn($data_definition->reveal());
     $data_definition->setDescription(Argument::any())->willReturn($data_definition->reveal());
     $data_definition->setRequired(Argument::any())->willReturn($data_definition->reveal());
-    $data_definition->setLabel(Argument::any())->willReturn($data_definition->reveal());
     $data_definition->setConstraints(Argument::any())->willReturn($data_definition->reveal());
+    $data_definition->setOptionsProviderDefinition(Argument::any())->willReturn($data_definition->reveal());
 
     $data_definition->getConstraints()->willReturn([]);
     $data_definition->getDataType()->willReturn($data_type);

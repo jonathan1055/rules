@@ -71,23 +71,31 @@ interface ContextDefinitionInterface extends ContextDefinitionInterfaceCore {
   public function toArray();
 
   /**
-   * Retrieves the select options callback.
+   * Returns an options provider if there are defined options.
    *
-   * @return string|null
-   *   The name of the callback function to be used to generate options for a
-   *   select list in the UI.
+   * @param \Drupal\Core\Plugin\Context\ContextInterface[] $contexts
+   *   (optional) The array of contexts to which the defined context belongs.
+   *
+   * @return \Drupal\Core\TypedData\OptionsProviderInterface|null
+   *   The options provider, or NULL if no options are defined.
+   *
+   * @see ::getOptionsProviderDefinition()
+   *
+   * @todo getOptionsProvider() and getOptionsProviderDefinition() are taken
+   * directly from core issue #2329937. Remove when that is committed.
+   * @see https://www.drupal.org/project/drupal/issues/2329937
    */
-  public function getListOptionsCallback();
+  public function getOptionsProvider(array $contexts = NULL);
 
   /**
-   * Sets the select options callback.
+   * Returns the set options provider definition.
    *
-   * @param string $name
-   *   The name of the callback function to be used to generate options for a
-   *   select list in the UI.
+   * @return string|null
+   *   The options provider definition, or NULL if no options provider has been
+   *   defined.
    *
-   * @return $this
+   * @see ::getOptionsProvider()
    */
-  public function setListOptionsCallback($name);
+  public function getOptionsProviderDefinition();
 
 }
