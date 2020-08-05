@@ -23,9 +23,9 @@ class ContextDefinition extends ContextDefinitionCore implements ContextDefiniti
     'required' => 'isRequired',
     'default_value' => 'defaultValue',
     'constraints' => 'constraints',
+    'options_provider' => 'optionsProviderDefinition',
     'allow_null' => 'allowNull',
     'assignment_restriction' => 'assignmentRestriction',
-    'options_provider' => 'optionsProviderDefinition',
   ];
 
   /**
@@ -43,13 +43,6 @@ class ContextDefinition extends ContextDefinitionCore implements ContextDefiniti
    * @see \Drupal\rules\Context\ContextDefinitionInterface::getAssignmentRestriction()
    */
   protected $assignmentRestriction = NULL;
-
-  /**
-   * The options provider definition.
-   *
-   * @var string|null
-   */
-  protected $optionsProviderDefinition = NULL;
 
   /**
    * {@inheritdoc}
@@ -123,53 +116,6 @@ class ContextDefinition extends ContextDefinitionCore implements ContextDefiniti
   public function setAssignmentRestriction($restriction) {
     $this->assignmentRestriction = $restriction;
     return $this;
-  }
-
-  /**
-   * Defines the options provider to be used.
-   *
-   * See \Drupal\Core\TypedData\TypedDataManager::getOptionsProvider() for
-   * supported definitions. In addition, specified option provider classes may
-   * implement \Drupal\Core\Plugin\Context\ContextAwareOptionsProviderInterface
-   * in order to provide options depending on the available contexts.
-   *
-   * @param string|null $provider_definition
-   *   The options provider definition; e.g. the class name.
-   *
-   * @return $this
-   *
-   * @see ::getOptionsProviderDefinition()
-   *
-   * @todo The functions setOptionsProviderDefinition(), getOptionsProvider()
-   * and getOptionsProviderDefinition() are taken directly from core issue
-   * #2329937 patch #61. Remove from Rules when that is committed.
-   * @see https://www.drupal.org/project/drupal/issues/2329937
-   */
-  public function setOptionsProviderDefinition($provider_definition) {
-    $this->optionsProviderDefinition = $provider_definition;
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getOptionsProvider(array $contexts = NULL) {
-    if (isset($this->optionsProviderDefinition)) {
-      $data_definition = $this->getDataDefinition()
-        ->setOptionsProviderContext(ContextAwareOptionsProviderInterface::class, 'setContexts', [$contexts]);
-
-      $provider = \Drupal::typedDataManager()
-        ->getOptionsProvider($data_definition);
-
-      return $provider;
-    }
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getOptionsProviderDefinition() {
-    return $this->optionsProviderDefinition;
   }
 
 }
