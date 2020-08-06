@@ -4,5 +4,6 @@ description: 'React on events and conditionally evaluate actions.'
 package: Rules
 core_version_requirement: ^8.8.2
 dependencies:
+  - drupal:config
   - typed_data:typed_data
 configure: entity.rules_reaction_rule.collection
