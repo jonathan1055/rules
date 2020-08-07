@@ -49,8 +49,6 @@ abstract class RulesEntityIntegrationTestBase extends RulesIntegrationTestBase {
   protected function setUp() {
     parent::setup();
 
-    require_once $this->root . '/core/includes/entity.inc';
-
     $this->namespaces['Drupal\\Core\\Entity'] = $this->root . '/core/lib/Drupal/Core/Entity';
 
     $language = $this->prophesize(LanguageInterface::class);
