@@ -9,7 +9,7 @@ env:
     # Make the script re-usable for other modules.
     - MODULE=rules
     # Allow this many deprecation warnings before failing the build.
-    - SYMFONY_DEPRECATIONS_HELPER=4229
+    - SYMFONY_DEPRECATIONS_HELPER=0
 
 jobs:
   fast_finish: true
@@ -20,6 +20,8 @@ jobs:
       env: DRUPAL_CORE=8.8.x
     - php: 7.3
       env: DRUPAL_CORE=8.9.x
+    - php: 7.4
+      env: DRUPAL_CORE=9.0.x
 
 services:
   - mysql
