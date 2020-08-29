@@ -47,7 +47,7 @@ abstract class RulesEntityIntegrationTestBase extends RulesIntegrationTestBase {
    * {@inheritdoc}
    */
   protected function setUp() {
-    parent::setup();
+    parent::setUp();
 
     $this->namespaces['Drupal\\Core\\Entity'] = $this->root . '/core/lib/Drupal/Core/Entity';
 
