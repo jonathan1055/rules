@@ -123,7 +123,7 @@ class ConditionForm implements ExpressionFormInterface {
       $form['provides'] = [
         '#type' => 'details',
         '#title' => $this->t('Provided variables'),
-        '#description' => $this->t('Adjust the name of provided variables, but note that renaming of already utilized variables invalidates the existing uses.'),
+        '#description' => $this->t('You may change the name of any provided variables, but note that renaming already-utilized variables invalidates the existing uses.'),
         '#open' => TRUE,
       ];
       foreach ($provides_definitions as $provides_name => $provides_definition) {
