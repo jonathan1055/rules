@@ -27,9 +27,12 @@ jobs:
     - php: 7.4
       env:
         - DRUPAL_CORE=9.1.x
+        # --- Remaining self deprecation notices (297)
         # 297 Declaring ::setUp without a void return typehint
+
+        # --- Remaining direct deprecation notices (566)
         #  50 Support for keys without a placeholder prefix is deprecated
-        # 516 EventDispatcher parameters
+        # 516 Parameter switch \Component\EventDispatcher -> \Contracts\EventDispatcher
         - DEPRECATIONS=863
 
 services:
@@ -64,6 +67,9 @@ before_script:
   - DRUPAL_ROOT=$(pwd)
   - echo $DRUPAL_ROOT
 
+  # Apply core patch for OptionsProvider on issue https://www.drupal.org/project/drupal/issues/2329937
+  - cd $DRUPAL_ROOT && wget -q -O - https://www.drupal.org/files/issues/2020-07-24/2329937-61-options-provider.patch | patch -p1 --verbose
+
   # Reference $MODULE in build site.
   - ln -s $TESTDIR modules/$MODULE
   # Install dependencies.
@@ -74,9 +80,6 @@ before_script:
 
   # Set the phpcs installed_paths to pick up the Drupal standards.
   - $DRUPAL_ROOT/vendor/bin/phpcs --config-set installed_paths $DRUPAL_ROOT/vendor/drupal/coder/coder_sniffer
-
-  # Show the allowed number of deprecation warnings.
-  - echo $SYMFONY_DEPRECATIONS_HELPER
 
   # Start a web server on port 8888, run in the background.
   - php -S localhost:8888 &
