@@ -19,9 +19,10 @@ use Drupal\rules\Core\RulesConditionBase;
  *     ),
  *     "operation" = @ContextDefinition("string",
  *       label = @Translation("Operator"),
- *       description = @Translation("The comparison operator. Valid values are == (default), <, >, CONTAINS (for strings or arrays) and IN (for arrays or lists)."),
+ *       description = @Translation("The comparison operator."),
  *       assignment_restriction = "input",
  *       default_value = "==",
+ *       options_provider = "\Drupal\rules\Plugin\OptionsProvider\ComparisonOperatorOptions",
  *       required = FALSE
  *     ),
  *     "value" = @ContextDefinition("any",
