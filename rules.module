@@ -98,7 +98,7 @@ function rules_user_login($account) {
   // Set the account twice on the event: as the main subject but also in the
   // list of arguments.
   $event = new UserLoginEvent($account);
-  $event_dispatcher = \Drupal::service('logger.ruleslog');
+  $event_dispatcher = \Drupal::service('logger.ruleslog'); // 1
   $event_dispatcher->dispatch(UserLoginEvent::EVENT_NAME, $event);
 }
 
@@ -109,7 +109,7 @@ function rules_user_logout($account) {
   // Set the account twice on the event: as the main subject but also in the
   // list of arguments.
   $event = new UserLogoutEvent($account, ['account' => $account]);
-  $event_dispatcher = \Drupal::service('logger.ruleslog');
+  $event_dispatcher = \Drupal::service('logger.ruleslog'); // 2
   $event_dispatcher->dispatch(UserLogoutEvent::EVENT_NAME, $event);
 }
 
@@ -121,7 +121,7 @@ function rules_entity_view(array &$build, EntityInterface $entity, EntityViewDis
   if ($entity instanceof ContentEntityInterface) {
     $entity_type_id = $entity->getEntityTypeId();
     $event = new EntityEvent($entity, [$entity_type_id => $entity]);
-    $event_dispatcher = \Drupal::service('event_dispatcher');
+    $event_dispatcher = \Drupal::service('logger.ruleslog'); // 3
     $event_dispatcher->dispatch("rules_entity_view:$entity_type_id", $event);
   }
 }
@@ -137,7 +137,7 @@ function rules_entity_presave(EntityInterface $entity) {
       $entity_type_id => $entity,
       $entity_type_id . '_unchanged' => $entity->original,
     ]);
-    $event_dispatcher = \Drupal::service('event_dispatcher');
+    $event_dispatcher = \Drupal::service('logger.ruleslog'); // 4
     $event_dispatcher->dispatch("rules_entity_presave:$entity_type_id", $event);
   }
 }
