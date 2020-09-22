@@ -7,7 +7,8 @@ use Drupal\Core\Logger\LogMessageParserInterface;
 use Drupal\Core\Logger\RfcLoggerTrait;
 use Drupal\rules\Event\SystemLoggerEvent;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+// use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher;
 
 /**
  * Logger that dispatches a SystemLoggerEvent when a logger entry is made.
@@ -19,7 +20,8 @@ class RulesLog implements LoggerInterface {
   /**
    * The dispatcher.
    *
-   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+   * \Symfony\Component\EventDispatcher\EventDispatcherInterface
+   * @var \Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher
    */
   protected $dispatcher;
 
@@ -33,12 +35,12 @@ class RulesLog implements LoggerInterface {
   /**
    * Constructs a new instance.
    *
-   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
-   *   An EventDispatcherInterface instance.
+   * @param \Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher $dispatcher
+   *   An EventDispatcher instance.
    * @param \Drupal\Core\Logger\LogMessageParserInterface $parser
    *   The parser to use when extracting message variables.
    */
-  public function __construct(EventDispatcherInterface $dispatcher, LogMessageParserInterface $parser) {
+  public function __construct(ContainerAwareEventDispatcher $dispatcher, LogMessageParserInterface $parser) {
     $this->dispatcher = $dispatcher;
     $this->parser = $parser;
   }
@@ -72,7 +74,15 @@ class RulesLog implements LoggerInterface {
 
     // Dispatch logger_entry event.
     $event = new SystemLoggerEvent($logger_entry, ['logger_entry' => $logger_entry]);
-    $this->dispatcher->dispatch(SystemLoggerEvent::EVENT_NAME, $event);
+        if (version_compare(\Drupal::VERSION, '9.1', '>=')) {
+      // The new way, with $event first.
+      $this->dispatcher->dispatch($event, SystemLoggerEvent::EVENT_NAME);
+    }
+    else {
+      // Replicate the existing dispatch signature.
+      $this->dispatcher->dispatch(SystemLoggerEvent::EVENT_NAME, $event);
+    }
+
   }
 
 }
