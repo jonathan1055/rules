@@ -98,11 +98,8 @@ function rules_user_login($account) {
   // Set the account twice on the event: as the main subject but also in the
   // list of arguments.
   $event = new UserLoginEvent($account);
-  //  \Drupal::service('scheduler.manager')->dispatch($event, SchedulerEvents::PRE_PUBLISH_IMMEDIATELY);
-
-  // $event_dispatcher = \Drupal::service('event_dispatcher');
   $event_dispatcher = \Drupal::service('logger.ruleslog');
-  $event_dispatcher->dispatchZ(UserLoginEvent::EVENT_NAME, $event);
+  $event_dispatcher->dispatch(UserLoginEvent::EVENT_NAME, $event);
 }
 
 /**
@@ -112,7 +109,7 @@ function rules_user_logout($account) {
   // Set the account twice on the event: as the main subject but also in the
   // list of arguments.
   $event = new UserLogoutEvent($account, ['account' => $account]);
-  $event_dispatcher = \Drupal::service('event_dispatcher');
+  $event_dispatcher = \Drupal::service('logger.ruleslog');
   $event_dispatcher->dispatch(UserLogoutEvent::EVENT_NAME, $event);
 }
 
