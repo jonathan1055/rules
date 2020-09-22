@@ -7,14 +7,12 @@ namespace Drupal\rules\Event;
 // @todo Remove this when core 9.1 is the lowest supported version.
 // @see https://www.drupal.org/project/scheduler/issues/3166688
 if (!class_exists('Drupal\Component\EventDispatcher\Event')) {
-  class_alias('Symfony\Component\EventDispatcher\Event', 'Drupal\Component\EventDispatcher\Event');
-// use Symfony\Component\EventDispatcher\GenericEvent;
+  class_alias('Symfony\Component\EventDispatcher\GenericEvent', 'Drupal\Component\EventDispatcher\Event');
 }
-
 use Drupal\Component\EventDispatcher\Event;
 
 /**
- * Base class from which all Rules events are extended from.
+ * Class from which all Rules events are extended from.
  */
 class GenericEvent extends Event {
 }
