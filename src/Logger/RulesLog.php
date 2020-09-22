@@ -2,6 +2,8 @@
 
 namespace Drupal\rules\Logger;
 
+// seems that do not need to change to Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher
+// only need to swap the argument order.
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Logger\LogMessageParserInterface;
 use Drupal\Core\Logger\RfcLoggerTrait;
@@ -37,7 +39,7 @@ class RulesLog implements LoggerInterface {
    *
    * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
    *  \   Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher $dispatcher
-   *   An EventDispatcher instance.
+   *   An EventDispatcherInterface instance.
    * @param \Drupal\Core\Logger\LogMessageParserInterface $parser
    *   The parser to use when extracting message variables.
    */
@@ -75,15 +77,33 @@ class RulesLog implements LoggerInterface {
 
     // Dispatch logger_entry event.
     $event = new SystemLoggerEvent($logger_entry, ['logger_entry' => $logger_entry]);
-        if (version_compare(\Drupal::VERSION, '9.1', '>=')) {
+    // Drupal 8.8 and 8.9 use Symfony 3.4 and Drupal 9.0 uses Symfony 4.4.
+    // Starting with Symfony 4.3 the signature of the event dispatcher has the
+    // parameters swapped round, the event object is first, followed by the
+    // event name string. An exception is produced at core 9.1 if not swapped.
+    // @todo Remove the check when Core 9.1 is the lowest supported version.
+    // @see https://www.drupal.org/project/rules/issues/3172039
+    if (version_compare(\Drupal::VERSION, '9.1', '>=')) {
       // The new way, with $event first.
       $this->dispatcher->dispatch($event, SystemLoggerEvent::EVENT_NAME);
     }
     else {
-      // Replicate the existing dispatch signature.
+      // The existing dispatch signature, with event name first.
       $this->dispatcher->dispatch(SystemLoggerEvent::EVENT_NAME, $event);
     }
 
+  }
+  
+  function dispatchZ($event_name, $event) {
+    if (version_compare(\Drupal::VERSION, '9.1', '>=')) {
+      // The new way, with $event first.
+      $this->dispatcher->dispatch($event, $event_name);
+    }
+    else {
+      // The existing dispatch signature, with event name first.
+      $this->dispatcher->dispatch($event_name, $event);
+    }
+    
   }
 
 }

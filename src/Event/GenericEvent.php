@@ -2,6 +2,9 @@
 
 namespace Drupal\rules\Event;
 
+// This is not required. Can swap the arguments OK and get reduced deprecation count.
+
+
 // Drupal\Component\EventDispatcher\Event was introduced in Drupal core 9.1 to
 // assist with deprecations and the transition to Symfony 5.
 // @todo Remove this when core 9.1 is the lowest supported version.
@@ -11,7 +14,7 @@ namespace Drupal\rules\Event;
 // }
 // use Drupal\Component\EventDispatcher\Event;
 
-use Symfony\Component\EventDispatcher\GenericEvent as AAA;
+use Symfony\Component\EventDispatcher\GenericEvent as AAA;  
 
 
 /**
