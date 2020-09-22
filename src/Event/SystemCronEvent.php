@@ -2,8 +2,6 @@
 
 namespace Drupal\rules\Event;
 
-use Symfony\Component\EventDispatcher\GenericEvent;
-
 /**
  * Event that is fired when cron maintenance tasks are performed.
  *
