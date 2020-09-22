@@ -7,8 +7,8 @@ use Drupal\Core\Logger\LogMessageParserInterface;
 use Drupal\Core\Logger\RfcLoggerTrait;
 use Drupal\rules\Event\SystemLoggerEvent;
 use Psr\Log\LoggerInterface;
-// use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+// use Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher;
 
 /**
  * Logger that dispatches a SystemLoggerEvent when a logger entry is made.
@@ -20,8 +20,8 @@ class RulesLog implements LoggerInterface {
   /**
    * The dispatcher.
    *
-   * \Symfony\Component\EventDispatcher\EventDispatcherInterface
-   * @var \Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher
+   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+   * \Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher
    */
   protected $dispatcher;
 
@@ -35,12 +35,13 @@ class RulesLog implements LoggerInterface {
   /**
    * Constructs a new instance.
    *
-   * @param \Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher $dispatcher
+   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
+   *  \   Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher $dispatcher
    *   An EventDispatcher instance.
    * @param \Drupal\Core\Logger\LogMessageParserInterface $parser
    *   The parser to use when extracting message variables.
    */
-  public function __construct(ContainerAwareEventDispatcher $dispatcher, LogMessageParserInterface $parser) {
+  public function __construct(EventDispatcherInterface $dispatcher, LogMessageParserInterface $parser) {
     $this->dispatcher = $dispatcher;
     $this->parser = $parser;
   }

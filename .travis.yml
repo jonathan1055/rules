@@ -16,12 +16,12 @@ env:
 jobs:
   fast_finish: true
   include:
-    - php: 7.0
-      env: DRUPAL_CORE=8.8.x
-    - php: 7.3
-      env: DRUPAL_CORE=8.8.x
-    - php: 7.3
-      env: DRUPAL_CORE=8.9.x
+    # - php: 7.0
+    #   env: DRUPAL_CORE=8.8.x
+    # - php: 7.3
+    #   env: DRUPAL_CORE=8.8.x
+    # - php: 7.3
+    #   env: DRUPAL_CORE=8.9.x
     - php: 7.4
       env: DRUPAL_CORE=9.0.x
     - php: 7.4
@@ -104,4 +104,4 @@ script:
   - $DRUPAL_ROOT/vendor/bin/phpcs --report-width=100 --runtime-set ignore_warnings_on_exit 1 --runtime-set ignore_errors_on_exit 1
 
   # Run again to give a summary and totals, and fail for errors and warnings.
-  - $DRUPAL_ROOT/vendor/bin/phpcs --report-width=100 --report=summary
+  - $DRUPAL_ROOT/vendor/bin/phpcs --report-width=100 --report=summary --runtime-set ignore_warnings_on_exit 1 --runtime-set ignore_errors_on_exit 1     
