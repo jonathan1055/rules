@@ -2,7 +2,7 @@
 
 namespace Drupal\rules\Event;
 
-// This is not required. Can swap the arguments OK and get reduced deprecation count.
+// This is not required. Can swap the arguments OK and get reduced deprecation count. 
 
 
 // Drupal\Component\EventDispatcher\Event was introduced in Drupal core 9.1 to

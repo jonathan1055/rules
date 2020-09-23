@@ -2,7 +2,7 @@
 
 namespace Drupal\rules\Event;
 
-use Symfony\Component\EventDispatcher\GenericEvent;
+// use Symfony\Component\EventDispatcher\GenericEvent;   
 
 /**
  * Represent various entity events.
