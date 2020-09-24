@@ -3,14 +3,14 @@
 namespace Drupal\rules\Event;
 
 use Drupal\user\UserInterface;
-use Symfony\Component\EventDispatcher\Event;
+// use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Event that is fired when a user logs in.
  *
  * @see rules_user_login()
  */
-class UserLoginEvent extends Event {
+class UserLoginEvent extends GenericEvent {
 
   const EVENT_NAME = 'rules_user_login';
 
