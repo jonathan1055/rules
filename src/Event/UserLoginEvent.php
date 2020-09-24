@@ -3,7 +3,6 @@
 namespace Drupal\rules\Event;
 
 use Drupal\user\UserInterface;
-// use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Event that is fired when a user logs in.
@@ -29,6 +28,8 @@ class UserLoginEvent extends GenericEvent {
    */
   public function __construct(UserInterface $account) {
     $this->account = $account;
+    // Set arguments as would be done in the parent __construct().
+    $this->arguments = ['account' => $account ];
   }
 
 }

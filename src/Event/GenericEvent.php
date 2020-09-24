@@ -12,13 +12,19 @@ namespace Drupal\rules\Event;
 // if (!class_exists('Drupal\Component\EventDispatcher\Event')) {
 //   class_alias('Symfony\Component\EventDispatcher\GenericEvent', 'Drupal\Component\EventDispatcher\Event');
 // }
+
 // use Drupal\Component\EventDispatcher\Event;
 
-use Symfony\Component\EventDispatcher\GenericEvent as AAA;  
+/*
+namespace Symfony\Component\EventDispatcher;
+class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
+*/
+
+use Symfony\Component\EventDispatcher\GenericEvent as GenEv;  
 
 
 /**
  * Class from which all Rules events are extended from.
  */
-class GenericEvent extends AAA {
+class GenericEvent extends GenEv {
 }
