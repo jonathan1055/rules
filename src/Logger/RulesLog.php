@@ -82,9 +82,10 @@ class RulesLog implements LoggerInterface {
 
   /**
    *
-   *
+   * @param string $event_name
+   * @param event $event
    */  
-  function dispatch($event_name, $event) {
+  function dispatch($event_name, $event = NULL) {
     // Drupal 8.8 and 8.9 use Symfony 3.4 and Drupal 9.0 uses Symfony 4.4.
     // Starting with Symfony 4.3 the signature of the event dispatcher has the
     // parameters swapped round, the event object is first, followed by the

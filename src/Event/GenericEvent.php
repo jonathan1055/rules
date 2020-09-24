@@ -2,8 +2,7 @@
 
 namespace Drupal\rules\Event;
 
-// This is not required. Can swap the arguments OK and get reduced deprecation count. 
-
+// This is not required. Can swap the arguments OK and get reduced deprecation count.
 
 // Drupal\Component\EventDispatcher\Event was introduced in Drupal core 9.1 to
 // assist with deprecations and the transition to Symfony 5.
@@ -13,18 +12,10 @@ namespace Drupal\rules\Event;
 //   class_alias('Symfony\Component\EventDispatcher\GenericEvent', 'Drupal\Component\EventDispatcher\Event');
 // }
 
-// use Drupal\Component\EventDispatcher\Event;
-
-/*
-namespace Symfony\Component\EventDispatcher;
-class GenericEvent extends Event implements \ArrayAccess, \IteratorAggregate
-*/
-
-use Symfony\Component\EventDispatcher\GenericEvent as GenEv;  
-
+use Symfony\Component\EventDispatcher\GenericEvent as SymfonyGenericEvent;
 
 /**
  * Class from which all Rules events are extended from.
  */
-class GenericEvent extends GenEv {
+class GenericEvent extends SymfonyGenericEvent {
 }

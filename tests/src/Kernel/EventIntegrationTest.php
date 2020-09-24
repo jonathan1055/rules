@@ -183,7 +183,8 @@ class EventIntegrationTest extends RulesKernelTestBase {
       }
     }
     // Manually trigger the initialization event.
-    $dispatcher->dispatch(KernelEvents::REQUEST);
+    $rules_log = $this->container->get('logger.ruleslog');
+    $rules_log->dispatch(KernelEvents::REQUEST);
 
     // Test that the action in the rule logged something.
     $this->assertRulesDebugLogEntryExists('action called');
