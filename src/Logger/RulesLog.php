@@ -80,15 +80,12 @@ class RulesLog implements LoggerInterface {
   }
 
   /**
+   * Dispatch an event.
    *
    * @param string $event_name
    * @param event $event
    */  
-  function dispatch($event_name, $event = NULL) {
-if (is_null($event)) {
-    $event = new SystemLoggerEvent();
-}
-
+  function dispatch($event_name, $event) {
     // Drupal 8.8 and 8.9 use Symfony 3.4 and Drupal 9.0 uses Symfony 4.4.
     // Starting with Symfony 4.3 the signature of the event dispatcher has the
     // parameters swapped round, the event object is first, followed by the
@@ -96,11 +93,11 @@ if (is_null($event)) {
     // @todo Remove the check when Core 9.1 is the lowest supported version.
     // @see https://www.drupal.org/project/rules/issues/3172039
     if (version_compare(\Drupal::VERSION, '9.1', '>=')) {
-      // The new way, with $event first.
+      // The new signature, with the $event object first.
       $this->dispatcher->dispatch($event, $event_name);
     }
     else {
-      // The existing dispatch signature, with event name first.
+      // The existing signature, with $event_name string first.
       $this->dispatcher->dispatch($event_name, $event);
     }
     

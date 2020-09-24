@@ -2,6 +2,8 @@
 
 namespace Drupal\rules\Event;
 
+use Symfony\Component\EventDispatcher\GenericEvent;
+
 /**
  * Event that is fired when a logger-item is created.
  */
