@@ -184,7 +184,7 @@ class EventIntegrationTest extends RulesKernelTestBase {
     }
     // Manually trigger the initialization event.
     $rules_log = $this->container->get('logger.ruleslog');
-    $event = new \Symfony\Component\EventDispatcher\Event();
+    $event = new \Symfony\Component\EventDispatcher\GenericEvent();
     $rules_log->dispatch(KernelEvents::REQUEST, $event);
 
     // Test that the action in the rule logged something.
@@ -221,7 +221,7 @@ class EventIntegrationTest extends RulesKernelTestBase {
     }
     // Manually trigger the initialization event.
     $rules_log = $this->container->get('logger.ruleslog');
-    $event = new \Symfony\Component\EventDispatcher\Event();
+    $event = new \Symfony\Component\EventDispatcher\GenericEvent();
     $rules_log->dispatch(KernelEvents::TERMINATE, $event);
 
     // Test that the action in the rule logged something.
