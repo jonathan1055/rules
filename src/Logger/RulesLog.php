@@ -10,7 +10,6 @@ use Drupal\Core\Logger\RfcLoggerTrait;
 use Drupal\rules\Event\SystemLoggerEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-// use Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher;
 
 /**
  * Logger that dispatches a SystemLoggerEvent when a logger entry is made.
@@ -86,6 +85,10 @@ class RulesLog implements LoggerInterface {
    * @param event $event
    */  
   function dispatch($event_name, $event = NULL) {
+if (is_null($event)) {
+    $event = new SystemLoggerEvent();
+}
+
     // Drupal 8.8 and 8.9 use Symfony 3.4 and Drupal 9.0 uses Symfony 4.4.
     // Starting with Symfony 4.3 the signature of the event dispatcher has the
     // parameters swapped round, the event object is first, followed by the
