@@ -7,6 +7,7 @@ use Drupal\Core\Logger\LogMessageParserInterface;
 use Drupal\Core\Logger\RfcLoggerTrait;
 use Drupal\rules\Event\SystemLoggerEvent;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -83,7 +84,7 @@ class RulesLog implements LoggerInterface {
    *
    * @param string $event_name
    *   The event name.
-   * @param Event $event
+   * @param \Symfony\Component\EventDispatcher\Event $event
    *   The event object.
    */
   public function dispatch($event_name, Event $event) {

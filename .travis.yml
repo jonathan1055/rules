@@ -104,4 +104,4 @@ script:
   - $DRUPAL_ROOT/vendor/bin/phpcs --report-width=100 --runtime-set ignore_warnings_on_exit 1 --runtime-set ignore_errors_on_exit 1
 
   # Run again to give a summary and totals, and fail for errors and warnings.
-  - $DRUPAL_ROOT/vendor/bin/phpcs --report-width=100 --report=summary --runtime-set ignore_warnings_on_exit 1 --runtime-set ignore_errors_on_exit 1     
+  - $DRUPAL_ROOT/vendor/bin/phpcs --report-width=100 --report=summary
