@@ -2,8 +2,6 @@
 
 namespace Drupal\rules\Logger;
 
-// seems that do not need to change to Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher
-// only need to swap the argument order.
 use Drupal\Core\DependencyInjection\DependencySerializationTrait;
 use Drupal\Core\Logger\LogMessageParserInterface;
 use Drupal\Core\Logger\RfcLoggerTrait;
@@ -22,7 +20,6 @@ class RulesLog implements LoggerInterface {
    * The dispatcher.
    *
    * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
-   * \Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher
    */
   protected $dispatcher;
 
@@ -37,7 +34,6 @@ class RulesLog implements LoggerInterface {
    * Constructs a new instance.
    *
    * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher
-   *  \   Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher $dispatcher
    *   An EventDispatcherInterface instance.
    * @param \Drupal\Core\Logger\LogMessageParserInterface $parser
    *   The parser to use when extracting message variables.
@@ -82,10 +78,15 @@ class RulesLog implements LoggerInterface {
   /**
    * Dispatch an event.
    *
+   * Use this function to swap the parameter order for all events dispatched
+   * by the Rules module.
+   *
    * @param string $event_name
-   * @param event $event
-   */  
-  function dispatch($event_name, $event) {
+   *   The event name.
+   * @param Event $event
+   *   The event object.
+   */
+  public function dispatch($event_name, Event $event) {
     // Drupal 8.8 and 8.9 use Symfony 3.4 and Drupal 9.0 uses Symfony 4.4.
     // Starting with Symfony 4.3 the signature of the event dispatcher has the
     // parameters swapped round, the event object is first, followed by the
@@ -100,7 +101,7 @@ class RulesLog implements LoggerInterface {
       // The existing signature, with $event_name string first.
       $this->dispatcher->dispatch($event_name, $event);
     }
-    
+
   }
 
 }
