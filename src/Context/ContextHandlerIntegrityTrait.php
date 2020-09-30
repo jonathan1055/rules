@@ -131,12 +131,12 @@ trait ContextHandlerIntegrityTrait {
   protected function checkDataTypeCompatible(CoreContextDefinitionInterface $context_definition, DataDefinitionInterface $provided, $context_name, IntegrityViolationList $violation_list) {
     $expected_type = $context_definition->getDataDefinition()->getDataType();
     $provided_type = $provided->getDataType();
-    if ($expected_type == $provided_type) {
+    if ($expected_type === $provided_type) {
       return;
     }
 
     // Make a special case for 'any' and 'entity' expected types for now.
-    if ($expected_type == 'any' || ($expected_type == 'entity' && strpos($provided_type, 'entity:') !== FALSE)) {
+    if ($expected_type === 'any' || ($expected_type === 'entity' && strpos($provided_type, 'entity:') !== FALSE)) {
       return;
     }
 

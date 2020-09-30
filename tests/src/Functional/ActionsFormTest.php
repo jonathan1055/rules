@@ -407,10 +407,15 @@ class ActionsFormTest extends RulesBrowserTestBase {
       ],
 
       // Ban.
-      'Ban IP' => [
+      'Ban IP - value' => [
         'rules_ban_ip',
         [],
         ['ip' => '192.0.2.1'],
+      ],
+      'Ban IP - empty' => [
+        'rules_ban_ip',
+        [],
+        ['ip' => ''],
       ],
       'Unban IP' => [
         'rules_unban_ip',

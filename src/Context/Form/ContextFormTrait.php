@@ -65,10 +65,10 @@ trait ContextFormTrait {
     $dataType = explode(':', $context_definition->getDataType())[0];
     $widget_id = $context_definition->getWidgetId($dataType);
 
-    if ($widget_id == 'broken') {
+    if ($widget_id == ContextDefinitionInterface::BROKEN_WIDGET_ID) {
       // The datatype is unknown and/or the typed-data widget has not been coded
-      // yet. Use 'broken' which by design has no input field.
-      \Drupal::messenger()->addError($this->t('No form widget is defined for %label (context name %context_name, data type %dataType). Modules can implement hook_typed_data_widgetlist_alter() to declare which form widget to use.', [
+      // yet, so use the 'broken' widget which by design has no input field.
+      \Drupal::messenger()->addError($this->t('No form widget is defined for %label (context name %context_name, data type %dataType). Modules can implement hook_typed_data_widgetlist_alter() to declare which form widget to use. See getWidgetId() and getStandardWidgetList().', [
         '%context_name' => $context_name,
         '%dataType' => $dataType,
         '%label' => is_object($context_definition->getLabel()) ? $context_definition->getLabel()->getUntranslatedString() : '* no label *',
@@ -150,7 +150,7 @@ trait ContextFormTrait {
 
     // If the context is not restricted to one mode or the other, and the widget
     // is ok (not broken) then provide a button to switch between the two modes.
-    if (empty($context_definition->getAssignmentRestriction()) && $widget_id != 'broken') {
+    if (empty($context_definition->getAssignmentRestriction()) && $widget_id != ContextDefinitionInterface::BROKEN_WIDGET_ID) {
       $value = $mode == ContextDefinitionInterface::ASSIGNMENT_RESTRICTION_SELECTOR ? $this->t('Switch to the direct input mode') : $this->t('Switch to data selection');
       $form['context_definitions'][$context_name]['switch_button'] = [
         '#type' => 'submit',

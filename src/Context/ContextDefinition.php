@@ -111,7 +111,7 @@ class ContextDefinition extends ContextDefinitionCore implements ContextDefiniti
   /**
    * An array of data type => widget id pairs.
    *
-   * @var array
+   * @var string[]
    */
   protected $widgetList;
 
@@ -195,7 +195,7 @@ class ContextDefinition extends ContextDefinitionCore implements ContextDefiniti
    * This covers all the data types provided by Core and Typed Data API
    * Enhancements, apart from 'binary' and 'map'.
    *
-   * @return array
+   * @return string[]
    *   An array of data type => widget id.
    */
   protected static function getStandardWidgetList() {
@@ -255,7 +255,7 @@ class ContextDefinition extends ContextDefinitionCore implements ContextDefiniti
       \Drupal::moduleHandler()->alter('typed_data_widgetlist', $this->widgetList);
     }
     // Return the widget id for this data type. If none, default to 'broken' id.
-    return isset($this->widgetList[$dataType]) ? $this->widgetList[$dataType] : 'broken';
+    return $this->widgetList[$dataType] ?? self::BROKEN_WIDGET_ID;
   }
 
   /**
