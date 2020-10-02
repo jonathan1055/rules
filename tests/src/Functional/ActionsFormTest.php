@@ -37,7 +37,7 @@ class ActionsFormTest extends RulesBrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // Create an article content type that we will use for testing.

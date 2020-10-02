@@ -16,21 +16,21 @@ env:
 jobs:
   fast_finish: true
   include:
-    - php: 7.0
+    - php: 7.1
       env: DRUPAL_CORE=8.8.x
-    - php: 7.3
-      env: DRUPAL_CORE=8.8.x
-    - php: 7.3
+    - php: 7.2
       env: DRUPAL_CORE=8.9.x
-    - php: 7.4
+    - php: 7.3
       env: DRUPAL_CORE=9.0.x
     - php: 7.4
       env:
         - DRUPAL_CORE=9.1.x
-        # 297 Declaring ::setUp without a void return typehint
+        # --- Remaining self deprecation notices (0)
+        # --- Remaining direct deprecation notices (579)
         #  50 Support for keys without a placeholder prefix is deprecated
         # 516 EventDispatcher parameters
-        - DEPRECATIONS=863
+        #  13 UnitTestCase::assertArrayEquals() is deprecated
+        - DEPRECATIONS=579
 
 services:
   - mysql
