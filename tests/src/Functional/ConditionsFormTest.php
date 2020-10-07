@@ -181,7 +181,7 @@ class ConditionsFormTest extends RulesBrowserTestBase {
           'value' => 'node_unchanged.title.value',
         ],
         // Defaulted values.
-        ['operation' => '=this=is-not-validated=yet='],
+        ['operation' => 'contains'],
         // Widgets.
         [
           'data' => 'text-input',
@@ -311,6 +311,7 @@ class ConditionsFormTest extends RulesBrowserTestBase {
     // Use unset $data['The key to remove']; to remove a temporarily unwanted
     // item, use return [$data['Key to test'], $data['Another']]; to selectively
     // test some items, or use return $data; to test everything.
+    return [$data['Data comparison']];
     return $data;
   }
 

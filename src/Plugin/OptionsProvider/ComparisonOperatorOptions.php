@@ -14,11 +14,11 @@ class ComparisonOperatorOptions extends OptionsProviderBase {
    */
   public function getPossibleOptions(AccountInterface $account = NULL) {
     return [
-      '==' => '==',
-      '<' => '< (less than)',
-      '>' => '> (greater than)',
-      'CONTAINS' => 'CONTAINS (for strings or arrays)',
-      'IN' => 'IN (for arrays or lists)',
+      '==' => $this->t('== (equals)'),
+      '<' => $this->t('< (less than)'),
+      '>' => $this->t('> (greater than)'),
+      'contains' => $this->t('Contains (for strings or arrays)'),
+      'in' => $this->t('In (for arrays or lists)'),
     ];
   }
 
