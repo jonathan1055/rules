@@ -26,7 +26,7 @@ class RulesEmailTest extends RulesKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     // Use the state system collector email backend.
     $this->container->get('config.factory')->getEditable('system.mail')
