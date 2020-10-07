@@ -23,9 +23,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     ),
  *     "types" = @ContextDefinition("string",
  *       label = @Translation("Content types"),
- *       description = @Translation("Select all the allowed node types."),
- *       multiple = TRUE,
+ *       description = @Translation("The content type(s) to check for."),
  *       options_provider = "\Drupal\rules\Plugin\OptionsProvider\NodeTypeOptions",
+ *       multiple = TRUE
  *     ),
  *   }
  * )

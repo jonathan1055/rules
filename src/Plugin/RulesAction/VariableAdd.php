@@ -13,7 +13,7 @@ use Drupal\rules\Core\RulesActionBase;
  *   category = @Translation("Data"),
  *   context_definitions = {
  *     "type" = @ContextDefinition("string",
- *       label = @Translation("Type"),
+ *       label = @Translation("Data Type"),
  *       description = @Translation("Specifies the type of the variable that should be added."),
  *       assignment_restriction = "input"
  *     ),

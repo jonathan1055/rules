@@ -41,6 +41,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     "language" = @ContextDefinition("language",
  *       label = @Translation("Language"),
  *       description = @Translation("If specified, the language object (not language code) used for getting the email message and subject."),
+ *       options_provider = "\Drupal\rules\Plugin\OptionsProvider\LanguageOptions",
  *       default_value = NULL,
  *       required = FALSE
  *     ),
@@ -146,6 +147,9 @@ class SystemEmailToUsersOfRole extends RulesActionBase implements ContainerFacto
     $number = 0;
     foreach ($accounts as $account) {
       // Language to use. Value passed in the context takes precedence.
+      // JSS: May need to check LANGCODE_NOT_SPECIFIED.
+      $langcode = (isset($language) && $language->getId() != LanguageInterface::LANGCODE_NOT_SPECIFIED) ? $language->getId() : $account->getPreferredLangcode();
+      // ORIG.
       $langcode = isset($language) ? $language->getId() : $account->getPreferredLangcode();
 
       $message = $this->mailManager->mail('rules', $key, $account->getEmail(), $langcode, $params, NULL);

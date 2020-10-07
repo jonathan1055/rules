@@ -28,6 +28,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     "language" = @ContextDefinition("language",
  *       label = @Translation("Language"),
  *       description = @Translation("If specified, the language for which the path alias applies."),
+ *       options_provider = "\Drupal\rules\Plugin\OptionsProvider\LanguageOptions",
  *       default_value = NULL,
  *       required = FALSE
  *     ),

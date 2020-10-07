@@ -25,14 +25,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     "type" = @ContextDefinition("string",
  *       label = @Translation("Type"),
  *       description = @Translation("The type of the evaluated entity."),
- *       assignment_restriction = "input",
- *       options_provider = "\Drupal\rules\Plugin\OptionsProvider\EntityTypeOptions"
+ *       options_provider = "\Drupal\rules\Plugin\OptionsProvider\EntityTypeOptions",
+ *       assignment_restriction = "input"
  *     ),
  *     "bundle" = @ContextDefinition("string",
  *       label = @Translation("Bundle"),
  *       description = @Translation("The bundle of the evaluated entity."),
- *       assignment_restriction = "input",
- *       options_provider = "\Drupal\rules\Plugin\OptionsProvider\EntityBundleOptions"
+ *       options_provider = "\Drupal\rules\Plugin\OptionsProvider\EntityBundleOptions",
+ *       assignment_restriction = "input"
  *     ),
  *   }
  * )

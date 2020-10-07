@@ -20,6 +20,7 @@ use Drupal\rules\Core\RulesConditionBase;
  *     "operator" = @ContextDefinition("string",
  *       label = @Translation("Operator"),
  *       description = @Translation("The comparison operator."),
+ *       options_provider = "\Drupal\rules\Plugin\OptionsProvider\ComparisonOperatorNumericOptions",
  *       assignment_restriction = "input",
  *       default_value = "==",
  *       required = FALSE
@@ -32,7 +33,6 @@ use Drupal\rules\Core\RulesConditionBase;
  * )
  *
  * @todo Add access callback information from Drupal 7?
- * @todo Set ContextDefinition options list
  */
 class DataListCountIs extends RulesConditionBase {
 
@@ -42,7 +42,7 @@ class DataListCountIs extends RulesConditionBase {
    * @param array $list
    *   The list to compare the value to.
    * @param string $operator
-   *   The type of comparison to do, may be one of '==', '<', or '>'.
+   *   The type of comparison to do.
    * @param int $value
    *   The value of that the count is to compare to.
    *
@@ -57,8 +57,14 @@ class DataListCountIs extends RulesConditionBase {
       case '<':
         return count($list) < $value;
 
+      case '<=':
+        return count($list) <= $value;
+
       case '>':
         return count($list) > $value;
+
+      case '>=':
+        return count($list) >= $value;
 
     }
   }

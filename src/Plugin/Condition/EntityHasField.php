@@ -24,8 +24,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     "field" = @ContextDefinition("string",
  *       label = @Translation("Field"),
  *       description = @Translation("The name of the field to check for."),
- *       assignment_restriction = "input",
- *       options_provider = "\Drupal\rules\Plugin\OptionsProvider\FieldListOptions"
+ *       options_provider = "\Drupal\rules\Plugin\OptionsProvider\FieldListOptions",
+ *       assignment_restriction = "input"
  *     ),
  *   }
  * )

@@ -19,6 +19,7 @@ use Drupal\rules\Core\RulesActionBase;
  *     "operator" = @ContextDefinition("string",
  *       label = @Translation("Operator"),
  *       description = @Translation("The calculation operator."),
+ *       options_provider = "\Drupal\rules\Plugin\OptionsProvider\CalculationOperatorOptions",
  *       assignment_restriction = "input"
  *     ),
  *     "input_2" = @ContextDefinition("float",

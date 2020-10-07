@@ -39,6 +39,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     "language" = @ContextDefinition("language",
  *       label = @Translation("Language"),
  *       description = @Translation("If specified, the language used for getting the email message and subject."),
+ *       options_provider = "\Drupal\rules\Plugin\OptionsProvider\LanguageOptions",
  *       default_value = NULL,
  *       required = FALSE
  *     ),
@@ -110,6 +111,9 @@ class SystemSendEmail extends RulesActionBase implements ContainerFactoryPluginI
    *   (optional) Language code.
    */
   protected function doExecute(array $to, $subject, $message, $reply = NULL, LanguageInterface $language = NULL) {
+    // JSS: May need to check LANGCODE_NOT_SPECIFIED.
+    $langcode = (isset($language) && $language->getId() != LanguageInterface::LANGCODE_NOT_SPECIFIED) ? $language->getId() : LanguageInterface::LANGCODE_SITE_DEFAULT;
+    // ORIG.
     $langcode = isset($language) ? $language->getId() : LanguageInterface::LANGCODE_SITE_DEFAULT;
     $params = [
       'subject' => $subject,

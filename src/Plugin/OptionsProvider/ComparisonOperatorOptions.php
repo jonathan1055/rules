@@ -16,9 +16,9 @@ class ComparisonOperatorOptions extends OptionsProviderBase {
     return [
       '==' => '==',
       '<' => '< (less than)',
-      '>' => '> (greather than)',
-      'CONTAINS' => 'contains (for strings or arrays)',
-      'IN' => 'in (for arrays or lists)',
+      '>' => '> (greater than)',
+      'CONTAINS' => 'CONTAINS (for strings or arrays)',
+      'IN' => 'IN (for arrays or lists)',
     ];
   }
 

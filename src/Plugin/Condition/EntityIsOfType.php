@@ -24,8 +24,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     "type" = @ContextDefinition("string",
  *       label = @Translation("Type"),
  *       description = @Translation("The entity type specified by the condition."),
- *       assignment_restriction = "input",
  *       options_provider = "\Drupal\rules\Plugin\OptionsProvider\EntityTypeOptions",
+ *       assignment_restriction = "input"
  *     ),
  *   }
  * )

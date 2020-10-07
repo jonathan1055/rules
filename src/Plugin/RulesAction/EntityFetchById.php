@@ -17,7 +17,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   context_definitions = {
  *     "type" = @ContextDefinition("string",
  *       label = @Translation("Entity type"),
- *       description = @Translation("Specifies the type of the entity that should be fetched."),
+ *       description = @Translation("Specify the type of the entity that should be fetched."),
+ *       options_provider = "\Drupal\rules\Plugin\OptionsProvider\EntityTypeOptions",
  *       assignment_restriction = "input"
  *     ),
  *     "entity_id" = @ContextDefinition("integer",
