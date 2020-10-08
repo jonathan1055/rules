@@ -207,7 +207,7 @@ class ConditionsFormTest extends RulesBrowserTestBase {
           'list' => 'node.uid.entity.roles',
           'value' => 2,
         ],
-        ['operator' => 'not * validated * yet'],
+        ['operator' => '<='],
       ],
       'Text comparison - direct' => [
         'rules_text_comparison',
@@ -219,7 +219,7 @@ class ConditionsFormTest extends RulesBrowserTestBase {
           'text' => 'node.title.value',
           'match' => 'node.uid.entity.name.value',
         ],
-        ['operator' => 'not * validated * yet'],
+        ['operator' => 'ends'],
         [],
         ['match'],
       ],
@@ -264,12 +264,12 @@ class ConditionsFormTest extends RulesBrowserTestBase {
       'Path alias exists' => [
         'rules_path_alias_exists',
         ['alias' => '/abc'],
-        ['language' => '?'],
+        ['language' => 'und'],
       ],
       'Path has alias' => [
         'rules_path_has_alias',
         ['path' => '/node/1'],
-        ['language' => '?'],
+        ['language' => 'en'],
       ],
 
       // User.
@@ -311,7 +311,6 @@ class ConditionsFormTest extends RulesBrowserTestBase {
     // Use unset $data['The key to remove']; to remove a temporarily unwanted
     // item, use return [$data['Key to test'], $data['Another']]; to selectively
     // test some items, or use return $data; to test everything.
-    return [$data['Data comparison']];
     return $data;
   }
 

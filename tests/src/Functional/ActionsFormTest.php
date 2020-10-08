@@ -202,7 +202,7 @@ class ActionsFormTest extends RulesBrowserTestBase {
       'Data convert' => [
         'rules_data_convert',
         ['value' => 'node.uid', 'target-type' => 'string'],
-        ['rounding-behavior' => '?'],
+        ['rounding-behavior' => 'up'],
       ],
       'List item add' => [
         'rules_list_item_add',
@@ -212,7 +212,7 @@ class ActionsFormTest extends RulesBrowserTestBase {
         ],
         [
           'unique' => TRUE,
-          'pos' => 'validated? start',
+          'pos' => 'start',
         ],
       ],
       'List item remove' => [
@@ -245,13 +245,24 @@ class ActionsFormTest extends RulesBrowserTestBase {
         ['entity' => 'node'],
       ],
       'Entity fetch by field - selector' => [
+        // Machine name.
         'rules_entity_fetch_by_field',
-        ['type' => 'node', 'field-name' => 'abc', 'field-value' => 'node.uid'],
+        // Required values.
+        ['type' => 'node', 'field-name' => 'nid', 'field-value' => 'node.uid'],
+        // Defaulted values.
         ['limit' => 5],
+        // Widgets.
         [],
+        // Selectors.
         ['field-value'],
+        // Provides.
+        ['entity-fetched' => 'new_named_variable'],
       ],
       'Entity fetch by field - direct' => [
+        'rules_entity_fetch_by_field',
+        ['type' => 'node', 'field-name' => 'sticky', 'field-value' => 1],
+      ],
+      'Entity fetch by id' => [
         'rules_entity_fetch_by_id',
         ['type' => 'node', 'entity-id' => 123],
       ],
@@ -295,7 +306,7 @@ class ActionsFormTest extends RulesBrowserTestBase {
       'Path alias create' => [
         'rules_path_alias_create',
         ['source' => '/node/1', 'alias' => 'abc'],
-        ['language' => '?'],
+        ['language' => 'en'],
       ],
       'Entity path alias create' => [
         'rules_entity_path_alias_create:entity:node',
@@ -322,7 +333,7 @@ class ActionsFormTest extends RulesBrowserTestBase {
           'subject' => 'Hello',
           'message' => "Some text\nLine two",
         ],
-        ['reply' => 'test@example.com', 'language' => '?'],
+        ['reply' => 'test@example.com', 'language' => 'und'],
         ['message' => 'textarea'],
       ],
       'System message' => [
@@ -337,7 +348,7 @@ class ActionsFormTest extends RulesBrowserTestBase {
           'subject' => 'Some testing subject',
           'message' => 'Test with direct input of recipients',
         ],
-        ['reply' => 'test@example.com', 'language' => '?'],
+        ['reply' => 'test@example.com', 'language' => 'en'],
         ['message' => 'textarea'],
       ],
       'Send email - data selector for address' => [
@@ -347,7 +358,7 @@ class ActionsFormTest extends RulesBrowserTestBase {
           'subject' => 'Some testing subject',
           'message' => 'Test with selector input of node author',
         ],
-        ['reply' => 'test@example.com', 'language' => '?'],
+        ['reply' => 'test@example.com'],
         ['message' => 'textarea'],
         ['to'],
       ],
@@ -362,7 +373,7 @@ class ActionsFormTest extends RulesBrowserTestBase {
       ],
       'Send account email' => [
         'rules_send_account_email',
-        ['user' => 'node.uid', 'email-type' => 'abc'],
+        ['user' => 'node.uid', 'email-type' => 'password_reset'],
       ],
       'User block' => [
         'rules_user_block',
