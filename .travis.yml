@@ -26,11 +26,12 @@ jobs:
       env:
         - DRUPAL_CORE=9.1.x
         # --- Remaining self deprecation notices (0)
-        # --- Remaining direct deprecation notices (579)
+        # --- Remaining direct deprecation notices (781)
         #  50 Support for keys without a placeholder prefix is deprecated
         # 516 EventDispatcher parameters
         #  13 UnitTestCase::assertArrayEquals() is deprecated
-        - DEPRECATIONS=579
+        # 202 Drupal\Core\Plugin\ContextAwarePluginBase
+        - DEPRECATIONS=781
 
 services:
   - mysql
