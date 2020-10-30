@@ -49,7 +49,7 @@ class RulesDebugLoggerChannelTest extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $container = new ContainerBuilder();
     $this->rulesDebugLogger = $this->prophesize(LoggerChannelInterface::class)->reveal();

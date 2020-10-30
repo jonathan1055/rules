@@ -32,7 +32,7 @@ class EntityPathAliasCreateTest extends RulesEntityIntegrationTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     // Must enable the path_alias module.
     $this->enableModule('path_alias');
