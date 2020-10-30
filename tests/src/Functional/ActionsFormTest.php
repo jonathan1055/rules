@@ -37,7 +37,7 @@ class ActionsFormTest extends RulesBrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     // Create an article content type that we will use for testing.
@@ -112,13 +112,15 @@ class ActionsFormTest extends RulesBrowserTestBase {
       $assert->pageTextNotContains('InvalidArgumentException: Cannot set a list with a non-array value');
       $assert->pageTextNotContains('Error message');
       $assert->pageTextContains('You have unsaved changes.');
-      $assert->addressEquals('admin/config/workflow/rules/reactions/edit/' . $expr_id);
+      // Allow for the ?uuid query string being present or absent in the assert
+      // method by using addressMatches() with regex instead of addressEquals().
+      $assert->addressMatches('#admin/config/workflow/rules/reactions/edit/' . $expr_id . '(\?uuid=' . $action->getUuid() . '|)$#');
 
       // Check that re-edit and re-save works OK.
       $this->clickLink('Edit');
       $this->pressButton('Save');
       $assert->pageTextNotContains('Error message');
-      $assert->addressEquals('admin/config/workflow/rules/reactions/edit/' . $expr_id);
+      $assert->addressMatches('#admin/config/workflow/rules/reactions/edit/' . $expr_id . '(\?uuid=' . $action->getUuid() . '|)$#');
 
       // Save the rule.
       $this->pressButton('Save');

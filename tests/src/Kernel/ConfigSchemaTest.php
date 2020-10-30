@@ -21,7 +21,7 @@ class ConfigSchemaTest extends RulesKernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
 
     $this->storage = $this->container->get('entity_type.manager')->getStorage('rules_component');
