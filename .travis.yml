@@ -94,8 +94,16 @@ before_script:
   - SYMFONY_DEPRECATIONS_HELPER=$DEPRECATIONS || $SYMFONY_DEPRECATIONS_HELPER
   - echo $SYMFONY_DEPRECATIONS_HELPER
 
+  # Apply Coder patches when running Core 9.1 (which uses Coder 8.3.10)
+  - if [ "$DRUPAL_CORE" == "9.1.x" ]; then
+      cd $DRUPAL_ROOT/vendor/drupal/coder;
+      wget -q -O - https://patch-diff.githubusercontent.com/raw/pfrenssen/coder/pull/119.diff | patch -p1;
+      wget -q -O - https://patch-diff.githubusercontent.com/raw/pfrenssen/coder/pull/129.diff | patch -p1;
+    fi
+
 script:
   # Run the PHPUnit tests which also include the kernel tests.
+  - cd $DRUPAL_ROOT;
   - ./vendor/bin/phpunit -c ./core/phpunit.xml.dist ./modules/$MODULE/tests/
 
   # Check for coding standards. First change directory to our module.
