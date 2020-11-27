@@ -98,11 +98,10 @@ before_script:
   - |
     if [ "$DRUPAL_CORE" == "9.1.x" ]; then
       cd $DRUPAL_ROOT/vendor/drupal/coder
-      # 119 array closer, 120 todo, 125 todo fixer (cannot apply), 129 array comma.
-      wget -q -O - https://patch-diff.githubusercontent.com/raw/pfrenssen/coder/pull/119.diff | patch -p1 # array closer
-      wget -q -O - https://patch-diff.githubusercontent.com/raw/pfrenssen/coder/pull/120.diff | patch -p1
-      # wget -q -O - https://patch-diff.githubusercontent.com/raw/pfrenssen/coder/pull/125.diff | patch -p1
-      wget -q -O - https://patch-diff.githubusercontent.com/raw/pfrenssen/coder/pull/129.diff | patch -p1
+      wget -q -O - https://patch-diff.githubusercontent.com/raw/pfrenssen/coder/pull/119.diff | patch -p1 # array closer parenthesis
+      wget -q -O - https://patch-diff.githubusercontent.com/raw/pfrenssen/coder/pull/120.diff | patch -p1 # @todo
+      # wget -q -O - https://patch-diff.githubusercontent.com/raw/pfrenssen/coder/pull/125.diff | patch -p1 # @todo fixer (cannot apply)
+      wget -q -O - https://patch-diff.githubusercontent.com/raw/pfrenssen/coder/pull/129.diff | patch -p1 # array comma counting
     fi
 
 script:
@@ -113,7 +112,9 @@ script:
   # Check for coding standards. First change directory to our module.
   - cd $DRUPAL_ROOT/modules/$MODULE
 
-  # Show the phpcs version, standards and all the sniffs that are used.
+  # Show the Coder, Codesniffer and phpcs versions, standards and all the sniffs that are used.
+  - composer show drupal/coder | egrep 'name |vers'
+  - composer show squizlabs/php_codesniffer | egrep 'name |vers'
   - $DRUPAL_ROOT/vendor/bin/phpcs --version
   - $DRUPAL_ROOT/vendor/bin/phpcs -i
   - $DRUPAL_ROOT/vendor/bin/phpcs -e
