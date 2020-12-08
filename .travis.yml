@@ -84,6 +84,9 @@ before_script:
   # Set the phpcs installed_paths to pick up the Drupal standards.
   - $DRUPAL_ROOT/vendor/bin/phpcs --config-set installed_paths $DRUPAL_ROOT/vendor/drupal/coder/coder_sniffer
 
+  # Show the allowed number of deprecation warnings.
+  - echo $SYMFONY_DEPRECATIONS_HELPER
+
   # Start a web server on port 8888, run in the background.
   - php -S localhost:8888 &
 
