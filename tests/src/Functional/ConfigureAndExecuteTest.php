@@ -198,7 +198,8 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     $config_entity->save();
 
     // Add a node and check that rule 1 is triggered.
-    $this->drupalPostForm('node/add/article', ['title[0][value]' => 'Two Rules Same Event'], 'Save');
+    $this->drupalGet('node/add/article');
+    $this->submitForm(['title[0][value]' => 'Two Rules Same Event'], 'Save');
     $node = $this->drupalGetNodeByTitle('Two Rules Same Event');
     $assert->pageTextContains($message1);
 
@@ -228,7 +229,8 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     $config_entity->save();
 
     // Edit the node and check that both rules are triggered.
-    $this->drupalPostForm('node/' . $node->id() . '/edit/', [], 'Save');
+    $this->drupalGet('node/' . $node->id() . '/edit/');
+    $this->submitForm([], 'Save');
     $assert->pageTextContains($message1);
     $assert->pageTextContains($message2);
 
@@ -237,7 +239,8 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     $this->clickLinkByHref('disable/rule2');
 
     // Edit the node and check that only rule 1 is triggered.
-    $this->drupalPostForm('node/' . $node->id() . '/edit/', [], 'Save');
+    $this->drupalGet('node/' . $node->id() . '/edit/');
+    $this->submitForm([], 'Save');
     $assert->pageTextContains($message1);
     $assert->pageTextNotContains($message2);
 
@@ -246,7 +249,8 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     $this->clickLinkByHref('enable/rule2');
 
     // Check that both rules are triggered.
-    $this->drupalPostForm('node/' . $node->id() . '/edit/', [], 'Save');
+    $this->drupalGet('node/' . $node->id() . '/edit/');
+    $this->submitForm([], 'Save');
     $assert->pageTextContains($message1);
     $assert->pageTextContains($message2);
 
@@ -260,7 +264,8 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     $this->pressButton('Save');
 
     // Check that rule 1 now shows the updated text message.
-    $this->drupalPostForm('node/' . $node->id() . '/edit/', [], 'Save');
+    $this->drupalGet('node/' . $node->id() . '/edit/');
+    $this->submitForm([], 'Save');
     $assert->pageTextNotContains($message1);
     $assert->pageTextContains($message1updated);
     $assert->pageTextContains($message2);
@@ -271,7 +276,8 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     $this->pressButton('Delete');
 
     // Check that only Rule 2's message is shown.
-    $this->drupalPostForm('node/' . $node->id() . '/edit/', [], 'Save');
+    $this->drupalGet('node/' . $node->id() . '/edit/');
+    $this->submitForm([], 'Save');
     $assert->pageTextNotContains($message1);
     $assert->pageTextNotContains($message1updated);
     $assert->pageTextContains($message2);
@@ -281,7 +287,8 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     $this->clickLinkByHref('disable/rule2');
 
     // Check that neither rule's message is shown.
-    $this->drupalPostForm('node/' . $node->id() . '/edit/', [], 'Save');
+    $this->drupalGet('node/' . $node->id() . '/edit/');
+    $this->submitForm([], 'Save');
     $assert->pageTextNotContains($message1);
     $assert->pageTextNotContains($message1updated);
     $assert->pageTextNotContains($message2);
