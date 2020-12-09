@@ -65,7 +65,7 @@ trait ContextFormTrait {
     $dataType = explode(':', $context_definition->getDataType())[0];
     $widget_id = $context_definition->getWidgetId($dataType);
 
-    if ($widget_id == ContextDefinitionInterface::BROKEN_WIDGET_ID) {
+    if ($widget_id === ContextDefinitionInterface::BROKEN_WIDGET_ID) {
       // The datatype is unknown and/or the typed-data widget has not been coded
       // yet, so use the 'broken' widget which by design has no input field.
       \Drupal::messenger()->addError($this->t('No form widget is defined for %label (context name %context_name, data type %dataType). Modules can implement hook_typed_data_widgetlist_alter() to declare which form widget to use. See getWidgetId() and getStandardWidgetList().', [
@@ -94,7 +94,10 @@ trait ContextFormTrait {
     $form['context_definitions'][$context_name] = $widget_form + [
       '#widget_id' => $widget_id,
     ];
-    $form['context_definitions'][$context_name]['#attributes']['class'][] = 'widget-' . str_replace('_', '-', $widget_id);
+    // If mode is input (not selector) then add a widget class.
+    if ($mode == ContextDefinitionInterface::ASSIGNMENT_RESTRICTION_INPUT) {
+      $form['context_definitions'][$context_name]['#attributes']['class'][] = 'widget-' . str_replace('_', '-', $widget_id);
+    }
 
     // Get the names of the data item input fields in the widget. Mostly there
     // is only one input field and often it will be called 'value', but some

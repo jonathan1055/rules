@@ -191,11 +191,10 @@ class ConditionsFormTest extends RulesBrowserTestBase {
         ['operation' => '=this=is-not-validated=yet='],
         // Widgets.
         [
-          'data' => 'text-input',
           'operation' => 'text-input',
           'value' => 'text-input',
         ],
-        // Selectors.
+        // Press the 'Switch to data selection' button for these items.
         ['value'],
       ],
       'Data is empty' => [
@@ -205,8 +204,6 @@ class ConditionsFormTest extends RulesBrowserTestBase {
       'List contains' => [
         'rules_list_contains',
         ['list' => 'node.uid.entity.roles', 'item' => 'abc'],
-        [],
-        ['list' => 'textarea'],
       ],
       'List count is' => [
         'rules_list_count_is',
@@ -285,9 +282,11 @@ class ConditionsFormTest extends RulesBrowserTestBase {
         [
           'entity' => 'node',
           'field' => 'timezone',
-          'user' => '@user.current_user_context:current_user',
         ],
-        ['operation' => 'edit'],
+        [
+          'user' => '@user.current_user_context:current_user',
+          'operation' => 'not * validated * yet',
+        ],
       ],
       'User has role' => [
         'rules_user_has_role',
@@ -315,7 +314,8 @@ class ConditionsFormTest extends RulesBrowserTestBase {
       ],
     ];
 
-    // Two list conditions fail with "Cannot set a list with a non-array value".
+    // Two list conditions fail with "Cannot set a list with a non-array value"
+    // and "Warning: explode() expects parameter 2 to be string, array given"
     // These run OK without the widget integration.
     // @todo Needs investigation.
     unset($data['List contains']);
