@@ -111,5 +111,5 @@ script:
 
   # Run again to give a summary and totals, and fail for errors and warnings.
   - if [ "$DRUPAL_CORE" != "9.1.x" ]; then
-      $DRUPAL_ROOT/vendor/bin/phpcs --report-width=100 --report=summary
+      $DRUPAL_ROOT/vendor/bin/phpcs --report-width=100 --report=summary;
     fi
