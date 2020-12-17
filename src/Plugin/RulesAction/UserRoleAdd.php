@@ -16,8 +16,7 @@ use Drupal\user\UserInterface;
  *   context_definitions = {
  *     "user" = @ContextDefinition("entity:user",
  *       label = @Translation("User"),
- *       description = @Translation("The user whose roles should be changed."),
- *       assignment_restriction = "selector"
+ *       description = @Translation("The user whose roles should be changed.")
  *     ),
  *     "roles" = @ContextDefinition("entity:user_role",
  *       label = @Translation("Roles"),

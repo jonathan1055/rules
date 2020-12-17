@@ -74,7 +74,6 @@ abstract class RulesConditionBase extends ConditionPluginBase implements RulesCo
         elseif (is_string($value)) {
           $value = $this->upcastEntityId($value, $type);
         }
-
       }
       $args[$name] = $value;
     }
