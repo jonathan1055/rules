@@ -29,10 +29,13 @@ class ConfigSchemaTest extends RulesKernelTestBase {
 
   /**
    * Make sure the system send email config schema works on saving.
-   *
-   * @doesNotPerformAssertions
    */
   public function testMailActionContextSchema() {
+    // This test does not perform assertions, and the @doesNotPerformAssertions
+    // annotation does not work properly in DrupalCI for PHP 7.4.
+    // @see https://www.drupal.org/project/rules/issues/3179763
+    $this->addToAssertionCount(1);
+
     $rule = $this->expressionManager
       ->createRule();
     $rule->addAction('rules_send_email', ContextConfig::create()
