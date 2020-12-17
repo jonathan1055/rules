@@ -2,8 +2,8 @@
 
 namespace Drupal\Tests\rules\Functional;
 
-use Drupal\user\Entity\User;
 use Drupal\rules\Context\ContextConfig;
+use Drupal\user\Entity\User;
 
 /**
  * Tests that a rule can be configured and triggered when a node is edited.
