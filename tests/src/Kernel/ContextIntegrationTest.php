@@ -111,4 +111,27 @@ class ContextIntegrationTest extends RulesKernelTestBase {
     $this->assertEquals(ContextDefinition::ASSIGNMENT_RESTRICTION_SELECTOR, $context_definition->getAssignmentRestriction());
   }
 
+  /**
+   * Tests converting a string context to an array context.
+   */
+  public function testStringToArrayMapping() {
+    // Configure a simple rule with one action.
+    $action = $this->expressionManager->createInstance('rules_action',
+      ContextConfig::create()
+        ->setConfigKey('action_id', 'rules_test_implode')
+        ->map('data', 'data_value')
+        ->toArray()
+    );
+
+    $rule = $this->expressionManager->createRule()
+      ->addExpressionObject($action);
+
+    $component = RulesComponent::create($rule)
+      ->addContextDefinition('data_value', ContextDefinition::create('string'))
+      ->setContextValue('data_value', 'foo');
+
+    $component->execute();
+    $this->assertEquals('foo', $component->getState()->getVariableValue('concatenated'));
+  }
+
 }

@@ -103,7 +103,7 @@ class ExecutionState implements ExecutionStateInterface {
       // you're reacting on a "Drupal is initializing" event ... Need to handle
       // a problem here gracefully - maybe disable the rule that caused the
       // problem?
-      throw new EvaluationException("Unable to get variable '$name'; it is not defined.");
+      throw new EvaluationException("EvaluationException: Unable to get variable '$name'; it is not defined.");
     }
     return $this->variables[$name];
   }

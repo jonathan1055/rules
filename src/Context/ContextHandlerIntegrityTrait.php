@@ -137,6 +137,15 @@ trait ContextHandlerIntegrityTrait {
     if ($target_type == 'any' || ($target_type == 'entity' && strpos($provided->getDataType(), 'entity:') !== FALSE)) {
       return;
     }
+
+    // If the target type is a list, get the item data type instead.
+    if ($target_type != $provided->getDataType() && $context_definition->isMultiple()) {
+      $target_type = $context_definition
+        ->getDataDefinition()
+        ->getItemDefinition()
+        ->getDataType();
+    }
+
     if ($target_type != $provided->getDataType()) {
       $expected_type_problem = $context_definition->getDataDefinition()->getDataType();
       $violation = new IntegrityViolation();

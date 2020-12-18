@@ -4,6 +4,7 @@ namespace Drupal\rules\Context;
 
 use Drupal\Component\Plugin\Exception\ContextException;
 use Drupal\Core\Plugin\ContextAwarePluginInterface as CoreContextAwarePluginInterface;
+use Drupal\Core\TypedData\TypedDataInterface;
 use Drupal\rules\Exception\EvaluationException;
 use Drupal\rules\Exception\IntegrityException;
 
@@ -60,6 +61,7 @@ trait ContextHandlerTrait {
     if (isset($this->configuration['context_mapping'])) {
       foreach ($this->configuration['context_mapping'] as $name => $selector) {
         $typed_data = $state->fetchDataByPropertyPath($selector);
+        $typed_data = $this->matchTypedData($typed_data, $plugin, $name);
         $plugin->setContextValue($name, $typed_data);
         $selected_data[$name] = $typed_data->getDataDefinition();
       }
@@ -98,6 +100,52 @@ trait ContextHandlerTrait {
         }
       }
     }
+  }
+
+  /**
+   * Match a TypedData object with what the plugin needs.
+   *
+   * @param \Drupal\Core\TypedData\TypedDataInterface $typed_data
+   *   The TypedData object that could need to be converted.
+   * @param \Drupal\Core\Plugin\ContextAwarePluginInterface $plugin
+   *   The plugin to check.
+   * @param string $name
+   *   The name of the context in the plugin definition.
+   *
+   * @return \Drupal\Core\TypedData\TypedDataInterface
+   *   A typed data object.
+   */
+  protected function matchTypedData(TypedDataInterface $typed_data, CoreContextAwarePluginInterface $plugin, $name) {
+    $plugin_context_definition = $plugin->getContextDefinition($name);
+    $typed_data_data_definition = $typed_data->getDataDefinition();
+
+    $typed_data_data_type = $typed_data_data_definition->getDataType();
+    $target_type = $plugin_context_definition->getDataDefinition()->getDataType();
+
+    // Check if a conversion is needed at all.
+    if ($typed_data_data_type == $target_type) {
+      return $typed_data;
+    }
+
+    // Check if a conversion to an array needs to happen.
+    if ($plugin_context_definition->isMultiple()) {
+      if ($typed_data_data_definition->isList()) {
+        // Convert listed typed data to an array.
+        $convert = [];
+        foreach ($typed_data as $key => $item) {
+          $convert[$key] = $item;
+        }
+      }
+      else {
+        // The typed data object represents a singular value, so pack it inside
+        // an array.
+        $convert = [$typed_data->getValue()];
+      }
+      // @todo use dependency injection.
+      $typed_data = \Drupal::service('typed_data_manager')->create($plugin_context_definition->getDataDefinition(), $convert);
+    }
+
+    return $typed_data;
   }
 
   /**
