@@ -129,7 +129,7 @@ script:
   # Do not fail for 9.1.x as there are known errors.
   - |
     if [[ "$DRUPAL_CORE" == "9.1.x" || "$DRUPAL_CORE" == "9.2.x" ]]; then
-      $DRUPAL_ROOT/vendor/bin/phpcs --report-width=100 --report-full --report-summary --report-source -s --runtime-set ignore_warnings_on_exit 1 --runtime-set ignore_errors_on_exit 1
+      $DRUPAL_ROOT/vendor/bin/phpcs . --report-width=100 --report-full --report-summary --report-source -s --runtime-set ignore_warnings_on_exit 1 --runtime-set ignore_errors_on_exit 1
     else
-      $DRUPAL_ROOT/vendor/bin/phpcs --report-width=100 --report-full --report-summary --report-source -s
+      $DRUPAL_ROOT/vendor/bin/phpcs . --report-width=100 --report-full --report-summary --report-source -s
     fi
