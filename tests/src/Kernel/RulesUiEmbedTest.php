@@ -17,12 +17,7 @@ class RulesUiEmbedTest extends RulesKernelTestBase {
    *
    * @var array
    */
-  protected static $modules = [
-    'rules',
-    'rules_test_ui_embed',
-    'system',
-    'user',
-  ];
+  protected static $modules = ['rules', 'rules_test_ui_embed', 'system', 'user'];
 
   /**
    * The rules UI manager.
