@@ -123,7 +123,7 @@ class RulesDebugLoggerChannelTest extends UnitTestCase {
         'path' => NULL,
       ];
       $context += $messages[0]['context'];
-      $this->assertArrayEquals([
+      $this->assertEquals([
         0 => [
           'message' => $message,
           'context' => $context,
