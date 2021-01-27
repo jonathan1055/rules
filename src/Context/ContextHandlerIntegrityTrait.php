@@ -135,11 +135,31 @@ trait ContextHandlerIntegrityTrait {
     // @todo Add support for matching based upon type-inheritance.
     $target_type = $context_definition->getDataDefinition()->getDataType();
 
-    // Special case any and entity target types for now, allowing 'entity_reference' too
-    if ($target_type == 'any' || ($context_definition->getDataDefinition()->getClass() == EntityAdapter::class && ($provided->getClass() == EntityAdapter::class || $provided->getClass() == EntityReference::class))) {
+    // Always allow a target type of 'any'.
+    if ($target_type == 'any') {
       return;
     }
-    if ($target_type != $provided->getDataType()) {
+
+    // Valid if the target type matches the provided type exactly.
+    if ($target_type == $provided->getDataType()) {
+      return;
+    }
+
+    // For target type of just 'entity' which is an entity adapter, allow the
+    // provided class to be EntityAdapter or EntityReference.
+    if ($target_type == 'entity'
+        && $context_definition->getDataDefinition()->getClass() == EntityAdapter::class
+        && ($provided->getClass() == EntityAdapter::class || $provided->getClass() == EntityReference::class)) {
+      return;
+    }
+
+    // Valid if the provided class is a subset of the expected class, for
+    // example provided=entity:node:page and target=entity:node.
+    if (strpos($provided->getDataType(), $target_type . ':') === 0) {
+      return;
+    }
+
+    // None of the above cases pass, so fail the validation.
       $expected_type_problem = $context_definition->getDataDefinition()->getDataType();
       $violation = new IntegrityViolation();
       $violation->setMessage($this->t('Expected a @expected_type data type for context %context_name but got a @provided_type data type instead.', [
@@ -150,7 +170,6 @@ trait ContextHandlerIntegrityTrait {
       $violation->setContextName($context_name);
       $violation->setUuid($this->getUuid());
       $violation_list->add($violation);
-    }
   }
 
 }
