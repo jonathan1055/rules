@@ -12,6 +12,8 @@ use Drupal\rules\Context\ContextProviderInterface;
 use Drupal\rules\Exception\IntegrityException;
 use Drupal\rules\Engine\IntegrityViolation;
 use Drupal\rules\Engine\IntegrityViolationList;
+use Drupal\Core\Entity\Plugin\DataType\EntityAdapter;
+use Drupal\Core\Entity\Plugin\DataType\EntityReference;
 
 /**
  * Extends the context handler trait with support for checking integrity.
@@ -134,7 +136,7 @@ trait ContextHandlerIntegrityTrait {
     $target_type = $context_definition->getDataDefinition()->getDataType();
 
     // Special case any and entity target types for now, allowing 'entity_reference' too
-    if ($target_type == 'any' || ($target_type == 'entity' && preg_match('/entity[:_]/', $provided->getDataType()) != FALSE)) {
+    if ($target_type == 'any' || ($context_definition->getDataDefinition()->getClass() == EntityAdapter::class && ($provided->getClass() == EntityAdapter::class || $provided->getClass() == EntityReference::class))) {
       return;
     }
     if ($target_type != $provided->getDataType()) {
