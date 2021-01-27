@@ -133,8 +133,8 @@ trait ContextHandlerIntegrityTrait {
     // @todo Add support for matching based upon type-inheritance.
     $target_type = $context_definition->getDataDefinition()->getDataType();
 
-    // Special case any and entity target types for now.
-    if ($target_type == 'any' || ($target_type == 'entity' && strpos($provided->getDataType(), 'entity:') !== FALSE)) {
+    // Special case any and entity target types for now, allowing 'entity_reference' too
+    if ($target_type == 'any' || ($target_type == 'entity' && preg_match('/entity[:_]/', $provided->getDataType()) != FALSE)) {
       return;
     }
     if ($target_type != $provided->getDataType()) {

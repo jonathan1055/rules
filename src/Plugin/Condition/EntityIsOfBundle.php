@@ -3,6 +3,7 @@
 namespace Drupal\rules\Plugin\Condition;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\TypedData\DataReferenceDefinitionInterface;
 use Drupal\rules\Core\RulesConditionBase;
 
 /**
@@ -65,6 +66,9 @@ class EntityIsOfBundle extends RulesConditionBase {
     $changed_definitions = [];
     if (isset($selected_data['entity']) && $bundle = $this->getContextValue('bundle')) {
       $changed_definitions['entity'] = clone $selected_data['entity'];
+      $changed_definitions['entity'] = $changed_definitions['entity'] instanceof DataReferenceDefinitionInterface
+        ? $changed_definitions['entity']->getTargetDefinition()
+        : $changed_definitions['entity'];
       $bundles = is_array($bundle) ? $bundle : [$bundle];
       $changed_definitions['entity']->setBundles($bundles);
     }
