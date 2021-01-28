@@ -147,8 +147,8 @@ trait ContextHandlerIntegrityTrait {
     }
 
     // When context is EntityAdapter and the provided type is an EntityAdapter
-    // or EntityReference then check the provided entity type.
-    $constraint_entity_type = '';
+    // or EntityReference then check the provided entity type constraint.
+    $provided_type_constraint = '';
     if ($context_definition->getDataDefinition()->getClass() == EntityAdapter::class
         && ($provided->getClass() == EntityAdapter::class || $provided->getClass() == EntityReference::class)) {
       if ($target_type == 'entity') {
@@ -156,9 +156,9 @@ trait ContextHandlerIntegrityTrait {
         // needed.
         return;
       }
-      $constraints = $provided->getConstraints();
-      $constraint_entity_type = $constraints['EntityType'];
-      if (strpos('entity:' . $constraint_entity_type, $target_type) === 0) {
+      $provided_type_constraint = $provided->getConstraints()['EntityType'];
+      $target_type_constraint = explode(':', $target_type)[1];
+      if ($provided_type_constraint == $target_type_constraint) {
         return;
       }
     }
@@ -168,7 +168,7 @@ trait ContextHandlerIntegrityTrait {
     $violation->setMessage($this->t('Expected a @target_type data type for context %context_name but got a @provided_type data type instead.', [
       '@target_type' => $target_type,
       '%context_name' => $context_definition->getLabel(),
-      '@provided_type' => "$constraint_entity_type $provided_type",
+      '@provided_type' => "$provided_type_constraint $provided_type",
     ]));
     $violation->setContextName($context_name);
     $violation->setUuid($this->getUuid());
