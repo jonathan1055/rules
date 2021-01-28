@@ -151,6 +151,11 @@ trait ContextHandlerIntegrityTrait {
     $constraint_entity_type = '';
     if ($context_definition->getDataDefinition()->getClass() == EntityAdapter::class
         && ($provided->getClass() == EntityAdapter::class || $provided->getClass() == EntityReference::class)) {
+      if ($target_type == 'entity') {
+        // The target type is an unqualified entity, so no constraint check is
+        // needed.
+        return;
+      }
       $constraints = $provided->getConstraints();
       $constraint_entity_type = $constraints['EntityType'];
       if (strpos('entity:' . $constraint_entity_type, $target_type) === 0) {
@@ -159,16 +164,15 @@ trait ContextHandlerIntegrityTrait {
     }
 
     // None of the above cases pass, so fail the validation.
-      $expected_type_problem = $context_definition->getDataDefinition()->getDataType();
-      $violation = new IntegrityViolation();
-      $violation->setMessage($this->t('Expected a @expected_type data type for context %context_name but got a @provided_type data type instead.', [
-        '@expected_type' => $expected_type_problem,
-        '%context_name' => $context_definition->getLabel(),
-        '@provided_type' => "$constraint_entity_type $provided_type",
-      ]));
-      $violation->setContextName($context_name);
-      $violation->setUuid($this->getUuid());
-      $violation_list->add($violation);
+    $violation = new IntegrityViolation();
+    $violation->setMessage($this->t('Expected a @target_type data type for context %context_name but got a @provided_type data type instead.', [
+      '@target_type' => $target_type,
+      '%context_name' => $context_definition->getLabel(),
+      '@provided_type' => "$constraint_entity_type $provided_type",
+    ]));
+    $violation->setContextName($context_name);
+    $violation->setUuid($this->getUuid());
+    $violation_list->add($violation);
   }
 
 }
