@@ -134,6 +134,7 @@ trait ContextHandlerIntegrityTrait {
     // Compare data types. For now, fail if they are not equal.
     // @todo Add support for matching based upon type-inheritance.
     $target_type = $context_definition->getDataDefinition()->getDataType();
+    $provided_type = $provided->getDataType();
 
     // Always allow a target type of 'any'.
     if ($target_type == 'any') {
@@ -141,22 +142,20 @@ trait ContextHandlerIntegrityTrait {
     }
 
     // Valid if the target type matches the provided type exactly.
-    if ($target_type == $provided->getDataType()) {
+    if ($target_type == $provided_type) {
       return;
     }
 
-    // For target type of just 'entity' which is an entity adapter, allow the
-    // provided class to be EntityAdapter or EntityReference.
-    if ($target_type == 'entity'
-        && $context_definition->getDataDefinition()->getClass() == EntityAdapter::class
+    // When context is EntityAdapter and the provided type is an EntityAdapter
+    // or EntityReference then check the provided entity type.
+    $constraint_entity_type = '';
+    if ($context_definition->getDataDefinition()->getClass() == EntityAdapter::class
         && ($provided->getClass() == EntityAdapter::class || $provided->getClass() == EntityReference::class)) {
-      return;
-    }
-
-    // Valid if the provided class is a subset of the expected class, for
-    // example provided=entity:node:page and target=entity:node.
-    if (strpos($provided->getDataType(), $target_type . ':') === 0) {
-      return;
+      $constraints = $provided->getConstraints();
+      $constraint_entity_type = $constraints['EntityType'];
+      if (strpos('entity:' . $constraint_entity_type, $target_type) === 0) {
+        return;
+      }
     }
 
     // None of the above cases pass, so fail the validation.
@@ -165,7 +164,7 @@ trait ContextHandlerIntegrityTrait {
       $violation->setMessage($this->t('Expected a @expected_type data type for context %context_name but got a @provided_type data type instead.', [
         '@expected_type' => $expected_type_problem,
         '%context_name' => $context_definition->getLabel(),
-        '@provided_type' => $provided->getDataType(),
+        '@provided_type' => "$constraint_entity_type $provided_type",
       ]));
       $violation->setContextName($context_name);
       $violation->setUuid($this->getUuid());
