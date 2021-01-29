@@ -148,19 +148,25 @@ trait ContextHandlerIntegrityTrait {
 
     // When context is EntityAdapter and the provided type is an EntityAdapter
     // or EntityReference then check the provided entity type constraint.
-    $provided_type_constraint = '';
+    $provided_type_text = $provided_type;
     if ($context_definition->getDataDefinition()->getClass() == EntityAdapter::class
         && ($provided->getClass() == EntityAdapter::class || $provided->getClass() == EntityReference::class)) {
+
+      // If the target type is an unqualified entity then there is no need to do
+      // a constraint check.
       if ($target_type == 'entity') {
-        // The target type is an unqualified entity, so no constraint check is
-        // needed.
         return;
       }
+
+      // getConstraints()['EntityType'] will be 'node', 'user', 'user_role' etc.
       $provided_type_constraint = $provided->getConstraints()['EntityType'];
+      // Explode $target_type to get the second part of the entity qualifier.
       $target_type_constraint = explode(':', $target_type)[1];
+      // If the two constraint entity types match then this reference is valid.
       if ($provided_type_constraint == $target_type_constraint) {
         return;
       }
+      $provided_type_text = "$provided_type_constraint $provided_type_text";
     }
 
     // None of the above cases pass, so fail the validation.
@@ -168,7 +174,7 @@ trait ContextHandlerIntegrityTrait {
     $violation->setMessage($this->t('Expected a @target_type data type for context %context_name but got a @provided_type data type instead.', [
       '@target_type' => $target_type,
       '%context_name' => $context_definition->getLabel(),
-      '@provided_type' => "$provided_type_constraint $provided_type",
+      '@provided_type' => $provided_type_text,
     ]));
     $violation->setContextName($context_name);
     $violation->setUuid($this->getUuid());
