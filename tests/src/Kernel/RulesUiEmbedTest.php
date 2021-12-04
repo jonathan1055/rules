@@ -13,9 +13,7 @@ use Drupal\rules\Ui\RulesUiDefinition;
 class RulesUiEmbedTest extends RulesKernelTestBase {
 
   /**
-   * Modules to enable.
-   *
-   * @var array
+   * {@inheritdoc}
    */
   protected static $modules = [
     'rules',

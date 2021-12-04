@@ -10,9 +10,7 @@ namespace Drupal\Tests\rules\Functional;
 class RulesDebugLogTest extends RulesBrowserTestBase {
 
   /**
-   * Modules to enable.
-   *
-   * @var array
+   * {@inheritdoc}
    */
   protected static $modules = ['rules', 'rules_test'];
 
