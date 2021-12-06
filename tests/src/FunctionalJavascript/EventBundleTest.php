@@ -12,9 +12,7 @@ use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 class EventBundleTest extends WebDriverTestBase {
 
   /**
-   * Modules to enable.
-   *
-   * @var array
+   * {@inheritdoc}
    */
   protected static $modules = ['rules', 'taxonomy'];
 

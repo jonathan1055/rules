@@ -131,7 +131,7 @@ trait ContextFormTrait {
 
     if ($mode == ContextDefinitionInterface::ASSIGNMENT_RESTRICTION_SELECTOR) {
       $element['#type'] = 'textfield';
-      $element['#description'] .= ' ' . $this->t("The data selector helps you drill down into the available data. <em>To make entity fields appear in the data selector, you may have to use the condition 'entity has field' (or 'content is of type').</em> More useful tips about data selection is available in <a href=':url'>the online documentation</a>.", [
+      $element['#description'] .= ' ' . $this->t("The data selector helps you drill down into the available data. <em>To make entity fields appear in the data selector, you may have to use the  condition 'Entity is of bundle'.</em> More useful tips about data selection are available in <a href=':url'>the online documentation</a>.", [
         ':url' => 'https://www.drupal.org/node/1300042',
       ]);
 
@@ -250,7 +250,7 @@ trait ContextFormTrait {
             // robust parsing we should also accommodate just \n or just \r.
             // Additionally, we want to remove leading and trailing whitespace
             // from each line, and discard any empty lines.
-            $values = preg_split('/\s*\R\s*/', $input, NULL, PREG_SPLIT_NO_EMPTY);
+            $values = preg_split('/\s*\R\s*/', $input, 0, PREG_SPLIT_NO_EMPTY);
             $context_config->setValue($context_name, $values);
           }
           else {

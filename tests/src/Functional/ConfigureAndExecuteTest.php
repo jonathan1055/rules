@@ -12,9 +12,7 @@ use Drupal\rules\Context\ContextConfig;
 class ConfigureAndExecuteTest extends RulesBrowserTestBase {
 
   /**
-   * Modules to enable.
-   *
-   * @var array
+   * {@inheritdoc}
    */
   protected static $modules = ['node', 'rules', 'typed_data'];
 
