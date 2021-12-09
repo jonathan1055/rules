@@ -58,7 +58,7 @@ class UserHasRole extends RulesConditionBase {
       return $role->id();
     }, $roles);
 
-    switch ($operation) {
+    switch (strtoupper($operation)) {
       case 'OR':
         return (bool) array_intersect($rids, $user->getRoles());
 

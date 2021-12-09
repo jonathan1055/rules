@@ -307,11 +307,17 @@ class ActionsFormTest extends RulesBrowserTestBase {
       ],
       'User role add' => [
         'rules_user_role_add',
-        ['user' => '@user', 'roles' => 'Editor'],
+        [
+          'user' => '@user.current_user_context:current_user',
+          'roles' => 'Editor',
+        ],
       ],
       'User role remove' => [
         'rules_user_role_remove',
-        ['user' => '@user', 'roles' => 'Editor'],
+        [
+          'user' => '@user.current_user_context:current_user',
+          'roles' => 'Editor',
+        ],
       ],
       'Unblock user' => [
         'rules_user_unblock',

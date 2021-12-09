@@ -3,6 +3,7 @@
 namespace Drupal\Tests\rules\Functional;
 
 use Drupal\rules\Context\ContextConfig;
+use Drupal\user\Entity\User;
 
 /**
  * Tests that a rule can be configured and triggered when a node is edited.
@@ -50,6 +51,9 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
       'administer rules',
       'administer site configuration',
     ]);
+
+    // Create a named role for use in conditions and actions.
+    $this->createRole(['administer nodes'], 'test-editor', 'Test Editor');
   }
 
   /**
@@ -417,6 +421,108 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule/edit/' . $action2->getUuid());
     $assert->buttonNotExists('edit-context-definitions-type-switch-button');
     $assert->elementExists('xpath', '//input[@id="edit-context-definitions-type-setting" and not(contains(@class, "rules-autocomplete"))]');
+  }
+
+  /**
+   * Tests upcasting in a condition.
+   */
+  public function testUpcastInCondition() {
+
+    /** @var \Drupal\Tests\WebAssert $assert */
+    $assert = $this->assertSession();
+
+    // Create a rule.
+    $expressionManager = $this->container->get('plugin.manager.rules_expression');
+    $storage = $this->container->get('entity_type.manager')->getStorage('rules_reaction_rule');
+    $rule = $expressionManager->createRule();
+    // Add a condition to check if the user has the 'test-editor' role.
+    $rule->addCondition('rules_user_has_role',
+      ContextConfig::create()
+        ->map('user', '@user.current_user_context:current_user')
+        ->setValue('roles', ['test-editor'])
+    );
+    // Add an action to display a system message.
+    $message = '-- RULE to test upcasting in condition --';
+    $rule->addAction('rules_system_message',
+      ContextConfig::create()
+        ->setValue('message', $message)
+        ->setValue('type', 'status')
+    );
+    // Set the even to User Login and save the configuration.
+    $expr_id = 'test_upcast';
+    $config_entity = $storage->create([
+      'id' => $expr_id,
+      'expression' => $rule->getConfiguration(),
+      'events' => [['event_name' => 'rules_user_login']],
+    ]);
+    $config_entity->save();
+
+    // Log in and check that the rule is triggered.
+    $this->drupalLogin($this->account);
+    $assert->pageTextNotContains($message);
+
+    // Add the required role to the user.
+    $this->account->addRole('test-editor');
+    $this->account->save();
+
+    // Log out and in and check that the rule is triggered.
+    $this->drupalLogout();
+    $this->drupalLogin($this->account);
+    $assert->pageTextContains($message);
+
+    // Remove the role from the user.
+    $this->account->removeRole('test-editor');
+    $this->account->save();
+
+    // Log out and in and check that the rule is not triggered.
+    $this->drupalLogout();
+    $this->drupalLogin($this->account);
+    $assert->pageTextNotContains($message);
+  }
+
+  /**
+   * Tests upcasting in an action.
+   */
+  public function testUpcastInAction() {
+
+    // Log in.
+    $this->drupalLogin($this->account);
+
+    // Create a rule.
+    $expressionManager = $this->container->get('plugin.manager.rules_expression');
+    $storage = $this->container->get('entity_type.manager')->getStorage('rules_reaction_rule');
+    $rule = $expressionManager->createRule();
+    // Add an action to add 'Editor' role to the current user. The role value
+    // here is just the machine name as text, and will be upcast to the full
+    // role object when the rule is triggered.
+    $rule->addAction('rules_user_role_add',
+      ContextConfig::create()
+        ->map('user', '@user.current_user_context:current_user')
+        ->setValue('roles', ['test-editor'])
+    );
+    // Save the configuration.
+    $expr_id = 'test_upcast';
+    $config_entity = $storage->create([
+      'id' => $expr_id,
+      'expression' => $rule->getConfiguration(),
+      'events' => [['event_name' => 'rules_entity_insert:node']],
+    ]);
+    $config_entity->save();
+
+    // Check that the user does not have the 'test-editor' role.
+    $this->assertEmpty(array_intersect(['test-editor'], $this->account->getRoles()));
+
+    // Create an article, which will trigger the rule, and add the role.
+    $this->drupalCreateNode([
+      'type' => 'article',
+      'title' => 'Upcasting role in action',
+    ]);
+
+    // Reload the user account.
+    $account = User::load($this->account->id());
+
+    // Check that the role has been added to the user.
+    $this->assertNotEmpty(array_intersect(['test-editor'], $account->getRoles()));
   }
 
 }
