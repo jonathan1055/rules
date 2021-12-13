@@ -111,7 +111,7 @@ class EventBundleTest extends WebDriverTestBase {
       // should be no bundles and the bundle select should be hidden.
       $bundles = \Drupal::service('entity_type.bundle.info')->getBundleInfo('node');
       $assert->pageTextNotContains('Restrict by type');
-      $assert->assert(empty($bundles), 'Restrict by type field is not shown and there are no bundles.');
+      $assert->assertEmpty($bundles, 'Restrict by type field is not shown and there are no bundles.');
     }
 
     // Save the Reaction Rule with event "rules_entity_insert:node--article".

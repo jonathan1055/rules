@@ -49,7 +49,7 @@ class RulesUiEmbedTest extends RulesKernelTestBase {
     $definition = $this->rulesUiManager->getDefinitions();
     $this->assertArrayHasKey('rules_test_ui_embed.settings_conditions', $definition);
     $this->assertInstanceOf(RulesUiDefinition::class, $definition['rules_test_ui_embed.settings_conditions']);
-    $this->assertTrue(!empty($definition['rules_test_ui_embed.settings_conditions']->label));
+    $this->assertNotEmpty($definition['rules_test_ui_embed.settings_conditions']->label);
     $this->assertEquals(RulesUiConfigHandler::class, $definition['rules_test_ui_embed.settings_conditions']->getClass());
   }
 
