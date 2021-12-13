@@ -66,7 +66,7 @@ class RulesCommands extends DrushCommands {
    *
    * @usage drush rules:list
    *   Lists both Reaction Rules and Rules Components.
-   * @usage drush rules:list --type=component
+   * @usage drush rules:list component
    *   Lists only Rules Components.
    * @usage drush rules:list --fields=machine-name
    *   Lists just the machine names.
@@ -103,7 +103,7 @@ class RulesCommands extends DrushCommands {
         break;
     }
 
-    // Loop over type option.
+    // Loop over type parameter.
     $rows = [];
     foreach ($types as $item) {
       $rules = $this->configFactory->listAll('rules.' . $item);
@@ -245,8 +245,8 @@ class RulesCommands extends DrushCommands {
    * @codingStandardsIgnoreStart
    * @usage drush rules:export test_rule > rules.reaction.test_rule.yml
    *   Exports the Rule with machine name 'test_rule' and saves it in a .yml file.
-   * @usage drush rules:list --pipe --type=component | xargs -I{}  sh -c "drush rules:export '{}' > 'rules.component.{}.yml'"
-   *   Exports all Rules Components into individual YAML files.
+   * @usage drush rules:list rule --fields=machine-name --pipe | xargs -I{}  sh -c "drush rules:export '{}' > 'rules.reaction.{}.yml'"
+   *   Exports all Reaction Rules into individual YAML files.
    * @codingStandardsIgnoreEnd
    *
    * @throws \Exception
