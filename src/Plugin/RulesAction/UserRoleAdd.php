@@ -20,7 +20,8 @@ use Drupal\user\UserInterface;
  *     ),
  *     "roles" = @ContextDefinition("entity:user_role",
  *       label = @Translation("Roles"),
- *       description = @Translation("One or more role ids to add."),
+ *       description = @Translation("The user role(s) to add."),
+ *       options_provider = "\Drupal\rules\TypedData\Options\RolesOptions",
  *       multiple = TRUE
  *     ),
  *   }

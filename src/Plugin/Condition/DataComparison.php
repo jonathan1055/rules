@@ -22,6 +22,7 @@ use Drupal\rules\Core\RulesConditionBase;
  *       description = @Translation("The comparison operator. Valid values are == (default), <, >, CONTAINS (for strings or arrays) and IN (for arrays or lists)."),
  *       assignment_restriction = "input",
  *       default_value = "==",
+ *       options_provider = "\Drupal\rules\TypedData\Options\ComparisonOperatorOptions",
  *       required = FALSE
  *     ),
  *     "value" = @ContextDefinition("any",

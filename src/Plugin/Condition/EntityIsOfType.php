@@ -21,6 +21,7 @@ use Drupal\rules\Core\RulesConditionBase;
  *     "type" = @ContextDefinition("string",
  *       label = @Translation("Type"),
  *       description = @Translation("The entity type specified by the condition."),
+ *       options_provider = "\Drupal\rules\TypedData\Options\EntityTypeOptions",
  *       assignment_restriction = "input"
  *     ),
  *   }

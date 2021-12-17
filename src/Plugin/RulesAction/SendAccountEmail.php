@@ -22,7 +22,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     ),
  *     "email_type" = @ContextDefinition("string",
  *       label = @Translation("Email type"),
- *       description = @Translation("The type of the email to send.")
+ *       description = @Translation("The type of the email to send."),
+ *       options_provider = "\Drupal\rules\TypedData\Options\EmailTypeOptions",
  *     ),
  *   }
  * )

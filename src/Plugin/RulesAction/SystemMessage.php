@@ -25,13 +25,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *       label = @Translation("Message type"),
  *       description = @Translation("The message type: status, warning, or error."),
  *       default_value = "status",
+ *       options_provider = "\Drupal\rules\TypedData\Options\MessageTypeOptions",
  *       required = FALSE
  *     ),
  *     "repeat" = @ContextDefinition("boolean",
  *       label = @Translation("Repeat message"),
- *       description = @Translation("If disabled and the message has been already shown, then the message won't be repeated."),
+ *       description = @Translation("If set to No and the message has been already shown, then the message won't be repeated."),
  *       assignment_restriction = "input",
  *       default_value = TRUE,
+ *       options_provider = "\Drupal\rules\TypedData\Options\YesNoOptions",
  *       required = FALSE
  *     ),
  *   }

@@ -21,7 +21,8 @@ use Drupal\rules\Exception\InvalidArgumentException;
  *     ),
  *     "roles" = @ContextDefinition("entity:user_role",
  *       label = @Translation("Roles"),
- *       description = @Translation("One or more role ids to remove."),
+ *       description = @Translation("The user role(s) to remove."),
+ *       options_provider = "\Drupal\rules\TypedData\Options\RolesOptions",
  *       multiple = TRUE
  *     ),
  *   }

@@ -21,13 +21,15 @@ use Drupal\user\UserInterface;
  *     "roles" = @ContextDefinition("entity:user_role",
  *       label = @Translation("Roles"),
  *       description = @Translation("Specifies the roles to check for."),
- *       multiple = TRUE
+ *       multiple = TRUE,
+ *       options_provider = "\Drupal\rules\TypedData\Options\RolesOptions"
  *     ),
  *     "operation" = @ContextDefinition("string",
- *       label = @Translation("Match roles"),
- *       description = @Translation("If matching against all selected roles, the user must have <em>all</em> the roles selected."),
+ *       label = @Translation("Matching multiple roles"),
+ *       description = @Translation("Specify if the user must have <em>all</em> the roles selected or <em>any</em> of the roles selected."),
  *       assignment_restriction = "input",
  *       default_value = "AND",
+ *       options_provider = "\Drupal\rules\TypedData\Options\AndOrOptions",
  *       required = FALSE
  *     ),
  *   }
