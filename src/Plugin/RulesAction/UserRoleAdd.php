@@ -9,6 +9,9 @@ use Drupal\user\UserInterface;
 /**
  * Provides a 'Add user role' action.
  *
+ * @todo Add access callback information from Drupal 7.
+ * @todo Add port for rules_user_roles_options_list.
+ *
  * @RulesAction(
  *   id = "rules_user_role_add",
  *   label = @Translation("Add user role"),
@@ -26,9 +29,6 @@ use Drupal\user\UserInterface;
  *     ),
  *   }
  * )
- *
- * @todo Add access callback information from Drupal 7.
- * @todo Add port for rules_user_roles_options_list.
  */
 class UserRoleAdd extends RulesActionBase {
 

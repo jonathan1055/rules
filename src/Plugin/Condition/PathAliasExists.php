@@ -11,6 +11,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides a 'Path alias exists' condition.
  *
+ * @todo Add access callback information from Drupal 7.
+ *
  * @Condition(
  *   id = "rules_path_alias_exists",
  *   label = @Translation("Path alias exists"),
@@ -30,8 +32,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     ),
  *   }
  * )
- *
- * @todo Add access callback information from Drupal 7.
  */
 class PathAliasExists extends RulesConditionBase implements ContainerFactoryPluginInterface {
 

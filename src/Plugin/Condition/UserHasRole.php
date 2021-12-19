@@ -9,6 +9,8 @@ use Drupal\user\UserInterface;
 /**
  * Provides a 'User has roles(s)' condition.
  *
+ * @todo Add access callback information from Drupal 7.
+ *
  * @Condition(
  *   id = "rules_user_has_role",
  *   label = @Translation("User has role(s)"),
@@ -34,8 +36,6 @@ use Drupal\user\UserInterface;
  *     ),
  *   }
  * )
- *
- * @todo Add access callback information from Drupal 7.
  */
 class UserHasRole extends RulesConditionBase {
 

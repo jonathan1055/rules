@@ -8,6 +8,8 @@ use Drupal\rules\Core\RulesConditionBase;
 /**
  * Provides an 'Entity is of bundle' condition.
  *
+ * @todo Add access callback information from Drupal 7?
+ *
  * @Condition(
  *   id = "rules_entity_is_of_bundle",
  *   label = @Translation("Entity is of bundle"),
@@ -32,8 +34,6 @@ use Drupal\rules\Core\RulesConditionBase;
  *     ),
  *   }
  * )
- *
- * @todo Add access callback information from Drupal 7?
  */
 class EntityIsOfBundle extends RulesConditionBase {
 

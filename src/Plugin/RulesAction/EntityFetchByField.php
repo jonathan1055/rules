@@ -10,6 +10,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides a 'Fetch entities by field' action.
  *
+ * @todo Add access callback information from Drupal 7.
+ *
  * @RulesAction(
  *   id = "rules_entity_fetch_by_field",
  *   label = @Translation("Fetch entities by field"),
@@ -43,8 +45,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     ),
  *   }
  * )
- *
- * @todo Add access callback information from Drupal 7.
  */
 class EntityFetchByField extends RulesActionBase implements ContainerFactoryPluginInterface {
 

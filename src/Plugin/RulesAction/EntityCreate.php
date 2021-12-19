@@ -10,12 +10,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides a generic 'Create a new entity' action.
  *
+ * @todo Add access callback information from Drupal 7.
+ *
  * @RulesAction(
  *   id = "rules_entity_create",
  *   deriver = "Drupal\rules\Plugin\RulesAction\EntityCreateDeriver"
  * )
- *
- * @todo Add access callback information from Drupal 7.
  */
 class EntityCreate extends RulesActionBase implements ContainerFactoryPluginInterface {
 

@@ -8,6 +8,8 @@ use Drupal\rules\Core\RulesActionBase;
 /**
  * Provides a 'Save entity' action.
  *
+ * @todo Add access callback information from Drupal 7.
+ *
  * @RulesAction(
  *   id = "rules_entity_save",
  *   label = @Translation("Save entity"),
@@ -28,8 +30,6 @@ use Drupal\rules\Core\RulesActionBase;
  *     ),
  *   }
  * )
- *
- * @todo Add access callback information from Drupal 7.
  */
 class EntitySave extends RulesActionBase {
 

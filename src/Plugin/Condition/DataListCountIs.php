@@ -7,6 +7,8 @@ use Drupal\rules\Core\RulesConditionBase;
 /**
  * Provides a 'List count comparison' condition.
  *
+ * @todo Add access callback information from Drupal 7?
+ *
  * @Condition(
  *   id = "rules_list_count_is",
  *   label = @Translation("List count comparison"),
@@ -31,8 +33,6 @@ use Drupal\rules\Core\RulesConditionBase;
  *     ),
  *   }
  * )
- *
- * @todo Add access callback information from Drupal 7?
  */
 class DataListCountIs extends RulesConditionBase {
 

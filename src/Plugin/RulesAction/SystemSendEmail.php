@@ -12,6 +12,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides "Send email" rules action.
  *
+ * @todo Define that message Context should be textarea comparing with textfield Subject
+ * @todo Add access callback information from Drupal 7.
+ *
  * @RulesAction(
  *   id = "rules_send_email",
  *   label = @Translation("Send email"),
@@ -45,9 +48,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     ),
  *   }
  * )
- *
- * @todo Define that message Context should be textarea comparing with textfield Subject
- * @todo Add access callback information from Drupal 7.
  */
 class SystemSendEmail extends RulesActionBase implements ContainerFactoryPluginInterface {
 

@@ -8,6 +8,8 @@ use Drupal\rules\Core\RulesConditionBase;
 /**
  * Provides a 'Entity has field' condition.
  *
+ * @todo Add access callback information from Drupal 7.
+ *
  * @Condition(
  *   id = "rules_entity_has_field",
  *   label = @Translation("Entity has field"),
@@ -26,8 +28,6 @@ use Drupal\rules\Core\RulesConditionBase;
  *     ),
  *   }
  * )
- *
- * @todo Add access callback information from Drupal 7.
  */
 class EntityHasField extends RulesConditionBase {
 

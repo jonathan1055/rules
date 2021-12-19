@@ -12,6 +12,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides a 'Show a message on the site' action.
  *
+ * @todo Add access callback information from Drupal 7.
+ *
  * @RulesAction(
  *   id = "rules_system_message",
  *   label = @Translation("Show a message on the site"),
@@ -38,8 +40,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     ),
  *   }
  * )
- *
- * @todo Add access callback information from Drupal 7.
  */
 class SystemMessage extends RulesActionBase implements ContainerFactoryPluginInterface {
 

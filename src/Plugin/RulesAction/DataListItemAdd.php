@@ -7,6 +7,8 @@ use Drupal\rules\Core\RulesActionBase;
 /**
  * Provides an 'Add list item' action.
  *
+ * @todo Add access callback information from Drupal 7?
+ *
  * @RulesAction(
  *   id = "rules_list_item_add",
  *   label = @Translation("Add list item"),
@@ -37,8 +39,6 @@ use Drupal\rules\Core\RulesActionBase;
  *     ),
  *   }
  * )
- *
- * @todo Add access callback information from Drupal 7?
  */
 class DataListItemAdd extends RulesActionBase {
 

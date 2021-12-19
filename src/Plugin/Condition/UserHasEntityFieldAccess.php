@@ -12,6 +12,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides a 'User has entity field access' condition.
  *
+ * @todo Add access callback information from Drupal 7.
+ *
  * @Condition(
  *   id = "rules_entity_field_access",
  *   label = @Translation("User has entity field access"),
@@ -44,8 +46,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     ),
  *   }
  * )
- *
- * @todo Add access callback information from Drupal 7.
  */
 class UserHasEntityFieldAccess extends RulesConditionBase implements ContainerFactoryPluginInterface {
 

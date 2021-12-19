@@ -7,6 +7,8 @@ use Drupal\rules\Core\RulesActionBase;
 /**
  * Provides an 'Add a variable' action.
  *
+ * @todo The context definition for "type" needs an options_provider list.
+ *
  * @RulesAction(
  *   id = "rules_variable_add",
  *   label = @Translation("Add a variable"),
@@ -29,8 +31,6 @@ use Drupal\rules\Core\RulesActionBase;
  *     ),
  *   }
  * )
- *
- * @todo The context definition for "type" needs an options_provider list.
  */
 class VariableAdd extends RulesActionBase {
 

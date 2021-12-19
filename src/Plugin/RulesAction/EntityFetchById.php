@@ -10,6 +10,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides a 'Fetch entity by id' action.
  *
+ * @todo Add access callback information from Drupal 7.
+ * @todo Port for rules_entity_action_type_options.
+ *
  * @RulesAction(
  *   id = "rules_entity_fetch_by_id",
  *   label = @Translation("Fetch entity by id"),
@@ -32,9 +35,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     ),
  *   }
  * )
- *
- * @todo Add access callback information from Drupal 7.
- * @todo Port for rules_entity_action_type_options.
  */
 class EntityFetchById extends RulesActionBase implements ContainerFactoryPluginInterface {
 

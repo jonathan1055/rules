@@ -13,6 +13,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides a 'Email to users of a role' action.
  *
+ * @todo Add access callback information from Drupal 7.
+ *
  * @RulesAction(
  *   id = "rules_email_to_users_of_role",
  *   label = @Translation("Send email to all users of a role"),
@@ -47,8 +49,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     ),
  *   }
  * )
- *
- * @todo Add access callback information from Drupal 7.
  */
 class SystemEmailToUsersOfRole extends RulesActionBase implements ContainerFactoryPluginInterface {
 

@@ -11,6 +11,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides a 'Create any path alias' action.
  *
+ * @todo Add access callback information from Drupal 7.
+ *
  * @RulesAction(
  *   id = "rules_path_alias_create",
  *   label = @Translation("Create any path alias"),
@@ -34,8 +36,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *     ),
  *   }
  * )
- *
- * @todo Add access callback information from Drupal 7.
  */
 class PathAliasCreate extends RulesActionBase implements ContainerFactoryPluginInterface {
 

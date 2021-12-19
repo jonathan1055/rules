@@ -8,6 +8,10 @@ use Drupal\rules\Exception\InvalidArgumentException;
 /**
  * Provides an action to convert data from one type to another.
  *
+ * @todo Add rounding_behavior default value "round".
+ * @todo Add options_list for target type.
+ * @todo Specify the right data type for the provided result.
+ *
  * @RulesAction(
  *   id = "rules_data_convert",
  *   label = @Translation("Convert data"),
@@ -38,9 +42,6 @@ use Drupal\rules\Exception\InvalidArgumentException;
  *     ),
  *   }
  * )
- * @todo Add rounding_behavior default value "round".
- * @todo Add options_list for target type.
- * @todo Specify the right data type for the provided result.
  */
 class DataConvert extends RulesActionBase {
 

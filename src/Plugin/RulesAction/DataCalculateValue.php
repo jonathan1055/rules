@@ -7,6 +7,10 @@ use Drupal\rules\Core\RulesActionBase;
 /**
  * Provides a 'numeric calculation' action.
  *
+ * @todo Add access callback information from Drupal 7.
+ * @todo Add defined operation options from Drupal 7.
+ * @todo If context args are integers, ensure that integers are returned.
+ *
  * @RulesAction(
  *   id = "rules_data_calculate_value",
  *   label = @Translation("Calculate a numeric value"),
@@ -33,10 +37,6 @@ use Drupal\rules\Core\RulesActionBase;
  *     ),
  *   }
  * )
- *
- * @todo Add access callback information from Drupal 7.
- * @todo Add defined operation options from Drupal 7.
- * @todo If context args are integers, ensure that integers are returned.
  */
 class DataCalculateValue extends RulesActionBase {
 
