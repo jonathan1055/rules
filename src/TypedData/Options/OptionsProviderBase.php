@@ -2,6 +2,7 @@
 
 namespace Drupal\rules\TypedData\Options;
 
+use Drupal\Core\Form\OptGroup;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\TypedData\OptionsProviderInterface;
@@ -15,22 +16,11 @@ abstract class OptionsProviderBase implements OptionsProviderInterface {
   /**
    * {@inheritdoc}
    */
-  public function getPossibleOptions(AccountInterface $account = NULL) {
-    return [];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getSettableOptions(AccountInterface $account = NULL) {
-    return $this->getPossibleOptions();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getPossibleValues(AccountInterface $account = NULL) {
-    return [];
+    // Flatten options firstly, because Possible Options may contain group
+    // arrays.
+    $flatten_options = OptGroup::flattenOptions($this->getPossibleOptions($account));
+    return array_keys($flatten_options);
   }
 
   /**
@@ -38,6 +28,13 @@ abstract class OptionsProviderBase implements OptionsProviderInterface {
    */
   public function getSettableValues(AccountInterface $account = NULL) {
     return $this->getPossibleValues();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getSettableOptions(AccountInterface $account = NULL) {
+    return $this->getPossibleOptions();
   }
 
 }

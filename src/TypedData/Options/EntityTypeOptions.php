@@ -2,13 +2,42 @@
 
 namespace Drupal\rules\TypedData\Options;
 
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\ContentEntityTypeInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Options provider to list all entity types.
  */
-class EntityTypeOptions extends OptionsProviderBase {
+class EntityTypeOptions extends OptionsProviderBase implements ContainerInjectionInterface {
+
+  /**
+   * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * Constructs a EntityTypeOptions object.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager service.
+   */
+  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+    $this->entityTypeManager = $entity_type_manager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('entity_type.manager')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -17,7 +46,7 @@ class EntityTypeOptions extends OptionsProviderBase {
     $options = [];
 
     // Load all the entity types.
-    $entity_types = \Drupal::service('entity_type.manager')->getDefinitions();
+    $entity_types = $this->entityTypeManager->getDefinitions();
     foreach ($entity_types as $entity_type) {
       if (!$entity_type instanceof ContentEntityTypeInterface) {
         continue;
