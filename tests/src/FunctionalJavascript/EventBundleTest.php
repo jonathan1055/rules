@@ -120,12 +120,12 @@ class EventBundleTest extends WebDriverTestBase {
     // Now ensure the bundle we selected with Ajax got saved.
     $this->drupalGet('admin/config/workflow/rules');
     $assert->pageTextContains('Test bundle selection Ajax rule');
-    $assert->pageTextContains('After saving a new content item of type Article');
+    $assert->pageTextContains('After saving a new content item entity of type Article');
     $assert->pageTextContains('Machine name: test_bundle_selection_ajax_rule');
 
     // And ensure the qualified event name is displayed properly in the UI.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_bundle_selection_ajax_rule');
-    $assert->pageTextContains('After saving a new content item of type Article');
+    $assert->pageTextContains('After saving a new content item entity of type Article');
     $assert->pageTextContains('Machine name: rules_entity_insert:node--article');
   }
 
