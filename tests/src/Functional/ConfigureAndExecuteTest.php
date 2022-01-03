@@ -25,17 +25,34 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
   protected $profile = 'minimal';
 
   /**
-   * A user account with administration permissions.
+   * A user with administration permissions.
    *
-   * @var \Drupal\Core\Session\AccountInterface
+   * @var \Drupal\user\UserInterface
    */
   protected $account;
+
+  /**
+   * The entity storage for Rules config entities.
+   *
+   * @var \Drupal\Core\Entity\EntityStorageInterface
+   */
+  protected $storage;
+
+  /**
+   * The Rules expression manager.
+   *
+   * @var \Drupal\rules\Engine\ExpressionManagerInterface
+   */
+  protected $expressionManager;
 
   /**
    * {@inheritdoc}
    */
   protected function setUp(): void {
     parent::setUp();
+
+    $this->storage = $this->container->get('entity_type.manager')->getStorage('rules_reaction_rule');
+    $this->expressionManager = $this->container->get('plugin.manager.rules_expression');
 
     // Create an article content type that we will use for testing.
     $type = $this->container->get('entity_type.manager')->getStorage('node_type')
@@ -45,6 +62,7 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
       ]);
     $type->save();
 
+    // Create the user with all needed permissions.
     $this->account = $this->drupalCreateUser([
       'create article content',
       'edit any article content',
