@@ -3,6 +3,7 @@
 namespace Drupal\Tests\rules\Functional;
 
 use Drupal\rules\Context\ContextConfig;
+use Drupal\user\Entity\User;
 
 /**
  * Tests that a rule can be configured and triggered when a node is edited.
@@ -50,27 +51,50 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
       'administer rules',
       'administer site configuration',
     ]);
+    $this->drupalLogin($this->account);
+
+    // Create a named role for use in conditions and actions.
+    $this->createRole(['administer nodes'], 'test-editor', 'Test Editor');
+  }
+
+  /**
+   * Helper function to create a reaction rule.
+   *
+   * @param string $label
+   *   The label for the new rule.
+   * @param string $machine_name
+   *   The internal machine-readable name.
+   * @param string $event
+   *   The name of the event to react on.
+   * @param string $description
+   *   Optional description for the reaction rule.
+   *
+   * @return ReactionRule
+   *   The rule object created.
+   */
+  protected function createRule($label, $machine_name, $event, $description = '') {
+    $this->drupalGet('admin/config/workflow/rules');
+    $this->clickLink('Add reaction rule');
+    $this->fillField('Label', $label);
+    $this->fillField('Machine-readable name', $machine_name);
+    $this->fillField('React on event', $event);
+    $this->fillField('Description', $description);
+    $this->pressButton('Save');
+    $this->assertSession()->pageTextContains('Reaction rule ' . $label . ' has been created');
+    $config_factory = $this->container->get('config.factory');
+    $rule = $config_factory->get('rules.reaction.' . $machine_name);
+    return $rule;
   }
 
   /**
    * Tests creation of a rule and then triggering its execution.
    */
   public function testConfigureAndExecute() {
-    $this->drupalLogin($this->account);
-
-    $this->drupalGet('admin/config/workflow/rules');
-
     // Set up a rule that will show a system message if the title of a node
     // matches "Test title".
-    $this->clickLink('Add reaction rule');
-
-    $this->fillField('Label', 'Test rule');
-    $this->fillField('Machine-readable name', 'test_rule');
-    $this->fillField('React on event', 'rules_entity_presave:node');
-    $this->pressButton('Save');
+    $this->createRule('Test rule', 'test_rule', 'rules_entity_presave:node');
 
     $this->clickLink('Add condition');
-
     $this->fillField('Condition', 'rules_data_comparison');
     $this->pressButton('Continue');
 
@@ -148,8 +172,6 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
 
     /** @var \Drupal\Tests\WebAssert $assert */
     $assert = $this->assertSession();
-
-    $this->drupalLogin($this->account);
 
     // Create a rule that will show a system message when updating a node whose
     // title contains "Two Rules Same Event".
@@ -279,26 +301,26 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
    * Tests user input in context form for 'multiple' valued context variables.
    */
   public function testMultipleInputContext() {
-    $this->drupalLogin($this->account);
-
+    // Set up a rule. The event is not relevant, we just want a rule to use.
+    // Calling $rule = $this->createRule('Test Multiple Input via UI',
+    // 'test_rule', 'rules_entity_insert:node') works locally but fails
+    // $this->assertEquals($expected_config_value, $to) on drupal.org with
+    // 'null does not match expected type "array".', hence revert to the
+    // long-hand way of creating the rule.
     $this->drupalGet('admin/config/workflow/rules');
-
-    // Set up a rule that will check the node type of a newly-created node.
-    // The node type is the 'multiple' valued textarea we will test.
     $this->clickLink('Add reaction rule');
-
-    $this->fillField('Label', 'Test rule');
+    $this->fillField('Label', 'Test Multiple Input via UI');
     $this->fillField('Machine-readable name', 'test_rule');
     $this->fillField('React on event', 'rules_entity_insert:node');
     $this->pressButton('Save');
 
-    $this->clickLink('Add condition');
-
-    // Use node_is_of_type because the types field has 'multiple = TRUE'.
-    $this->fillField('Condition', 'rules_node_is_of_type');
+    // Add action rules_send_email because the 'to' field has 'multiple = TRUE'
+    // rendered as a textarea that we can use for this test.
+    $this->clickLink('Add action');
+    $this->fillField('Action', 'rules_send_email');
     $this->pressButton('Continue');
 
-    $this->fillField('context_definitions[node][value]', 'node');
+    $this->fillField('context_definitions[node][value]', 'node'); // ? CHECK  
 
     // Maximum allowed length of string input is 255 characters.
     $suboptimal_user_input = [
@@ -320,7 +342,12 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
       "terminator nr\n\r",
       "whitespace at end of input\r\n    \r\n",
     ];
-    $this->fillField('context_definitions[types][value]', implode($suboptimal_user_input));
+    $this->fillField('context_definitions[to][value]', implode($suboptimal_user_input));
+
+    // Set the other required fields. These play no part in the test.
+    $this->fillField('context_definitions[subject][value]', 'Hello');
+    $this->fillField('context_definitions[message][value]', 'Dear Heart');
+
     $this->pressButton('Save');
 
     // One more save to permanently store the rule.
@@ -348,41 +375,40 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
       "terminator nr",
       "whitespace at end of input",
     ];
+    // Need to get the $rule again, as the existing $rule does not have the
+    // changes added above and $rule->get('expression.actions...) is empty.
+    // @todo Is there a way to refersh $rule and not have to get it again?
     $config_factory = $this->container->get('config.factory');
+    $config_factory->clearStaticCache();
     $rule = $config_factory->get('rules.reaction.test_rule');
-    $this->assertEquals($expected_config_value, $rule->get('expression.conditions.conditions.0.context_values.types'));
+
+    $to = $rule->get('expression.actions.actions.0.context_values.to');
+    $this->assertEquals($expected_config_value, $to);
   }
 
   /**
    * Tests the implementation of assignment restriction in context form.
    */
   public function testAssignmentRestriction() {
-    $this->drupalLogin($this->account);
-
     $expression_manager = $this->container->get('plugin.manager.rules_expression');
     $storage = $this->container->get('entity_type.manager')->getStorage('rules_reaction_rule');
 
     // Create a rule.
     $rule = $expression_manager->createRule();
 
-    // Add a condition which is unrestricted.
+    // Add a condition which is restricted to selector for 'data', restricted to
+    // input for 'operation' but unrestricted on 'value'.
     $condition1 = $expression_manager->createCondition('rules_data_comparison');
     $rule->addExpressionObject($condition1);
-    // Add a condition which is restricted to 'selector' for 'node'.
-    $condition2 = $expression_manager->createCondition('rules_node_is_of_type');
-    $rule->addExpressionObject($condition2);
 
-    // Add an action which is unrestricted.
+    // Add an action which is unrestricted on 'message' and 'type' but is
+    // restricted to input for 'repeat'.
     $action1 = $expression_manager->createAction('rules_system_message');
     $rule->addExpressionObject($action1);
-    // Add an action which is restricted to 'input' for 'type'.
-    $action2 = $expression_manager->createAction('rules_variable_add');
-    $rule->addExpressionObject($action2);
 
     // As the ContextFormTrait is action/condition agnostic it is not necessary
-    // to check a condition restricted to input, because the check on action2
-    // covers this. Likewise we do not need an action restricted by selector
-    // because condition2 covers this. Save the rule to config. No event needed.
+    // to check an action restricted by selector because the condition covers
+    // this. Save the rule to config. No event needed.
     $config_entity = $storage->create([
       'id' => 'test_rule',
       'expression' => $rule->getConfiguration(),
@@ -394,30 +420,135 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
 
     // Display the rule edit page to show the actions and conditions.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule');
+    $assert->statusCodeEquals(200);
 
-    // Edit condition 1, assert that the switch button is shown for value and
-    // that the default entry field is regular text entry not a selector.
+    // Edit the condition and assert that the page loads correctly.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule/edit/' . $condition1->getUuid());
+    $assert->statusCodeEquals(200);
+    // Check that a switch button is not shown for 'data' and that the field is
+    // an autocomplete selector field not plain text entry.
+    $assert->buttonNotExists('edit-context-definitions-data-switch-button');
+    $assert->elementExists('xpath', '//input[@id="edit-context-definitions-data-setting" and contains(@class, "rules-autocomplete")]');
+    // Check that a switch button is not shown for 'operation'.
+    $assert->buttonNotExists('edit-context-definitions-operation-switch-button');
+    // Check that a switch button is shown for 'value' and that the default
+    // field is plain text entry not an autocomplete selector field.
     $assert->buttonExists('edit-context-definitions-value-switch-button');
     $assert->elementExists('xpath', '//input[@id="edit-context-definitions-value-value" and not(contains(@class, "rules-autocomplete"))]');
 
-    // Edit condition 2, assert that the switch button is NOT shown for node
-    // and that the entry field is a selector with class rules-autocomplete.
-    $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule/edit/' . $condition2->getUuid());
-    $assert->buttonNotExists('edit-context-definitions-node-switch-button');
-    $assert->elementExists('xpath', '//input[@id="edit-context-definitions-node-value" and contains(@class, "rules-autocomplete")]');
-
-    // Edit action 1, assert that the switch button is shown for message and
-    // that the default entry field is a regular text entry not a selector.
+    // Edit the action and assert that page loads correctly.
     $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule/edit/' . $action1->getUuid());
+    $assert->statusCodeEquals(200);
+    // Check that a switch button is shown for 'message' and that the field is a
+    // plain text entry field not an autocomplete selector field.
     $assert->buttonExists('edit-context-definitions-message-switch-button');
-    $assert->elementExists('xpath', '//input[@id="edit-context-definitions-message-value" and not(contains(@class, "rules-autocomplete"))]');
+    $assert->elementExists('xpath', '//input[@id="edit-context-definitions-message-setting" and not(contains(@class, "rules-autocomplete"))]');
+    // Check that a switch button is shown for 'type'.
+    $assert->buttonExists('edit-context-definitions-type-switch-button');
+    // Check that a switch button is not shown for 'repeat'.
+    $assert->buttonNotExists('edit-context-definitions-repeat-switch-button');
+  }
 
-    // Edit action 2, assert that the switch button is NOT shown for type and
-    // that the entry field is a regular text entry not a selector.
-    $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule/edit/' . $action2->getUuid());
-    $assert->buttonNotExists('edit-context-definitions-type-switch-button');
-    $assert->elementExists('xpath', '//input[@id="edit-context-definitions-type-value" and not(contains(@class, "rules-autocomplete"))]');
+  /**
+   * Tests upcasting in a condition.
+   */
+  public function testUpcastInCondition() {
+
+    /** @var \Drupal\Tests\WebAssert $assert */
+    $assert = $this->assertSession();
+
+    // Create a rule.
+    $expressionManager = $this->container->get('plugin.manager.rules_expression');
+    $storage = $this->container->get('entity_type.manager')->getStorage('rules_reaction_rule');
+    $rule = $expressionManager->createRule();
+    // Add a condition to check if the user has the 'test-editor' role.
+    $rule->addCondition('rules_user_has_role',
+      ContextConfig::create()
+        ->map('user', '@user.current_user_context:current_user')
+        ->setValue('roles', ['test-editor'])
+    );
+    // Add an action to display a system message.
+    $message = '-- RULE to test upcasting in condition --';
+    $rule->addAction('rules_system_message',
+      ContextConfig::create()
+        ->setValue('message', $message)
+        ->setValue('type', 'status')
+    );
+    // Set the even to User Login and save the configuration.
+    $expr_id = 'test_upcast';
+    $config_entity = $storage->create([
+      'id' => $expr_id,
+      'expression' => $rule->getConfiguration(),
+      'events' => [['event_name' => 'rules_user_login']],
+    ]);
+    $config_entity->save();
+
+    // Log in and check that the rule is triggered.
+    $this->drupalLogin($this->account);
+    $assert->pageTextNotContains($message);
+
+    // Add the required role to the user.
+    $this->account->addRole('test-editor');
+    $this->account->save();
+
+    // Log out and in and check that the rule is triggered.
+    $this->drupalLogout();
+    $this->drupalLogin($this->account);
+    $assert->pageTextContains($message);
+
+    // Remove the role from the user.
+    $this->account->removeRole('test-editor');
+    $this->account->save();
+
+    // Log out and in and check that the rule is not triggered.
+    $this->drupalLogout();
+    $this->drupalLogin($this->account);
+    $assert->pageTextNotContains($message);
+  }
+
+  /**
+   * Tests upcasting in an action.
+   */
+  public function testUpcastInAction() {
+
+    // Log in.
+    $this->drupalLogin($this->account);
+
+    // Create a rule.
+    $expressionManager = $this->container->get('plugin.manager.rules_expression');
+    $storage = $this->container->get('entity_type.manager')->getStorage('rules_reaction_rule');
+    $rule = $expressionManager->createRule();
+    // Add an action to add 'Editor' role to the current user. The role value
+    // here is just the machine name as text, and will be upcast to the full
+    // role object when the rule is triggered.
+    $rule->addAction('rules_user_role_add',
+      ContextConfig::create()
+        ->map('user', '@user.current_user_context:current_user')
+        ->setValue('roles', ['test-editor'])
+    );
+    // Save the configuration.
+    $expr_id = 'test_upcast';
+    $config_entity = $storage->create([
+      'id' => $expr_id,
+      'expression' => $rule->getConfiguration(),
+      'events' => [['event_name' => 'rules_entity_insert:node']],
+    ]);
+    $config_entity->save();
+
+    // Check that the user does not have the 'test-editor' role.
+    $this->assertEmpty(array_intersect(['test-editor'], $this->account->getRoles()));
+
+    // Create an article, which will trigger the rule, and add the role.
+    $this->drupalCreateNode([
+      'type' => 'article',
+      'title' => 'Upcasting role in action',
+    ]);
+
+    // Reload the user account.
+    $account = User::load($this->account->id());
+
+    // Check that the role has been added to the user.
+    $this->assertNotEmpty(array_intersect(['test-editor'], $account->getRoles()));
   }
 
 }

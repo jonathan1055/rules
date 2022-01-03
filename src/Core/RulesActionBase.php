@@ -134,7 +134,17 @@ abstract class RulesActionBase extends ContextAwarePluginBase implements RulesAc
     // passing the defined context as arguments.
     $args = [];
     foreach ($this->getContextDefinitions() as $name => $definition) {
-      $args[$name] = $this->getContextValue($name);
+      $value = $this->getContextValue($name);
+      $type = $definition->toArray()['type'];
+      if (substr($type, 0, 6) == 'entity') {
+        if (is_array($value) && is_string($value[0])) {
+          $value = array_map([$this, 'upcastEntityId'], $value, array_fill(0, count($value), $type));
+        }
+        elseif (is_string($value)) {
+          $value = $this->upcastEntityId($value, $type);
+        }
+      }
+      $args[$name] = $value;
     }
     call_user_func_array([$this, 'doExecute'], $args);
   }

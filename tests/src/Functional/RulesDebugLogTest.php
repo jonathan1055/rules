@@ -72,7 +72,7 @@ class RulesDebugLogTest extends RulesBrowserTestBase {
     $assert = $this->assertSession();
 
     // Ensure that one and only one event message appears.
-    $assert->pageTextContainsOnce('0 ms Reacting on event After saving a new content item.');
+    $assert->pageTextContainsOnce('0 ms Reacting on event After saving a new content item entity.');
   }
 
 }
