@@ -120,7 +120,7 @@ class ActionsFormTest extends RulesBrowserTestBase {
         $assert->pageTextContains('field is required');
         // Fill each required field with the value provided.
         foreach ($required as $name => $value) {
-          $this->fillField('edit-context-definitions-' . $name . '-setting', $value);
+          $this->fillField('edit-context-definitions-' . $name . '-value', $value);
         }
       }
 
@@ -138,7 +138,7 @@ class ActionsFormTest extends RulesBrowserTestBase {
       if (!empty($defaulted) || !empty($provides)) {
         // Fill each previously defaulted field with the value provided.
         foreach ($defaulted as $name => $value) {
-          $this->fillField('edit-context-definitions-' . $name . '-setting', $value);
+          $this->fillField('edit-context-definitions-' . $name . '-value', $value);
         }
         foreach ($provides as $name => $value) {
           $this->fillField('edit-provides-' . $name . '-name', $value);

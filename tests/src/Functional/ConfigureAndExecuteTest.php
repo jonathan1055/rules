@@ -15,7 +15,7 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected static $modules = ['node', 'rules', 'typed_data'];
+  protected static $modules = ['rules', 'typed_data'];
 
   /**
    * We use the minimal profile because we want to test local action links.
@@ -320,8 +320,6 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     $this->fillField('Action', 'rules_send_email');
     $this->pressButton('Continue');
 
-    $this->fillField('context_definitions[node][value]', 'node'); // ? CHECK  
-
     // Maximum allowed length of string input is 255 characters.
     $suboptimal_user_input = [
       "  \r\nwhitespace at beginning\r\n",
@@ -428,7 +426,7 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     // Check that a switch button is not shown for 'data' and that the field is
     // an autocomplete selector field not plain text entry.
     $assert->buttonNotExists('edit-context-definitions-data-switch-button');
-    $assert->elementExists('xpath', '//input[@id="edit-context-definitions-data-setting" and contains(@class, "rules-autocomplete")]');
+    $assert->elementExists('xpath', '//input[@id="edit-context-definitions-data-value" and contains(@class, "rules-autocomplete")]');
     // Check that a switch button is not shown for 'operation'.
     $assert->buttonNotExists('edit-context-definitions-operation-switch-button');
     // Check that a switch button is shown for 'value' and that the default
@@ -442,7 +440,7 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     // Check that a switch button is shown for 'message' and that the field is a
     // plain text entry field not an autocomplete selector field.
     $assert->buttonExists('edit-context-definitions-message-switch-button');
-    $assert->elementExists('xpath', '//input[@id="edit-context-definitions-message-setting" and not(contains(@class, "rules-autocomplete"))]');
+    $assert->elementExists('xpath', '//input[@id="edit-context-definitions-message-value" and not(contains(@class, "rules-autocomplete"))]');
     // Check that a switch button is shown for 'type'.
     $assert->buttonExists('edit-context-definitions-type-switch-button');
     // Check that a switch button is not shown for 'repeat'.
