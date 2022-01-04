@@ -12,7 +12,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Provides "Send email" rules action.
  *
- * @todo Define that message Context should be textarea comparing with textfield Subject
  * @todo Add access callback information from Drupal 7.
  *
  * @RulesAction(

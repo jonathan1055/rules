@@ -191,7 +191,6 @@ class ConditionsFormTest extends RulesBrowserTestBase {
         ['operation' => 'contains'],
         // Widgets.
         [
-          'data' => 'text-input',
           'operation' => 'text-input',
           'value' => 'text-input',
         ],
@@ -205,8 +204,6 @@ class ConditionsFormTest extends RulesBrowserTestBase {
       '3. List contains' => [
         'rules_list_contains',
         ['list' => 'node.uid.entity.roles', 'item' => 'abc'],
-        [],
-        ['list' => 'textarea'],
       ],
       '4. List count is' => [
         'rules_list_count_is',
