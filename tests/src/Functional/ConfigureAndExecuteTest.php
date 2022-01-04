@@ -182,18 +182,128 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
   }
 
   /**
+   * Tests adding an event and then triggering its execution.
+   */
+  public function testAddEventAndExecute() {
+    // Create an article.
+    $node = $this->drupalCreateNode([
+      'type' => 'article',
+    ]);
+
+    // Create a rule with a single event and with an action.
+    $message = 'Rule is triggered';
+    $rule = $this->expressionManager->createRule();
+    $rule->addAction('rules_system_message',
+        ContextConfig::create()
+          ->setValue('message', $message)
+          ->setValue('type', 'status')
+    );
+    $config_entity = $this->storage->create([
+      'id' => 'test_rule',
+      'label' => 'Test rule',
+      'events' => [
+        ['event_name' => 'rules_entity_insert:node--article'],
+      ],
+      'expression' => $rule->getConfiguration(),
+    ]);
+    $config_entity->save();
+
+    $this->drupalLogin($this->account);
+
+    /** @var \Drupal\Tests\WebAssert $assert */
+    $assert = $this->assertSession();
+
+    // Now add an event using the UI.
+    $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule');
+
+    // Go to "Add event" page.
+    $this->clickLink('Add event');
+    $assert->pageTextContains('Add event to Test rule');
+    $assert->pageTextContains('Event selection');
+    $assert->pageTextContains('React on event');
+
+    // Select an event.
+    $this->findField('events[0][event_name]')->selectOption('rules_entity_update:node');
+    $this->pressButton('Add');
+
+    // Select bundle 'article'.
+    $this->findField('bundle')->selectOption('article');
+    $this->pressButton('Add');
+
+    // Update an article and assert that the event is triggered.
+    $this->drupalGet('node/' . $node->id() . '/edit/');
+    $this->submitForm([], 'Save');
+    $assert->pageTextContains($message);
+  }
+
+  /**
+   * Tests deleting an event and then triggering its execution.
+   */
+  public function testDeleteEventAndExecute() {
+    // Create a rule with two events and an action.
+    $message = 'Rule is triggered';
+    $rule = $this->expressionManager->createRule();
+    $rule->addAction('rules_system_message',
+        ContextConfig::create()
+          ->setValue('message', $message)
+          ->setValue('type', 'status')
+    );
+    $config_entity = $this->storage->create([
+      'id' => 'test_rule',
+      'label' => 'Test rule',
+      'events' => [
+        ['event_name' => 'rules_entity_insert:node'],
+        ['event_name' => 'rules_entity_update:node'],
+      ],
+      'expression' => $rule->getConfiguration(),
+    ]);
+    $config_entity->save();
+
+    $this->drupalLogin($this->account);
+
+    /** @var \Drupal\Tests\WebAssert $assert */
+    $assert = $this->assertSession();
+
+    // Create a node to ensure that the rule is triggered and the message is
+    // displayed when creating a node (the first of the two events).
+    $this->drupalGet('node/add/article');
+    $this->submitForm(['title[0][value]' => 'Foo'], 'Save');
+    $assert->pageTextContains($message);
+
+    // Delete an event using the UI.
+    $this->drupalGet('admin/config/workflow/rules/reactions/edit/test_rule');
+    // Click delete button for the first event.
+    $this->clickLinkByHref('event-delete/rules_entity_insert');
+
+    // Assert we are on the delete page.
+    $assert->pageTextContains('Are you sure you want to delete the event After saving a new content item entity from Test rule?');
+
+    // And confirm the delete.
+    $this->pressButton('Delete');
+    $assert->pageTextContains('Deleted event After saving a new content item entity from Test rule.');
+
+    // Create a node and assert that the event is not triggered.
+    $this->drupalGet('node/add/article');
+    $this->submitForm(['title[0][value]' => 'Bar'], 'Save');
+    $node = $this->drupalGetNodeByTitle('Bar');
+    $assert->pageTextNotContains($message);
+
+    // Update it and assert that the message now does get displayed.
+    $this->drupalGet('node/' . $node->id() . '/edit/');
+    $this->submitForm([], 'Save');
+    $assert->pageTextContains($message);
+  }
+
+  /**
    * Tests creating and altering two rules reacting on the same event.
    */
   public function testTwoRulesSameEvent() {
-    $expressionManager = $this->container->get('plugin.manager.rules_expression');
-    $storage = $this->container->get('entity_type.manager')->getStorage('rules_reaction_rule');
-
     /** @var \Drupal\Tests\WebAssert $assert */
     $assert = $this->assertSession();
 
     // Create a rule that will show a system message when updating a node whose
     // title contains "Two Rules Same Event".
-    $rule1 = $expressionManager->createRule();
+    $rule1 = $this->expressionManager->createRule();
     // Add the condition to the rule.
     $rule1->addCondition('rules_data_comparison',
         ContextConfig::create()
@@ -209,7 +319,7 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
           ->setValue('type', 'status')
     );
     // Add the event and save the rule configuration.
-    $config_entity = $storage->create([
+    $config_entity = $this->storage->create([
       'id' => 'rule1',
       'label' => 'Rule One',
       'events' => [['event_name' => 'rules_entity_presave:node']],
@@ -224,7 +334,7 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     $assert->pageTextContains($message1);
 
     // Repeat to create a second similar rule.
-    $rule2 = $expressionManager->createRule();
+    $rule2 = $this->expressionManager->createRule();
     // Add the condition to the rule.
     $rule2->addCondition('rules_data_comparison',
         ContextConfig::create()
@@ -240,7 +350,7 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
           ->setValue('type', 'status')
     );
     // Add the event and save the rule configuration.
-    $config_entity = $storage->create([
+    $config_entity = $this->storage->create([
       'id' => 'rule2',
       'label' => 'Rule Two',
       'events' => [['event_name' => 'rules_entity_presave:node']],
@@ -312,7 +422,6 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
     $assert->pageTextNotContains($message1);
     $assert->pageTextNotContains($message1updated);
     $assert->pageTextNotContains($message2);
-
   }
 
   /**
