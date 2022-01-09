@@ -48,9 +48,6 @@ abstract class ExpressionContainerFormBase implements ExpressionFormInterface {
       elseif (is_array($value)) {
         $value = '[' . implode(', ', $value) . ']';
       }
-      elseif (is_object($value) && method_exists($value, 'getName')) {
-        $value = $value->getName();
-      }
       // @todo Truncate $value if it's "too long", so as not to clutter UI.
       // Perhaps we can display the full value on hover.
       $parameters[] = $key . ': ' . $value;
