@@ -40,7 +40,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *       default_value = NULL,
  *       required = FALSE
  *     ),
- *     "language" = @ContextDefinition("language",
+ *     "language" = @ContextDefinition("entity:configurable_language",
  *       label = @Translation("Language"),
  *       description = @Translation("If specified, the language object (not language code) used for getting the email message and subject."),
  *       options_provider = "\Drupal\rules\TypedData\Options\LanguageOptions",
