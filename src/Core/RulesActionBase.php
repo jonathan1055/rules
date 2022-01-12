@@ -4,15 +4,18 @@ namespace Drupal\rules\Core;
 
 use Drupal\Component\Plugin\Exception\ContextException;
 use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Plugin\ContextAwarePluginBase;
+use Drupal\Core\Plugin\ContextAwarePluginTrait;
+use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\rules\Context\ContextProviderTrait;
 
 /**
  * Base class for rules actions.
  */
-abstract class RulesActionBase extends ContextAwarePluginBase implements RulesActionInterface {
-
+abstract class RulesActionBase extends PluginBase implements RulesActionInterface {
+  use ContextAwarePluginTrait {
+    getContextValue as protected traitGetContextValue;
+  }
   use ContextProviderTrait;
   use ExecutablePluginTrait;
   use ConfigurationAccessControlTrait;
@@ -29,7 +32,7 @@ abstract class RulesActionBase extends ContextAwarePluginBase implements RulesAc
    */
   public function getContextValue($name) {
     try {
-      return parent::getContextValue($name);
+      return $this->traitGetContextValue($name);
     }
     catch (ContextException $e) {
       // Catch the undocumented exception thrown when no context value is set
