@@ -2,8 +2,8 @@
 
 namespace Drupal\rules\EventHandler;
 
-use Drupal\rules\Event\EntityEvent;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\rules\Event\EntityEvent;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
