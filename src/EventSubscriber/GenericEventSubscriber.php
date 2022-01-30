@@ -8,9 +8,10 @@ use Drupal\rules\Context\ExecutionState;
 use Drupal\rules\Core\RulesConfigurableEventHandlerInterface;
 use Drupal\rules\Core\RulesEventManager;
 use Drupal\rules\Engine\RulesComponentRepositoryInterface;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\EventDispatcher\Event as SymfonyComponentEvent;
+use Symfony\Contracts\EventDispatcher\Event as SymfonyContractsEvent;
 
 /**
  * Subscribes to Symfony events and maps them to Rules events.
@@ -97,12 +98,22 @@ class GenericEventSubscriber implements EventSubscriberInterface {
   /**
    * Reacts on the given event and invokes configured reaction rules.
    *
-   * @param \Symfony\Component\EventDispatcher\Event $event
+   * @param object $event
    *   The event object containing context for the event.
+   *   In Drupal 9 this will be a \Symfony\Component\EventDispatcher\Event,
+   *   In Drupal 10 this will be a \Symfony\Contracts\EventDispatcher\Event.
    * @param string $event_name
    *   The event name.
    */
-  public function onRulesEvent(Event $event, $event_name) {
+  public function onRulesEvent(object $event, $event_name) {
+    // @todo The 'object' type hint should be replaced with the appropriate
+    // class once Symfony 4 is no longer supported, and the assert() should be
+    // removed.
+    assert(
+      $event instanceof SymfonyComponentEvent ||
+      $event instanceof SymfonyContractsEvent
+    );
+
     // Get event metadata and the to-be-triggered events.
     $event_definition = $this->eventManager->getDefinition($event_name);
     $handler_class = $event_definition['class'];
