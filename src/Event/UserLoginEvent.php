@@ -19,7 +19,7 @@ class UserLoginEvent extends Event {
    *
    * @var \Drupal\user\UserInterface
    */
-  public $account;
+  protected $account;
 
   /**
    * Constructs the object.
