@@ -23,9 +23,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *       label = @Translation("Path alias"),
  *       description = @Translation("Specify the path alias to check for. For example, '/about' for an about page.")
  *     ),
- *     "language" = @ContextDefinition("string",
+ *     "language" = @ContextDefinition("entity:configurable_language",
  *       label = @Translation("Language"),
- *       description = @Translation("If specified, the language for which the URL alias applies. If blank, will default to the language of the current url at condition evaluation time."),
+ *       description = @Translation("If specified, the language for which the URL alias applies."),
  *       options_provider = "\Drupal\rules\TypedData\Options\LanguageOptions",
  *       default_value = NULL,
  *       required = FALSE
@@ -76,16 +76,15 @@ class PathAliasExists extends RulesConditionBase implements ContainerFactoryPlug
    *
    * @param string $alias
    *   The alias to see if exists.
-   * @param string $langcode
-   *   The language code to use.
+   * @param \Drupal\Core\Language\LanguageInterface|null $language
+   *   The language to use.
    *
    * @return bool
-   *   TRUE if the alias exists with the given language, or with the current
-   *   url language if not specified.
+   *   TRUE if the system path does not match the given alias (ie: the alias
+   *   exists).
    */
-  protected function doEvaluate($alias, string $langcode = NULL) {
-    // Convert empty string to NULL. 
-    $langcode = empty($langcode) ? NULL : $langcode;
+  protected function doEvaluate($alias, LanguageInterface $language = NULL) {
+    $langcode = is_null($language) ? NULL : $language->getId();
     $path = $this->aliasManager->getPathByAlias($alias, $langcode);
     // getPathByAlias() returns the alias if there is no path.
     return $path != $alias;
