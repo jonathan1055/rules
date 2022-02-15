@@ -15,7 +15,7 @@ class ConfigureAndExecuteTest extends RulesBrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected static $modules = ['rules', 'typed_data', 'config_translation'];
+  protected static $modules = ['rules', 'typed_data', 'language'];
 
   /**
    * We use the minimal profile because we want to test local action links.

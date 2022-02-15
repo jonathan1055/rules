@@ -14,7 +14,7 @@ class UiPageTest extends RulesBrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected static $modules = ['rules', 'rules_test', 'config_translation'];
+  protected static $modules = ['rules', 'rules_test', 'language'];
 
   /**
    * We use the minimal profile because we want to test local action links.
