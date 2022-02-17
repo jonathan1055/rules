@@ -12,7 +12,7 @@ class RulesComponentListBuilderTest extends RulesBrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected static $modules = ['rules', 'rules_test', 'language'];
+  protected static $modules = ['rules', 'rules_test'];
 
   /**
    * We use the minimal profile because we want to test local action links.

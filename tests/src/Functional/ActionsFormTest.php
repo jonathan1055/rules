@@ -15,7 +15,6 @@ class ActionsFormTest extends RulesBrowserTestBase {
   protected static $modules = [
     'node',
     'ban',
-    'language',
     'path_alias',
     'rules',
     'typed_data',
