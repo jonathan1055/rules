@@ -232,8 +232,6 @@ class ContextDefinition extends ContextDefinitionCore implements ContextDefiniti
       'entity_reference' => 'text_input',
       'float' => 'text_input',
       'integer' => 'text_input',
-      'language' => 'text_input',
-      'language_reference' => 'text_input',
       'string' => 'text_input',
       'uri' => 'text_input',
 
@@ -251,6 +249,10 @@ class ContextDefinition extends ContextDefinitionCore implements ContextDefiniti
 
       // Selection list.
       'none-yet' => 'select',
+
+      // Do not use a widget.
+      'language' => self::NO_WIDGET,
+      'language_reference' => self::NO_WIDGET,
     ];
   }
 
