@@ -35,7 +35,7 @@ jobs:
         # 128 core/jquery.ui.autocomplete
         #  50 Support for keys without a placeholder prefix
         - DEPRECATIONS=696
-    - php: 7.6
+    - php: 8.0
       env:
         - DRUPAL_CORE=9.4.x
         - DEPRECATIONS=1000
