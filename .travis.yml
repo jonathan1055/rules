@@ -35,6 +35,10 @@ jobs:
         # 128 core/jquery.ui.autocomplete
         #  50 Support for keys without a placeholder prefix
         - DEPRECATIONS=696
+    - php: 7.5
+      env:
+        - DRUPAL_CORE=9.4.x
+        - DEPRECATIONS=1000
 
 services:
   - mysql
@@ -83,7 +87,9 @@ before_script:
   - travis_retry composer install
 
   # Set the phpcs installed_paths to pick up the Drupal standards.
-  - $DRUPAL_ROOT/vendor/bin/phpcs --config-set installed_paths $DRUPAL_ROOT/vendor/drupal/coder/coder_sniffer
+  - if [ "$DRUPAL_CORE" <= "9.3.x" ]; then
+      $DRUPAL_ROOT/vendor/bin/phpcs --config-set installed_paths $DRUPAL_ROOT/vendor/drupal/coder/coder_sniffer
+    fi
 
   # Start a web server on port 8888, run in the background.
   - php -S localhost:8888 &
