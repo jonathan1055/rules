@@ -87,8 +87,8 @@ before_script:
   - travis_retry composer install
 
   # Set the phpcs installed_paths to pick up the Drupal standards.
-  - if [[ "$DRUPAL_CORE" == "9.1.x" || "$DRUPAL_CORE" == "9.2.x" ]]; then
-      $DRUPAL_ROOT/vendor/bin/phpcs --config-set installed_paths $DRUPAL_ROOT/vendor/drupal/coder/coder_sniffer
+  - if [ "$DRUPAL_CORE" <= "9.3.x" ]; then
+      $DRUPAL_ROOT/vendor/bin/phpcs --config-set installed_paths $DRUPAL_ROOT/vendor/drupal/coder/coder_sniffer;
     fi
 
   # Start a web server on port 8888, run in the background.
