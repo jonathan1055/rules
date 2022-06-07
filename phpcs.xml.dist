@@ -3,6 +3,11 @@
   <description>Default PHP CodeSniffer configuration for Rules.</description>
   <file>.</file>
 
+  <!-- temporary fix until drupal.org testbot script is changed.
+    This config installed_paths setting is for testing patches only, it should not be committed.
+    See https://www.drupal.org/project/drupalci_testbot/issues/3283978 -->
+  <config name="installed_paths" value="/var/www/html/vendor/drupal/coder/coder_sniffer/,/var/www/html/vendor/sirbrillig/phpcs-variable-analysis/,/var/www/html/vendor/slevomat/coding-standard/"/>
+
   <exclude-pattern>./d7-tests/</exclude-pattern>
   <exclude-pattern>./vendor/</exclude-pattern>
   <exclude-pattern>./config/</exclude-pattern>
